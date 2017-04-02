@@ -13,7 +13,7 @@
 const unsigned int	ADDR_SIZE ( 32 );   // ADDRESS SIZE
 const unsigned int	OPC_SIZE ( 6 );     // OP SIZE
 const unsigned int	REG_SIZE ( 32 );    // REGISTER SIZE
-const unsigned int	DATA_SIZE ( 32 );   // DATA SIZE
+const unsigned int	DATA_SIZE ( 64 );   // DATA SIZE
 
 /**
  * SPECIAL RESERVED REGISTERS
@@ -117,13 +117,13 @@ Bus dbus ( "DATA_MEMORY_BUS",
  * ALUs
  */
 BusALU	alu_addr0 ( "ALU_ADDRESS0",
-                    DATA_SIZE + DATA_SIZE );
+                    DATA_SIZE );
 BusALU	alu_addr1 ( "ALU_ADDRESS1",
-                    DATA_SIZE + DATA_SIZE );
+                    DATA_SIZE );
 BusALU	alu_op0 ( "ALU_OP0",
-                  DATA_SIZE + DATA_SIZE );
+                  DATA_SIZE );
 BusALU	alu_op1 ( "ALU_OP1",
-                  DATA_SIZE + DATA_SIZE );
+                  DATA_SIZE );
 
 /**
  * Cache
