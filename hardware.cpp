@@ -26,14 +26,8 @@ Counter		lr1 ( "LOCK_REG_2",
                   REG_SIZE );
 Counter		pcc ( "PCC",
                   REG_SIZE );
-Clearable	ir0 ( "IR0",
-                  REG_SIZE );
-Clearable	ir1 ( "IR1",
-                  REG_SIZE );
-Clearable	ir2 ( "IR2",
-                  REG_SIZE );
-Clearable	ir3 ( "IR3",
-                  REG_SIZE );
+Clearable	ir ( "IR",
+                 REG_SIZE );
 
 /**
  * Programmer-viewable registers

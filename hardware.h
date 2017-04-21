@@ -17,14 +17,11 @@ extern const unsigned int	REG_SIZE;   // REGISTER SIZE
 extern const unsigned int	DATA_SIZE;  // DATA SIZE
 
 /* RESERVED REGISTERS */
-extern Counter				pc;
-extern Counter				lr0;
-extern Counter				lr1;
+extern Counter				pc;         // pc
+extern Counter				lr0;        // lock registers 0
+extern Counter				lr1;        // lock registers 1
 extern Counter				pcc;
-extern Clearable			ir0;
-extern Clearable			ir1;
-extern Clearable			ir2;
-extern Clearable			ir3;
+extern Clearable			ir;         // instr register
 
 /* Programmer-viewable registers */
 extern Counter				r0;
@@ -58,12 +55,12 @@ extern Counter				r27;
 extern Counter				r28;
 extern Counter				r29;
 extern Counter				r30;
-extern Clearable			r31;     // used as a 'zero' register
+extern Clearable			r31;        // used as a 'zero' register
 
 /* busses */
-extern Bus					ibus;
-extern Bus					abus;
-extern Bus					dbus;
+extern Bus					ibus;       // instr_cache bus
+extern Bus					abus;       // data_cache.MAR bus
+extern Bus					dbus;       // data_cache write and read bus
 
 /* cache */
 extern Memory				instr_cache;
