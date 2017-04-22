@@ -27,12 +27,18 @@ void run_simulation ( char* objfile )
 
     char [] buff = new char [ 32 ]; // sprintf buffer
 
-    // ticks MUST BE HANDLED BY THE STAGES
+    /**
+     * PIPELINE START
+     *   NOTE
+     *   each pipeline must be tick terminating. each functions results must be sent to STAGE
+     *   OUTFEEDERS
+     *
+     */
     while ( ! done ) { // until we stop the simulation
 
         // FETCH
         fetch ( );
-
+        pipe_transfer ( );
         // ISSUE
         issue ( );
 
