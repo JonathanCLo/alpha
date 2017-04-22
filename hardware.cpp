@@ -43,15 +43,15 @@ Clearable  reg_lock2_ir ( "REG_LOCK2_ISSUE_READ", REG_SIZE );
 Clearable  mem_lock_ir ( "MEM_LOCK_ISSUE_READ", REG_SIZE );
 
 // READ stage
-Clearable  reg_lock1_ir ( "REG_LOCK1_READ", REG_SIZE );
-Clearable  reg_lock2_ir ( "REG_LOCK2_READ", REG_SIZE );
+Clearable  reg_lock1_r ( "REG_LOCK1_READ", REG_SIZE );
+Clearable  reg_lock2_r ( "REG_LOCK2_READ", REG_SIZE );
 Clearable  mem_lock_r ( "MEM_LOCK_READ", REG_SIZE );
 
 // READ-EXECUTE Pipeline
 Counter    ra_re ( "RA_READ_EXECUTE", REG_SIZE );
 Counter    rb_re ( "RB_READ_EXECUTE", REG_SIZE );
-Clearable  reg_lock1_e ( "REG_LOCK1_READ_EXECUTE", REG_SIZE );
-Clearable  reg_lock2_e ( "REG_LOCK2_READ_EXECUTE", REG_SIZE );
+Clearable  reg_lock1_re ( "REG_LOCK1_READ_EXECUTE", REG_SIZE );
+Clearable  reg_lock2_re ( "REG_LOCK2_READ_EXECUTE", REG_SIZE );
 Clearable  mem_lock_re ( "MEM_LOCK_READ_EXECUTE", REG_SIZE );
 
 
