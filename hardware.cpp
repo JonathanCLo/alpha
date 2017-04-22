@@ -22,8 +22,8 @@ Counter  pcc ( "PCC", REG_SIZE );
 
 
 // FETCH stage
+Counter    pc_f ( "PC", ADDR_SIZE );
 Clearable  ir_f ( "IR_FETCH", REG_SIZE );
-Counter    pc ( "PC", ADDR_SIZE );
 Bus  fetch_bus ( "FETCH_BUS", ADDR_SIZE ); // BUS to pipeline
 
 // FETCH-ISSUE pipeline
