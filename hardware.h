@@ -42,6 +42,7 @@ extern Clearable  reg_lock2_ir; // reglock2 - Issue Read
 extern Clearable  mem_lock_ir; // memlock - Issue Read
 // READ
 extern Counter    pc_r; // PC - read
+extern Clearable  ir_r; // IR - Read
 extern Clearable  reg_lock1_r; // reglock - Read
 extern Clearable  reg_lock2_r; // reglock2 - Read
 extern Clearable  mem_lock_r; // memlock - read
@@ -61,10 +62,12 @@ extern Clearable  reg_lock2_e; // reglock 2 - execute
 extern Clearable  mem_lock_e; // memlock - execute
 // EXECUTE MEMORY
 extern Counter    pc_em; // PC - execute memory
+extern Clearable  out_em; // out - execute memory
 extern Clearable  addr_em; // address - execute memory
 extern Clearable  mem_lock_em; // memlock - execute memory
 // MEMORY
 extern Counter    pc_m; // pc - execute
+extern Clearable  out_m; // out - memory
 extern Clearable  addr_m; // address - memory
 extern Clearable  mem_lock_e; // memlock - memory
 

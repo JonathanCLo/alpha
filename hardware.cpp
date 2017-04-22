@@ -48,11 +48,11 @@ Clearable  mem_lock_ir ( "MEM_LOCK_ISSUE_READ", REG_SIZE );
 
 // READ stage
 Counter    pc_r ( "PC_READ", ADDR_SIZE )
+Clearable  ir_r ( "IR_READ", REG_SIZE );
 Clearable  reg_lock1_r ( "REG_LOCK1_READ", REG_SIZE );
 Clearable  reg_lock2_r ( "REG_LOCK2_READ", REG_SIZE );
 Clearable  mem_lock_r ( "MEM_LOCK_READ", REG_SIZE );
 Bus  read_bus ( "READ_BUS", ADDR_SIZE );
-
 
 // READ-EXECUTE Pipeline
 Counter    pc_re ( "PC_READ_EXECUTE", ADDR_SIZE );
@@ -75,11 +75,13 @@ Bus  exec_bus ( "EXECUTE_BUS", ADDR_SIZE );
 
 // EXECUTE-MEMORY Pipeline
 Counter    pc_em ( "PC_EXECUTE_MEMORY", ADDR_SIZE );
+Clearble   out_em ( "OUT_EXECUTE_MEMORY", REG_SIZE );
 Clearable  addr_em ( "ADDR_EXECUTE_MEMORY", ADDR_SIZE )
 Clearable  mem_lock_em ( "MEM_LOCK_EXECUTE_MEMORY", REG_SIZE );
 
 // MEMORY Stage
 Counter    pc_m ( "PC_MEMORY", ADDR_SIZE );
+Clearable  out_em ( "OUT_MEMORY", REG_SIZE );
 Clearable  addr_m ( "ADDR_MEMORY", ADDR_SIZE );
 Clearable  mem_lock_e ( "MEM_LOCK_MEMORY", REG_SIZE );
 Bus  mem_bus ( "MEMORY_BUS", ADDR_SIZE );
@@ -132,7 +134,8 @@ Bus  data_dbus ( "DATA_DATABUS", REG_SIZE );
  * Cache
  */
 // insstruction cache
-Memory  instr_cache ( "INSTRUCTION_CACHE", ADDR_SIZE, DATA_SIZE );
+Memory  instr_cache ( "INSTRUCTION_CACHE",
+                      ADDR_SIZE, DATA_SIZE );
 // data cache
 Memory  data_cache ( "DATA_CACHE", ADDR_SIZE, DATA_SIZE );
 
