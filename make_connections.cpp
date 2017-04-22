@@ -20,9 +20,11 @@ void make_connections_memory ( );
  */
 void make_connections ( )
 {
-
     make_connections_fetch ( );
     make_connections_issue ( );
+    make_connections_read ( );
+    make_connections_execute ( );
+    make_connections_memory ( );
 
 } // make_connections
 
@@ -42,7 +44,7 @@ void make_connections_fetch ( )
 
 /**
  * make_connections_issue
- *
+ *  makes hardware connections within the issue stage. EXCLUDES PIPELINE
  *
  */
 void make_connections_issue ( )
@@ -52,7 +54,7 @@ void make_connections_issue ( )
 
 /**
  * make_connections_read
- *
+ *  makes hardware connections within the read stage. EXCLUDES PIPELINE
  *
  */
 void make_connections_read ( )
@@ -62,7 +64,7 @@ void make_connections_read ( )
 
 /**
  * make_connections_execute
- *
+ *  makes hardware connections within the execute stage. EXCLUDES PIPELINE
  *
  */
 void make_connections_execute ( )
@@ -72,7 +74,7 @@ void make_connections_execute ( )
 
 /**
  * make_connections_memory
- *
+ *  makes hardware connections within the memory stage. EXCLUDES PIPELINE
  *
  */
 void make_connections_memory ( )
