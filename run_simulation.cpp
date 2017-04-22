@@ -25,6 +25,8 @@ void run_simulation ( char* objfile )
     pc.latchFrom ( instr_cache.READ ( ) );
     Clock::tick ( );
 
+    char [] buff = new char [ 32 ]; // sprintf buffer
+
     // ticks MUST BE HANDLED BY THE STAGES
     while ( ! done ) { // until we stop the simulation
 

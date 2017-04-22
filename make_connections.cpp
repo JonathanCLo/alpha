@@ -23,18 +23,23 @@ void make_connections ( )
 {
     make_connections_fetch ( );
     // FETCH-ISSUE pipeline connections
-    pc_f.connectsTo ( fetch_bus.IN ( ) );
     pc_fi.connectsTo ( fetch_bus.OUT ( ) );
     pc_fi.connectsTo ( issue_bus.IN ( ) );
-    ir_f.connectsTo ( fetch_bus.IN ( ) );
     ir_fi.connectsTo ( fetch_bus.OUT ( ) );
     ir_fi.connectsTo ( issue_bus.IN ( ) );
     //
     make_connections_issue ( );
     // ISSUE-READ pipeline connections
+    pc_ir.connectsTo ( issue_bus.OUT ( ) );
+    pc_ir.connectsTo ( read_bus.IN ( ) );
     ir_ir.connectsTo ( issue_bus.OUT ( ) );
     ir_ir.connectsTo ( read_bus.IN ( ) );
-    ir.connectsTo ( )
+    reg_lock1_ir.connectsTo ( issue_bus.OUT ( ) );
+    reg_lock1_ir.connectsTo ( read_bus.IN ( ) );
+    reg_lock2_ir.connectsTo ( issue_bus.OUT ( ) );
+    reg_lock2_ir.connectsTo ( read_bus.IN ( ) );
+    mem_lock_ir.connectsTo ( issue_bus.OUT ( ) );
+    mem_lock_ir.connectsTo ( read_bus.OUT ( ) );
     //
     make_connections_read ( );
     // READ-EXECUTE pipeline connections
