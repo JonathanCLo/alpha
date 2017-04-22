@@ -1,2 +1,2 @@
-# spec_arch
-CSCI 453 Computer Architecture, implementing the SPEC hardware and ISA
+# DEC SPEC Alpha Architecture
+CSCI 453 Computer Architecture, implementing the ALPHA ISA
