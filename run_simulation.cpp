@@ -18,15 +18,15 @@
 void run_simulation ( char* objfile )
 {
     // step 1:  load the object file
-    m.load ( objfile );
+    instr_cache.load ( objfile );
+    data_cache.load ( objfile );
 
     // step 2:  set the entry point
+    pc.latchFrom ( instr_cache.READ ( ) );
+    Clock::tick ( );
 
+    while ( ! done ) { // until we stop the simulation
 
-
-    // step 3:  start the pipeline
-    // until we stop the simulation
-    while ( ! done ) {
         // FETCH
         fetch ( );
 
