@@ -1,12 +1,8 @@
 /**
  * run_simulation.cpp
  *
- * Original program:	Jim Heliotis, March 2000
- * Updates:
- *  2000/11/29:	wrc, restructured code
- *  2001/12/10:	wrc, modified simulation control
- *
- * runs the simulation.
+ * Author   Nathan Castle   < >
+ *          Jonathan Lo     < >
  */
 
 #include "includes.h"
@@ -27,30 +23,8 @@ void run_simulation ( char* objfile )
 
     char [] buff = new char [ 32 ]; // sprintf buffer
 
-    /**
-     * PIPELINE START
-     *   NOTE
-     *   each pipeline must be tick terminating. each functions results must be sent to STAGE
-     *   OUTFEEDERS
-     *
-     */
-    while ( ! done ) { // until we stop the simulation
-
-        // FETCH
-        fetch ( );
-        pipe_transfer ( );
-        // ISSUE
-        issue ( );
-
-        // REGISTER READ
-        read ( );
-
-        // EXECUTE
-        execute ( );
-
-        // MEMORY
-        memory ( );
-    }
+    while ( ! done )  // until we stop the simulation
+        pipeline ( ); // pipeline
 } // run_simulation
 
 // $(filename) end
