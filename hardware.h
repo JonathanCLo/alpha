@@ -51,6 +51,13 @@ extern Clearable            mem_lock_ed; //memlock - execute memory
 extern Clearable            addr_m; //address - memory
 extern Clearable            mem_lock_e; //memlock - memory
 
+/** special pipeline buses **/
+extern Bus                  fetch_bus;
+extern Bus                  issue_bus;
+extern Bus                  read_bus;
+extern Bus                  exec_bus;
+extern Bus                  mem_bus;
+
 /* Programmer-viewable registers */
 extern Counter				r0;
 extern Counter				r1;
