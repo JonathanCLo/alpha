@@ -43,9 +43,23 @@ void make_connections ( )
     //
     make_connections_read ( );
     // READ-EXECUTE pipeline connections
+    pc_re.connectsTo ( read_bus.OUT ( ) );
+    pc_re.connectsTo ( exec_bus.IN ( ) );
+    reg_lock1_re.connectsTo ( read_bus.OUT ( ) );
+    reg_lock1_re.connectsTo ( exec_bus.IN ( ) );
+    reg_lock2_re.connectsTo ( read_bus.OUT ( ) );
+    reg_lock2_re.connectsTo ( exec_bus.IN ( ) );
+    mem_lock_re.connectsTo ( read_bus.OUT ( ) );
+    mem_lock_re.connectsTo ( exec_bus.IN ( ) );
     //
     make_connections_execute ( );
     // EXECUTE-MEMORY pipeline connections
+    pc_em.connectsTo ( exec_bus.OUT ( ) );
+    pc_em.connectsTo ( mem_bus.IN ( ) );
+    addr_em.connectsTo ( exec_bus.OUT ( ) );
+    addr_em.connectsTo ( mem_bus.IN ( ) );
+    mem_lock_em.connectsTo ( exec_bus.OUT ( ) );
+    mem_lock_em.connectsTo ( mem_bus.IN ( ) );
     //
     make_connections_memory ( );
 
@@ -91,8 +105,15 @@ void make_connections_issue ( )
  */
 void make_connections_read ( )
 {
-
-}
+    pc_r.connectsTo ( read_bus.OUT ( ) );
+    pc_r.connectsTo ( read_bus.IN  ( ) );
+    reg_lock1_r.connectsTo ( read_bus.OUT ( ) );
+    reg_lock1_r.connectsTo ( read_bus.IN ( ) );
+    reg_lock2_r.connectsTo ( read_bus.OUT ( ) );
+    reg_lock2_r.connectsTo ( read_bus.IN ( ) );
+    mem_lock_r.connectsTo ( read_bus.OUT ( ) );
+    mem_lock_r.connectsTo ( read_bus.IN ( ) );
+} //make_connections_read
 
 /**
  * make_connections_execute
@@ -101,7 +122,16 @@ void make_connections_read ( )
  */
 void make_connections_execute ( )
 {
-
+    pc_e.connectsTo ( exec_bus.OUT ( ) );
+    pc_e.connectsTo ( exec_bus.IN ( ) );
+    out_e.connectsTo ( exec_bus.OUT ( ) );
+    out_e.connectsTo ( exec_bus.IN ( ) );
+    reg_lock1_e.connectsTo ( exec_bus.IN ( ) );
+    reg_lock1_e.connectsTo ( exec_bus.OUT ( ) );
+    reg_lock2_e.connectsTo ( exec_bus.IN ( ) );
+    reg_lock2_e.connectsTo ( exec_bus.OUT ( ) );
+    mem_lock_e.connectsTo ( exec_bus.IN ( ) );
+    mem_lock_e.connectsTo ( exec_bus.OUT ( ) );
 }
 
 /**
@@ -111,7 +141,12 @@ void make_connections_execute ( )
  */
 void make_connections_memory ( )
 {
-
+    pc_m.connectsTo ( mem_bus.IN ( ) );
+    pc_m.connectsTo ( mem_bus.OUT ( ) );
+    addr_m.connectsTo ( mem_bus.IN ( ) );
+    addr_m.connectsTo ( mem_bus.OUT ( ) );
+    mem_lock_e.connectsTo ( mem_bus.IN ( ) );
+    mem_lock_e.connectsTo ( mem_bus.OUT ( ) );
 }
 
 // $(filename) end
