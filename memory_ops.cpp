@@ -1,7 +1,8 @@
 /**
  * memory_ops.cpp
  *
- * Author   Jonathan Lo < >
+ * Author   Nathan Caster   < >
+ *          Jonathan Lo     <jcl5201>
  */
 
 #include "includes.h"
@@ -23,6 +24,16 @@ void instr_read ( )
     instr_cache.read ( );
     ir_f.latchFrom ( instr_cache.READ ( ) );
     Clock::tick ( );
+}
+
+/**
+ * data_read
+ *
+ *
+ */
+void data_read ( )
+{
+
 }
 
 // $(filename) END
