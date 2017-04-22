@@ -21,9 +21,21 @@ void make_connections_memory ( );
 void make_connections ( )
 {
     make_connections_fetch ( );
+    // FETCH-ISSUE pipeline connections
+    pc_f.connectsTo ( fetch_bus.IN ( ) );
+    pc_fi.connectsTo ( fetch_bus.OUT ( ) );
+    ir_f.connectsTo ( fetch_bus.IN ( ) );
+    ir_fi.connectsTo ( fetch_bus.OUT ( ) );
+    //
     make_connections_issue ( );
+    // ISSUE-READ pipeline connections
+    //
     make_connections_read ( );
+    // READ-EXECUTE pipeline connections
+    //
     make_connections_execute ( );
+    // EXECUTE-MEMORY pipeline connections
+    //
     make_connections_memory ( );
 
 } // make_connections
