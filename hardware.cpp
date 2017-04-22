@@ -13,17 +13,62 @@
 const unsigned int  ADDR_SIZE ( 32 );   // ADDRESS SIZE
 const unsigned int  OPC_SIZE ( 6 );     // OP SIZE
 const unsigned int  REG_SIZE ( 32 );    // REGISTER SIZE
-const unsigned int  DATA_SIZE ( 64 );   // DATA SIZE
+const unsigned int  DATA_SIZE ( 16 );   // DATA SIZE
 
 /**
  * SPECIAL RESERVED REGISTERS
  */
-Counter    lr0 ( "LOCK_REG_1", REG_SIZE );
-Counter    lr1 ( "LOCK_REG_2", REG_SIZE );
-Counter    pcc ( "PCC", REG_SIZE );
+Counter  pcc ( "PCC", REG_SIZE );
 
-Clearable  ir ( "IR", REG_SIZE );
+
+// FETCH stage
+Clearable  ir_f ( "IR_FETCH", REG_SIZE );
 Counter    pc ( "PC", ADDR_SIZE );
+
+// FETCH-ISSUE pipeline
+Clearable  ir_fi ( "IR_FETCH_ISSUE", REG_SIZE );
+Clearable  pc_fi ( "PC_FETCH_ISSUE", ADDR_SIZE );
+
+// ISSUE stage
+Counter    pc_i ( "PC_ISSUE", REG_SIZE );
+BusALU     alu_i ( "ALU_ISSUE", REG_SIZE );
+Clearable  reg_lock1_i ( "REG_LOCK1_ISSUE", REG_SIZE );
+Clearable  reg_lock2_i ( "REG_LOCK2_ISSUE", REG_SIZE );
+Clearable  mem_lock_i ( "MEM_LOCK_ISSUE", REG_SIZE );
+
+// ISSUE-READ Pipeline
+Clearable  ir_ir ( "IR_ISSUE_READ", REG_SIZE );
+Clearable  reg_lock1_ir ( "REG_LOCK1_ISSUE_READ", REG_SIZE );
+Clearable  reg_lock2_ir ( "REG_LOCK2_ISSUE_READ", REG_SIZE );
+Clearable  mem_lock_ir ( "MEM_LOCK_ISSUE_READ", REG_SIZE );
+
+// READ stage
+Clearable  reg_lock1_ir ( "REG_LOCK1_READ", REG_SIZE );
+Clearable  reg_lock2_ir ( "REG_LOCK2_READ", REG_SIZE );
+Clearable  mem_lock_r ( "MEM_LOCK_READ", REG_SIZE );
+
+// READ-EXECUTE Pipeline
+Counter    ra_re ( "RA_READ_EXECUTE", REG_SIZE );
+Counter    rb_re ( "RB_READ_EXECUTE", REG_SIZE );
+Clearable  reg_lock1_e ( "REG_LOCK1_READ_EXECUTE", REG_SIZE );
+Clearable  reg_lock2_e ( "REG_LOCK2_READ_EXECUTE", REG_SIZE );
+Clearable  mem_lock_re ( "MEM_LOCK_READ_EXECUTE", REG_SIZE );
+
+
+// EXECUTE Stage
+BusALU     alu_e ( "ALU_EXECUTE", REG_SIZE );
+Clearable  out_e ( "OUT_EXECUTE", REG_SIZE );
+Clearable  reg_lock1_e ( "REG_LOCK1_EXECUTE", REG_SIZE );
+Clearable  reg_lock2_e ( "REG_LOCK2_EXECUTE", REG_SIZE );
+Clearable  mem_lock_e ( "MEM_LOCK_EXECUTE", REG_SIZE );
+
+// EXECUTE-MEMORY Pipeline
+Clearable  addr_ed ( "ADDR_EXECUTE_MEMORY", ADDR_SIZE )
+Clearable  mem_lock_e ( "MEM_LOCK_EXECUTE_MEMORY", REG_SIZE );
+
+// MEMORY Stage
+Clearable  addr_m ( "ADDR_MEMORY", ADDR_SIZE );
+Clearable  mem_lock_e ( "MEM_LOCK_MEMORY", REG_SIZE );
 
 /**
  * Programmer-viewable registers
@@ -64,17 +109,10 @@ Clearable  r31 ( "R31", REG_SIZE );
 /**
  * Busses
  */
-Bus  ibus ( "INSTRUCTION_BUS", DATA_SIZE );
-Bus  abus ( "ADDR_MEMORY_BUS", DATA_SIZE );
-Bus  dbus ( "DATA_MEMORY_BUS", DATA_SIZE );
-
-/**
- * ALUs
- */
-BusALU  alu_addr0 ( "ALU_ADDRESS0", DATA_SIZE );
-BusALU  alu_addr1 ( "ALU_ADDRESS1", DATA_SIZE );
-BusALU  alu_op0 ( "ALU_OP0", DATA_SIZE );
-BusALU  alu_op1 ( "ALU_OP1", DATA_SIZE );
+Bus  addr_ibus ( "ADDR_INSTBUS", ADDR_SIZE );
+Bus  data_ibus ( "DATA_INSTBUS", REG_SIZE );
+Bus  addr_dbus ( "ADDR_DATABUS", ADDR_SIZE );
+Bus  data_dbus ( "DATA_DATABUS", REG_SIZE );
 
 /**
  * Cache

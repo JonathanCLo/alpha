@@ -30,14 +30,11 @@ void run_simulation ( char* objfile )
         // FETCH
         fetch ( );
 
-        // instruction slot
-
-        // map
-
-        // issue
+        // ISSUE
+        issue ( );
 
         // REGISTER READ
-        registerRead ( );
+        read ( );
 
         // EXECUTE
         execute ( );

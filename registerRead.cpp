@@ -6,14 +6,14 @@
 
 #include "includes.h"
 
-void registerRead ( );
+void read ( );
 
 /**
  * registerRead
  *
  *
  */
-void registerRead ( )
+void read ( )
 {
 
 }
