@@ -18,98 +18,79 @@ extern const unsigned int  DATA_SIZE;  // DATA SIZE
 
 /**
  * SPECIAL RESERVED REGISTERS
- *
  */
-// FETCH
-extern Counter    pcc;
-extern Counter    pc_f; // PC-Fetch
-extern Clearable  ir_f; // IR-Fetch
-extern Bus        bus_pc_f_fi;
-extern Bus        bus_ir_f_fi;  
-// FETCH/ISSUE
-extern Clearable  pc_fi; // PC-Fetch-Issue
-extern Clearable  ir_fi; // IR-Fetch-Issue
-extern Bus        bus_pc_fi_i;
-extern Bus        bus_ir_fi_i;
-// ISSUE
-extern Counter    pc_i; // PC - Issue
-extern Counter    ir_i; // IR - Issue
-extern BusALU     alu_i; // ALU - Issue
-extern Clearable  reg_lock1_i; // RegLock 1 - Issue
-extern Clearable  reg_lock2_i; // Reglock 2 - Issue
-extern Clearable  mem_lock_i; // MemLock - Issue
-extern Bus        bus_pc_i_ir;
-extern Bus        bus_ir_i_ir;
-extern Bus        bus_rl1_i_ir;
-extern Bus        bus_rl2_i_ir;
-extern Bus        bus_ml_i_ir;
-// ISSUE/READ
-extern Counter    pc_ir; // IR-Fetch-Issue
-extern Clearable  ir_ir; // IR - Issue Read
-extern Clearable  reg_lock1_ir; // reglock1 - Issue Read
-extern Clearable  reg_lock2_ir; // reglock2 - Issue Read
-extern Clearable  mem_lock_ir; // memlock - Issue Read
-extern Bus        bus_pc_ir_r;
-extern Bus        bus_ir_ir_r;
-extern Bus        bus_rl1_ir_r;
-extern Bus        bus_rl2_ir_r;
-extern Bus        bus_ml_ir_r;
-// READ
-extern Counter    pc_r; // PC - read
-extern Clearable  ir_r; // IR - Read
-extern Clearable  reg_lock1_r; // reglock - Read
-extern Clearable  reg_lock2_r; // reglock2 - Read
-extern Clearable  mem_lock_r; // memlock - read
-extern Bus        bus_pc_r_re;
-extern Bus        bus_rl1_r_re;
-extern Bus        bus_rl2_r_re;
-extern Bus        bus_ml_r_re;
-// READ/EXECUTE
-extern Counter    pc_re; // PC - read execute
-extern Counter    ra_re; // RA - Read Execute
-extern Counter    rb_re; // RB - Read Execute
-extern Clearable  reg_lock1_re; // reglock1 - Read Execute
-extern Clearable  reg_lock2_re; // reglock2 - Read Execute
-extern Clearable  mem_lock_re; // memlock - Read Execute
-extern Bus        bus_pc_re_e;
-extern Bus        bus_rl1_re_e;
-extern Bus        bus_rl2_re_e;
-extern Bus        bus_ml_re_e;
-// EXECUTE
-extern Counter    pc_e; // PC - execute
-extern BusALU     alu_e; // ALU - execute
-extern Clearable  out_e; // OUT - execute
-extern Clearable  reg_lock1_e; // reglock 1 - execute
-extern Clearable  reg_lock2_e; // reglock 2 - execute
-extern Clearable  mem_lock_e; // memlock - execute
-extern Bus        bus_pc_e_em;
-extern Bus        bus_out_e_em;
-extern Bus        bus_rl1_e_em;
-extern Bus        bus_rl2_e_em;
-extern Bus        bus_ml_e_em;
-// EXECUTE MEMORY
-extern Counter    pc_em; // PC - execute memory
-extern Clearable  out_em; // out - execute memory
-extern Clearable  addr_em; // address - execute memory
-extern Clearable  mem_lock_em; // memlock - execute memory
-extern Bus        bus_pc_em_m;
-extern Bus        bus_out_em_m;
-extern Bus        bus_addr_em_m;
-extern Bus        bus_ml_em_m;
-// MEMORY
-extern Counter    pc_m; // pc - execute
-extern Clearable  out_m; // out - memory
-extern Clearable  addr_m; // address - memory
-extern Clearable  mem_lock_e; // memlock - memory
+extern Counter    pc_f; // pc fetch
+extern Counter    pc_fi; // pc fetch issue
+extern Counter    pc_i; // pc issue
+extern Counter    pc_ir; // pc issue read
+extern Counter    pc_r; // pc read
+extern Counter    pc_re; // pc read execute
+extern Clearable  ir_f; // ir fetch
+extern Clearable  ir_fi; // ir fetch issue
+extern Clearable  ir_i; // ir issue
+extern Clearable  ir_ir; // ir issue read
+extern Clearable  ir_r; // ir read
+extern Clearable  ir_re; // ir read execute
+extern Clearable  disp_r; // disp read
+extern Clearable  disp_re; // disp read execute
+extern Clearable  li_r; // literal read
+extern Clearable  li_re; // literal read execute
+extern Clearable  func_r; // func read
+extern Clearable  func_re; // func read execute
+extern Counter    ra_re; // ra read execute
+extern Counter    rb_re; // rb read execute
+extern Counter    rc_re; // rc read execute
+extern Counter    aux_re; // aux read execute
+extern Counter    fout_e; // fout execute
+extern Counter    arith_op1; // execute
+extern Counter    arith_op2; // execute
+extern Counter    shift_op1; // execute
+extern Counter    shift_op2; // execute
+extern Counter    addr_op1; // execute
+extern Counter    addr_op2; // execute
+extern Counter    out_em; // out execute memory
+extern Clearable  out_m; // out memory
+extern Counter    addr_em; // addr execute memory
+extern Clearable  data_m; // data memory
 
-/** special pipeline buses **/
-extern Bus  fetch_bus;
-extern Bus  issue_bus;
-extern Bus  read_bus;
-extern Bus  exec_bus;
-extern Bus  mem_bus;
+/**
+ * BUSES
+ */
+extern Bus  pcbus_f; // pcbus fetch
+extern Bus  pcbus_i; // pcbus issue
+extern Bus  irbus_i; // irbus issue
+extern Bus  pcbus_r; // pcbus read
+extern Bus  irbus_r; // irbus read
+extern Bus  dispbus_r; // dispbus read
+extern Bus  libus_r; // literalbus read
+extern Bus  funcbus_r; // funcbus read
+extern Bus  rabus_r; // rabus read
+extern Bus  rbbus_r; // rbbus read
+extern Bus  rcbus_r; // rcbus read
+extern Bus  auxbus_r; // auxbus read
+extern Bus  arith_ebus; // arith ebus execute
+extern Bus  shift_ebus; // shift ebus execute
+extern Bus  addr_ebus; // addr ebus execute
+extern Bus  outbus_em; // outbus execute memory
+extern Bus  addrbus_em; // outbus execute memory
+extern Bus  dbus_m; // dbus memory
+extern Bus  sbus1; // stage buses
+extern Bus  sbus2;
+extern Bus  sbus3;
+extern Bus  sbus4;
+extern Bus  sbus5;
 
-/* Programmer-viewable registers */
+/**
+ * ALU
+ */
+extern BusALU  pc_alu; // pc alu
+extern BusALU  arith_alu; // arith alu
+extern BusALU  shift_alu; // shift alu
+extern BusALU  addr_alu; // addr alu
+
+/**
+ * Programmer-viewable registers
+ */
 extern Counter    r0;
 extern Counter    r1;
 extern Counter    r2;
@@ -142,12 +123,6 @@ extern Counter    r28;
 extern Counter    r29;
 extern Counter    r30;
 extern Clearable  r31;        // used as a 'zero' register
-
-/* busses */
-extern Bus  addr_ibus; // address - instruction bus
-extern Bus  data_ibus; // data - instruction bus
-extern Bus  addr_dbus; // address - data bus
-extern Bus  data_dbus; // data - data bus
 
 /* cache */
 extern Memory  instr_cache;
