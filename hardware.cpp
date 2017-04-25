@@ -25,10 +25,9 @@ Counter  pcc ( "PCC", REG_SIZE );
  * FETCH
  */
 // REGISTERS
-Counter    pc_f ( "PC_FETCH", ADDR_SIZE );
-Clearable  ir_f ( "IR_FETCH", REG_SIZE );
+Counter  pc_f ( "PC_FETCH", ADDR_SIZE );
 // BUSES
-Bus  pcbus_f ( "PCBUS_FETCH", ADDR_SIZE );
+Bus      pcbus_f ( "PCBUS_FETCH", ADDR_SIZE );
 // AUX COMPONENTS
 // PIPELINE COMPONENTS
 Counter   pc_fi ( "PC_FETCH_ISSUE", ADDR_SIZE );
@@ -39,6 +38,7 @@ Clearble  ir_fi ( "IR_FETCH_ISSUE", REG_SIZE );
  */
 // REGISTERS
 Counter    pc_i ( "PC_ISSUE", ADDR_SIZE );
+Counter    aux_i ( "AUX_ISSUE", ADDR_SIZE );
 Clearable  ir_i ( "IR_ISSUE", REG_SIZE );
 // BUSES
 Bus        pcbus_i ( "PCBUS_ISSUE", ADDR_SIZE );
@@ -69,6 +69,7 @@ Bus  rabus_r ( "RABUS_READ", REG_SIZE );
 Bus  rbbus_r ( "RBBUS_READ", REG_SIZE );
 Bus  rcbus_r ( "RCBUS_READ", REG_SIZE );
 Bus  auxbus_r ( "AUXBUS_READ", REG_SIZE );
+Bus  lockbus_r ( "LOCKBUS_READ", REG_SIZE );
 // AUX COMPONENTS
 // PIPELINE COMPONENTS
 Counter    pc_re ( "PC_READ_EXECUTE", ADDR_SIZE );
@@ -80,6 +81,7 @@ Counter    aux_re ( "AUX_READ_EXECUTE", AUX_SIZE );
 Clearable  disp_re ( "DISPLACE_READ_EXECUTE", DATA_SIZE );
 Clearable  li_re ( "LITERAL_READ_EXECUTE", DATA_SIZE );
 Clearable  func_re ( "FUNC_READ_EXECUTE", DATA_SIZE );
+Clearable  lock_re ( "LOCK_READ_EXECUTE", DATA_SIZE );
 
 /**
  * EXECUTE
@@ -93,11 +95,14 @@ Counter  shift_op2 ( "SHIFT_OP2", REG_SIZE );
 Counter  addr_op1 ( "ADDR_OP1", ADDR_SIZE );
 Counter  addr_op2 ( "ADDR_OP2", ADDR_SIZE );
 // BUSES
-Bus      arith_ebus ( "ARITH_EBUS", REG_SIZE );
-Bus      shift_ebus ( "SHIFT_EBUS", REG_SIZE );
-Bus      addr_ebus ( "ADDR_EBUS", ADDR_SIZE );
+Bus      arithop1_ebus ( "ARITH_OP1_EBUS", REG_SIZE );
+Bus      arithop2_ebus ( "ARITH_OP2_EBUS", REG_SIZE );
+Bus      shiftop1_ebus ( "SHIFT_OP1_EBUS", REG_SIZE );
+Bus      shiftop2_ebus ( "SHIFT_OP2_EBUS", REG_SIZE );
+Bus      addrop1_ebus ( "ADDR_OP1_EBUS", REG_SIZE );
+Bus      addrop2_ebus ( "ADDR_OP2_EBUS", REG_SIZE );
 // AUX COMPONENTS
-BusALU   arith_alu ( "ARITH_ALU", REG_SIZE );
+BusALU   arith_alu ( "ARITHOP", REG_SIZE );
 BusALU   shift_alu ( "SHIFT_ALU", REG_SIZE );
 BusALU   addr_alu ( "ADDR_ALU", ADDR_SIZE );
 // PIPELINE COMPONENTS
@@ -113,6 +118,7 @@ Bus      addrbus_em ( "ADDRBUS_EXECUTE_MEMORY", ADDR_SIZE );
 Clearable  data_m ( "DATA_MEMORY", DATA_SIZE );
 Clearable  out_m ( "OUT_MEMORY", REG_SIZE );
 // BUSES
+Bus  addrbus_m ( "ADDRBUS_MEMORY", REG_SIZE ); // TODO CONFLICTING SIZE!
 Bus  dbus_m ( "DATABUS_MEMORY", REG_SIZE ); // TODO CONFLICTING SIZE!
 // AUX COMPONENTS
 // PIPELINE COMPONENTS

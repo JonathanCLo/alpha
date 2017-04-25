@@ -25,12 +25,14 @@ extern Counter    pc_i; // pc issue
 extern Counter    pc_ir; // pc issue read
 extern Counter    pc_r; // pc read
 extern Counter    pc_re; // pc read execute
-extern Clearable  ir_f; // ir fetch
 extern Clearable  ir_fi; // ir fetch issue
 extern Clearable  ir_i; // ir issue
 extern Clearable  ir_ir; // ir issue read
 extern Clearable  ir_r; // ir read
 extern Clearable  ir_re; // ir read execute
+extern Counter    aux_i; // aux issue
+extern Clearable  lock_ir; // lock issue read
+extern Clearable  lock_re; // lock read execute
 extern Clearable  disp_r; // disp read
 extern Clearable  disp_re; // disp read execute
 extern Clearable  li_r; // literal read
@@ -68,6 +70,7 @@ extern Bus  rabus_r; // rabus read
 extern Bus  rbbus_r; // rbbus read
 extern Bus  rcbus_r; // rcbus read
 extern Bus  auxbus_r; // auxbus read
+extern Bus  lockbus_r; // lockbus read
 extern Bus  arith_ebus; // arith ebus execute
 extern Bus  shift_ebus; // shift ebus execute
 extern Bus  addr_ebus; // addr ebus execute

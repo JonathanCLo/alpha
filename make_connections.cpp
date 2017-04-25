@@ -22,131 +22,211 @@ void make_connections_memory ( );
 void make_connections ( )
 {
     make_connections_fetch ( );
-    // FETCH-ISSUE pipeline connections
-    pc_fi.connectsTo ( fetch_bus.OUT ( ) );
-    pc_fi.connectsTo ( issue_bus.IN ( ) );
-    ir_fi.connectsTo ( fetch_bus.OUT ( ) );
-    ir_fi.connectsTo ( issue_bus.IN ( ) );
-    //
     make_connections_issue ( );
-    // ISSUE-READ pipeline connections
-    pc_ir.connectsTo ( issue_bus.OUT ( ) );
-    pc_ir.connectsTo ( read_bus.IN ( ) );
-    ir_ir.connectsTo ( issue_bus.OUT ( ) );
-    ir_ir.connectsTo ( read_bus.IN ( ) );
-    reg_lock1_ir.connectsTo ( issue_bus.OUT ( ) );
-    reg_lock1_ir.connectsTo ( read_bus.IN ( ) );
-    reg_lock2_ir.connectsTo ( issue_bus.OUT ( ) );
-    reg_lock2_ir.connectsTo ( read_bus.IN ( ) );
-    mem_lock_ir.connectsTo ( issue_bus.OUT ( ) );
-    mem_lock_ir.connectsTo ( read_bus.OUT ( ) );
-    //
     make_connections_read ( );
-    // READ-EXECUTE pipeline connections
-    pc_re.connectsTo ( read_bus.OUT ( ) );
-    pc_re.connectsTo ( exec_bus.IN ( ) );
-    reg_lock1_re.connectsTo ( read_bus.OUT ( ) );
-    reg_lock1_re.connectsTo ( exec_bus.IN ( ) );
-    reg_lock2_re.connectsTo ( read_bus.OUT ( ) );
-    reg_lock2_re.connectsTo ( exec_bus.IN ( ) );
-    mem_lock_re.connectsTo ( read_bus.OUT ( ) );
-    mem_lock_re.connectsTo ( exec_bus.IN ( ) );
-    //
     make_connections_execute ( );
-    // EXECUTE-MEMORY pipeline connections
-    pc_em.connectsTo ( exec_bus.OUT ( ) );
-    pc_em.connectsTo ( mem_bus.IN ( ) );
-    addr_em.connectsTo ( exec_bus.OUT ( ) );
-    addr_em.connectsTo ( mem_bus.IN ( ) );
-    mem_lock_em.connectsTo ( exec_bus.OUT ( ) );
-    mem_lock_em.connectsTo ( mem_bus.IN ( ) );
-    //
     make_connections_memory ( );
-
-} // make_connections
+}
 
 /**
- * make_connections_fetch
- *  makes hardware connections within the fetch stage. EXCLUDES PIPELINE
+ * make_connections
+ *
  *
  */
 void make_connections_fetch ( )
 {
-    instr_cache.MAR ( ).connectsTo ( addr_ibus.OUT ( ) );
-    pc_f.connectsTo ( addr_ibus.IN ( ) );
-    pc_f.connectsTo ( fetch_bus.IN ( ) );
-    ir_f.connectsTo ( data_ibus.OUT ( ) );
-    data_ibus.OUT ( ).connectsTo ( instr_cache.READ ( ) );
+    pc_f.connectsTo ( pcbus_f.IN ( ) );
+    pc_fi.connectsTo ( pcbus_f.IN ( ) );
+
+    instr_cache.MAR ( ).connectsTo ( pcbus_f.OUT ( ) );
+
+    ir_fi.connectsTo ( m.READ ( ) );
 }
 
 /**
  * make_connections_issue
- *  makes hardware connections within the issue stage. EXCLUDES PIPELINE
+ *
  *
  */
 void make_connections_issue ( )
 {
-    pc_i.connectsTo ( issue_bus.OUT ( ) );
-    pc_i.connectsTo ( issue_bus.IN ( ) );
-    ir_i.connectsTo ( issue_bus.OUT ( ) );
-    ir_i.connectsTo ( issue_bus.IN ( ) );
-    reg_lock1_i.connectsTo ( issue_bus.OUT ( ) );
-    reg_lock1_i.connectsTo ( issue_bus.IN ( ) );
-    reg_lock2_i.connectsTo ( issue_bus.OUT ( ) );
-    reg_lock2_i.connectsTo ( issue_bus.IN ( ) );
-    mem_lock_i.connectsTo ( issue_bus.OUT ( ) );
-    mem_lock_i.connectsTo ( issue_bus.IN ( ) );
+    pc_fi.connectsTo ( pcbus_i.IN ( ) );
+    pc_i.connectsTo ( pcbus_i.OUT ( ) );
+    pc_i.connectsTo ( pcbus_i.IN ( ) );
+    pc_i.connectsTo ( pc_alu.OP1 ( ) );
+    pc_i.connectsTo ( pc_alu.OUT ( ) );
+    pc_ir.connectsTo ( pcbus_ir.OUT ( ) );
+
+    aux_i.connectsTo ( pc_alu.OP2 ( ) );
+
+    ir_fi.connectsTo ( irbus_i.IN ( ) );
+    ir_i.connectsTo ( irbus_i.OUT ( ) );
+    ir_i.connectsTo ( irbus_i.IN ( ) );
+    ir_ir.connectsTo ( irbus_ir.OUT ( ) );
+
 } // make_connections_issue
 
 /**
  * make_connections_read
- *  makes hardware connections within the read stage. EXCLUDES PIPELINE
+ *
  *
  */
 void make_connections_read ( )
 {
-    pc_r.connectsTo ( read_bus.OUT ( ) );
-    pc_r.connectsTo ( read_bus.IN  ( ) );
-    reg_lock1_r.connectsTo ( read_bus.OUT ( ) );
-    reg_lock1_r.connectsTo ( read_bus.IN ( ) );
-    reg_lock2_r.connectsTo ( read_bus.OUT ( ) );
-    reg_lock2_r.connectsTo ( read_bus.IN ( ) );
-    mem_lock_r.connectsTo ( read_bus.OUT ( ) );
-    mem_lock_r.connectsTo ( read_bus.IN ( ) );
-} //make_connections_read
+    pc_ir.connectsTo ( pcbus_r.IN ( ) );
+    pc_r.connectsTo ( pcbus_r.OUT ( ) );
+    pc_r.connectsTo ( pcbus_r.IN ( ) );
+    pc_re.connectsTo ( pcbus_r.OUT ( ) );
+
+    ir_ir.connectsTo ( irbus_r.IN ( ) );
+    ir_re.connectsTo ( irbus_r.OUT ( ) );
+
+    disp_r.connectsTo ( dispbus_r.IN ( ) );
+    disp_re.connectsTo ( dispbus_r.OUT ( ) );
+
+    li_r.connectsTo ( li_r.IN ( ) );
+    li_re.connectsTo ( li_r.OUT ( ) );
+
+    func_r.connectsTo ( func_r.IN ( ) );
+    func_re.connectsTo ( func_r.OUT ( ) );
+
+    lock_ir.connectsTo ( lockbus_r.IN ( ) );
+    lock_re.connectsTo ( lockbus_r.OUT ( ) );
+} // make_connections_read
 
 /**
  * make_connections_execute
- *  makes hardware connections within the execute stage. EXCLUDES PIPELINE
+ *
  *
  */
 void make_connections_execute ( )
 {
-    pc_e.connectsTo ( exec_bus.OUT ( ) );
-    pc_e.connectsTo ( exec_bus.IN ( ) );
-    out_e.connectsTo ( exec_bus.OUT ( ) );
-    out_e.connectsTo ( exec_bus.IN ( ) );
-    reg_lock1_e.connectsTo ( exec_bus.IN ( ) );
-    reg_lock1_e.connectsTo ( exec_bus.OUT ( ) );
-    reg_lock2_e.connectsTo ( exec_bus.IN ( ) );
-    reg_lock2_e.connectsTo ( exec_bus.OUT ( ) );
-    mem_lock_e.connectsTo ( exec_bus.IN ( ) );
-    mem_lock_e.connectsTo ( exec_bus.OUT ( ) );
-}
+    fout_e.connectsTo ( outbus_em.OUT ( ) );
+    fout_e.connectsTo ( arith_ebus.IN ( ) );
+
+    arith_op1.connectsTo ( arithop1_ebus.OUT ( ) );
+    arith_op2.connectsTo ( arithop2_ebus.OUT ( ) );
+    arith_op1.connectsTo ( arith_alu.OP1 ( ) );
+    arith_op2.connectsTo ( arith_alu.OP2 ( ) );
+    shift_op1.connectsTo ( shiftop1_ebus.OUT ( ) );
+    shift_op2.connectsTo ( shiftop2_ebus.OUT ( ) );
+    shift_op1.connectsTo ( shift_alu.OP1 ( ) );
+    shift_op2.connectsTo ( shift_alu.OP2 ( ) );
+    addr_op1.connectsTo ( addrop1_ebus.OUT ( ) );
+    addr_op2.connectsTo ( addrop2_ebus.OUT ( ) );
+    addr_op1.connectsTo ( addr_alu.OP1 ( ) );
+    addr_op2.connectsTo ( addr_alu.OP2 ( ) );
+
+    pc_re.connectsTo ( arithop1_ebus.IN ( ) );
+    pc_re.connectsTo ( arithop2_ebus.IN ( ) );
+    pc_re.connectsTo ( addrop1_ebus.IN ( ) );
+    pc_re.connectsTo ( addrop2_ebus.IN ( ) );
+    ra_re.connectsTo ( arithop1_ebus.IN ( ) );
+    ra_re.connectsTo ( arithop2_ebus.IN ( ) );
+    ra_re.connectsTo ( shiftop1_ebus.IN ( ) );
+    ra_re.connectsTo ( shiftop2_ebus.IN ( ) );
+    rb_re.connectsTo ( arithop1_ebus.IN ( ) );
+    rb_re.connectsTo ( arithop2_ebus.IN ( ) );
+    rb_re.connectsTo ( shiftop1_ebus.IN ( ) );
+    rb_re.connectsTo ( shiftop2_ebus.IN ( ) );
+    rc_re.connectsTo ( shiftop1_ebus.IN ( ) );
+    rc_re.connectsTo ( shiftop2_ebus.IN ( ) );
+    aux_re.connectsTo ( shiftop1_ebus.IN ( ) );
+    aux_re.connectsTo ( shiftop2_ebus.IN ( ) );
+    disp_re.connectsTo ( shiftop1_ebus.IN ( ) );
+    disp_re.connectsTo ( shiftop2_ebus.IN ( ) );
+    li_re.connectsTo ( arithop1_ebus.IN ( ) );
+    li_re.connectsTo ( arithop2_ebus.IN ( ) );
+    li_re.connectsTo ( shiftop1_ebus.IN ( ) );
+    li_re.connectsTo ( shiftop2_ebus.IN ( ) );
+
+    out_em.connectsTo ( arith_alu.OUT ( ) );
+    out_em.connectsTo ( shift_alu.OUT ( ) );
+    out_em.connectsTo ( outbus_em.IN ( ) );
+
+    addr_em.connectsTo ( addr_alu.OUT ( ) );
+
+} // make_connections_execute
 
 /**
  * make_connections_memory
- *  makes hardware connections within the memory stage. EXCLUDES PIPELINE
+ *
  *
  */
 void make_connections_memory ( )
 {
-    pc_m.connectsTo ( mem_bus.IN ( ) );
-    pc_m.connectsTo ( mem_bus.OUT ( ) );
-    addr_m.connectsTo ( mem_bus.IN ( ) );
-    addr_m.connectsTo ( mem_bus.OUT ( ) );
-    mem_lock_e.connectsTo ( mem_bus.IN ( ) );
-    mem_lock_e.connectsTo ( mem_bus.OUT ( ) );
-}
+    addr_em.connectsTo ( addrbus_m.IN ( ) );
+    data_cache.MAR ( ).connectsTo ( addrbus_m.OUT ( ) );
+
+    out_em.connectsTo ( data_cache.WRITE ( ) );
+    out_em.connectsTo ( dbus_m.IN ( ) );
+
+    r0.connectsTo ( dbus_m.OUT ( ) );
+    r1.connectsTo ( dbus_m.OUT ( ) );
+    r2.connectsTo ( dbus_m.OUT ( ) );
+    r3.connectsTo ( dbus_m.OUT ( ) );
+    r4.connectsTo ( dbus_m.OUT ( ) );
+    r5.connectsTo ( dbus_m.OUT ( ) );
+    r6.connectsTo ( dbus_m.OUT ( ) );
+    r7.connectsTo ( dbus_m.OUT ( ) );
+    r8.connectsTo ( dbus_m.OUT ( ) );
+    r9.connectsTo ( dbus_m.OUT ( ) );
+    r10.connectsTo ( dbus_m.OUT ( ) );
+    r11.connectsTo ( dbus_m.OUT ( ) );
+    r12.connectsTo ( dbus_m.OUT ( ) );
+    r13.connectsTo ( dbus_m.OUT ( ) );
+    r14.connectsTo ( dbus_m.OUT ( ) );
+    r15.connectsTo ( dbus_m.OUT ( ) );
+    r16.connectsTo ( dbus_m.OUT ( ) );
+    r17.connectsTo ( dbus_m.OUT ( ) );
+    r18.connectsTo ( dbus_m.OUT ( ) );
+    r19.connectsTo ( dbus_m.OUT ( ) );
+    r20.connectsTo ( dbus_m.OUT ( ) );
+    r21.connectsTo ( dbus_m.OUT ( ) );
+    r22.connectsTo ( dbus_m.OUT ( ) );
+    r23.connectsTo ( dbus_m.OUT ( ) );
+    r24.connectsTo ( dbus_m.OUT ( ) );
+    r25.connectsTo ( dbus_m.OUT ( ) );
+    r26.connectsTo ( dbus_m.OUT ( ) );
+    r27.connectsTo ( dbus_m.OUT ( ) );
+    r28.connectsTo ( dbus_m.OUT ( ) );
+    r29.connectsTo ( dbus_m.OUT ( ) );
+    r30.connectsTo ( dbus_m.OUT ( ) );
+    r31.connectsTo ( dbus_m.OUT ( ) );
+
+    r0.connectsTo ( data_cache.READ ( ) );
+    r1.connectsTo ( data_cache.READ ( ) );
+    r2.connectsTo ( data_cache.READ ( ) );
+    r3.connectsTo ( data_cache.READ ( ) );
+    r4.connectsTo ( data_cache.READ ( ) );
+    r5.connectsTo ( data_cache.READ ( ) );
+    r6.connectsTo ( data_cache.READ ( ) );
+    r7.connectsTo ( data_cache.READ ( ) );
+    r8.connectsTo ( data_cache.READ ( ) );
+    r9.connectsTo ( data_cache.READ ( ) );
+    r10.connectsTo ( data_cache.READ ( ) );
+    r11.connectsTo ( data_cache.READ ( ) );
+    r12.connectsTo ( data_cache.READ ( ) );
+    r13.connectsTo ( data_cache.READ ( ) );
+    r14.connectsTo ( data_cache.READ ( ) );
+    r15.connectsTo ( data_cache.READ ( ) );
+    r16.connectsTo ( data_cache.READ ( ) );
+    r17.connectsTo ( data_cache.READ ( ) );
+    r18.connectsTo ( data_cache.READ ( ) );
+    r19.connectsTo ( data_cache.READ ( ) );
+    r20.connectsTo ( data_cache.READ ( ) );
+    r21.connectsTo ( data_cache.READ ( ) );
+    r22.connectsTo ( data_cache.READ ( ) );
+    r23.connectsTo ( data_cache.READ ( ) );
+    r24.connectsTo ( data_cache.READ ( ) );
+    r25.connectsTo ( data_cache.READ ( ) );
+    r26.connectsTo ( data_cache.READ ( ) );
+    r27.connectsTo ( data_cache.READ ( ) );
+    r28.connectsTo ( data_cache.READ ( ) );
+    r29.connectsTo ( data_cache.READ ( ) );
+    r30.connectsTo ( data_cache.READ ( ) );
+    r31.connectsTo ( data_cache.READ ( ) );
+
+} // make_connections_memory
 
 // $(filename) end
