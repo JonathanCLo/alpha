@@ -18,7 +18,7 @@ void run_simulation ( char* objfile )
     data_cache.load ( objfile );
 
     // step 2:  set the entry point
-    pc.latchFrom ( instr_cache.READ ( ) );
+    pc_f.latchFrom ( instr_cache.READ ( ) );
     Clock::tick ( );
 
     char [] buff = new char [ 32 ]; // sprintf buffer
