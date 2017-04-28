@@ -27,6 +27,7 @@ void fetch ( )
     pc_fi.latchFrom ( pcbus_f.OUT ( ) );
     Clock::tick ( );
 
+    issue ( );
 } // fetch
 
 // $(filename) end

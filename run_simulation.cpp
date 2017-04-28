@@ -23,8 +23,8 @@ void run_simulation ( char* objfile )
 
     char [] buff = new char [ 32 ]; // sprintf buffer
 
-    while ( ! done )  // until we stop the simulation
-        pipeline ( ); // pipeline
+    while ( ! done ) // until we stop the simulation
+        fetch ( ); // fetch stage
 } // run_simulation
 
 // $(filename) end
