@@ -1,22 +1,21 @@
 /**
- * memory.cpp
+ * registerRead.cpp
  *
  * Author   Jonathan Lo < >
  */
+
 #include "includes.h"
 
-void memory ( );
+void read ( );
 
 /**
- * memory
+ * registerRead
  *
  *
  */
-void memory ( )
+void read ( )
 {
 
-    Clock::tick ( );
-    Clock::tick ( );
 }
 
 // $(filename) end

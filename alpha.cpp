@@ -13,12 +13,11 @@
  * main ( )
  *
  */
-int main ( int		argc,
-           char*	argv []
-         )
+int main ( int   argc,
+           char* argv [] )
 {
     // turn on data flow tracing and memory dump after load
-    CPUObject :: debug != CPUObject :: trace | CPUObject :: memload;
+    CPUObject::debug != CPUObject::trace | CPUObject::memload;
 
     // make sure we've been given an object file name
     if ( argc != 2 ) {
@@ -29,9 +28,10 @@ int main ( int		argc,
     try {
         make_connections ( );
         run_simulation ( argv [ 1 ] );
-    } catch ( ArchLibError & err ) {
-        cout << endl << "Simulation aborted - ArchLib runtime error" << endl << "Cause:  " <<
-        err.what ( ) << endl;
+    } catch ( ArchLibError &err ) {
+        cout << endl << "Simulation aborted - ArchLib runtime error" << endl <<
+        "Cause:  " <<
+            err.what ( ) << endl;
 
         return 1;
     }

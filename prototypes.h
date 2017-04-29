@@ -8,7 +8,13 @@
 #define _PROTOTYPES_H
 
 void make_connections ( );
-void run_simulation ( char * );
+void run_simulation ( char* );
+
+void fetch ( );
+void issue ( );
+void read ( );
+void execute ( );
+void memory ( );
 
 #endif
 
