@@ -267,8 +267,6 @@ void make_connections_execute ( )
     rc_re.connectsTo ( shiftop2_ebus.IN ( ) );
     aux_re.connectsTo ( shiftop1_ebus.IN ( ) );
     aux_re.connectsTo ( shiftop2_ebus.IN ( ) );
-    li_re.connectsTo ( shiftop1_ebus.IN ( ) );
-    li_re.connectsTo ( shiftop2_ebus.IN ( ) );
 
     pc_re.connectsTo ( addrop1_ebus.IN ( ) );
     disp_re.connectsTo ( addrop2_ebus.IN ( ) );
