@@ -12,6 +12,8 @@ void b ( );
 void mf ( );
 void pcc ( );
 void o ( );
+void o_imm ( );
+void o_reg ( );
 
 /**
  * move_ra
@@ -522,9 +524,6 @@ void read ( )
     char  buff [ 8 ];
 
 
-    sprintf ( buff, "opc=%03lx", opc );
-    cout << buff;
-
     // move ir
     irbus_r.IN ( ).pullFrom ( ir_re );
     ir_r.latchFrom ( irbus_r.OUT ( ) );
@@ -536,6 +535,9 @@ void read ( )
     Clock::tick ( );
 
     long  opc = ir_r ( REG_SIZE - 1, REG_SIZE - 6 );
+
+    sprintf ( buff, "opc=%03lx", opc );
+    cout << buff;
 
     switch ( opc ) {
         // TODO double check these numbers
