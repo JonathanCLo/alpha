@@ -17,7 +17,7 @@ void o_reg ( );
 
 /**
  * move_ra
- *
+ * support function to move a PVR to RA
  *
  */
 void move_ra ( )
@@ -132,7 +132,7 @@ void move_ra ( )
 
 /**
  * move_rb
- *
+ * support function to move PVR to RB
  *
  */
 void move_rb ( )
@@ -248,7 +248,7 @@ void move_rb ( )
 
 /**
  * move_rc
- *
+ * support function to move PVR to RC
  *
  */
 void move_rc ( )
@@ -365,7 +365,7 @@ void move_rc ( )
  * md
  * handles memory displacement instruction format, moves ra and rb into
  * pipeline registers
- *
+ * TICK TERMINATING
  */
 void md ( )
 {
@@ -388,7 +388,7 @@ void md ( )
 /**
  * b
  * handles branch instruction format, moves ra and rb into pipeline registers
- *
+ * TICK TERMINATING
  */
 void b ( )
 {
@@ -406,7 +406,7 @@ void b ( )
 /**
  * mf
  * handles memory instruction format, moves ra and rb into pipeline registers
- *
+ * TICK TERMINATING
  */
 void mf ( )
 {
@@ -425,7 +425,7 @@ void mf ( )
 /**
  * pcc
  * special mf instruction format for pcc
- *
+ * TICK TERMINATING
  */
 void pcc ( )
 {
@@ -461,9 +461,30 @@ void pcc ( )
 } // pcc
 
 /**
+ * o_imm
+ *
+ *
+ */
+void o_imm ( )
+{
+    // DO NOTHING
+}
+
+/**
+ * o_reg
+ * pass register to rb;
+ *
+ */
+void o_reg ( )
+{
+    // move_rb
+    move_rb ( );
+}
+
+/**
  * o
  * handles operate instr_cache format
- *
+ * TICK TERMINATING
  */
 void o ( )
 {
@@ -494,30 +515,9 @@ void o ( )
 } // o
 
 /**
- * o_imm
- *
- *
- */
-void o_imm ( )
-{
-    // DO NOTHING
-}
-
-/**
- * o_reg
- * pass register to rb;
- *
- */
-void o_reg ( )
-{
-    // move_rb
-    move_rb ( );
-}
-
-/**
  * read
- *
- *
+ * read stage of pipeline. Moves required values into pipeline registers
+ * unused pipeline registers are not cleared, and hold unknown values
  */
 void read ( )
 {
@@ -540,7 +540,6 @@ void read ( )
     cout << buff;
 
     switch ( opc ) {
-        // TODO double check these numbers
         case 8:
         case 9:
         case 10:
@@ -579,7 +578,6 @@ void read ( )
             done = true;
 
     } // switch
-
 
     execute ( );
 } // read
