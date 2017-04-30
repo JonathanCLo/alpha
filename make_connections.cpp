@@ -256,8 +256,6 @@ void make_connections_execute ( )
     rb_re.connectsTo ( arithop2_ebus.IN ( ) );
     aux_re.connectsTo ( arithop1_ebus.IN ( ) );
     aux_re.connectsTo ( arithop2_ebus.IN ( ) );
-    li_re.connectsTo ( arithop1_ebus.IN ( ) );
-    li_re.connectsTo ( arithop2_ebus.IN ( ) );
 
     ra_re.connectsTo ( shiftop1_ebus.IN ( ) );
     ra_re.connectsTo ( shiftop2_ebus.IN ( ) );
@@ -269,7 +267,6 @@ void make_connections_execute ( )
     aux_re.connectsTo ( shiftop2_ebus.IN ( ) );
 
     pc_re.connectsTo ( addrop1_ebus.IN ( ) );
-    disp_re.connectsTo ( addrop2_ebus.IN ( ) );
 
     out_em.connectsTo ( arith_alu.OUT ( ) );
     out_em.connectsTo ( shift_alu.OUT ( ) );
