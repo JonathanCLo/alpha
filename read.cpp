@@ -20,7 +20,7 @@ void o ( );
  */
 void move_ra ( )
 {
-    long  ra = ir ( REG_SIZE - 7, REG_SIZE - 11 );
+    long  ra = ir_r ( REG_SIZE - 7, REG_SIZE - 11 );
 
 
     // move ra
@@ -135,7 +135,7 @@ void move_ra ( )
  */
 void move_rb ( )
 {
-    long  rb = ir ( REG_SIZE - 12, REG_SIZE - 16 );
+    long  rb = ir_r ( REG_SIZE - 12, REG_SIZE - 16 );
 
 
     // move rb
@@ -251,7 +251,7 @@ void move_rb ( )
  */
 void move_rc ( )
 {
-    long  rc = ir ( REG_SIZE - 28, 0 );
+    long  rc = ir_r ( REG_SIZE - 28, 0 );
 
 
     // move rc
@@ -367,7 +367,7 @@ void move_rc ( )
  */
 void md ( )
 {
-    long  disp = ir ( REG_SIZE - 17, 0 );
+    long  disp = ir_r ( REG_SIZE - 17, 0 );
 
 
     // move pc
@@ -427,8 +427,8 @@ void mf ( )
  */
 void pcc ( )
 {
-    long  rb   = ir ( REG_SIZE - 12, REG_SIZE - 16 );
-    long  disp = ir ( REG_SIZE - 17, 0 );
+    long  rb   = ir_r ( REG_SIZE - 12, REG_SIZE - 16 );
+    long  disp = ir_r ( REG_SIZE - 17, 0 );
 
 
     // move pc
@@ -465,7 +465,7 @@ void pcc ( )
  */
 void o ( )
 {
-    long  type = ir ( REG_SIZE - 20 );
+    long  type = ir_r ( REG_SIZE - 20 );
 
 
     // move pc
@@ -519,8 +519,6 @@ void o_reg ( )
  */
 void read ( )
 {
-    long  opc = ir ( REG_SIZE - 1, REG_SIZE - 6 );
-
     char  buff [ 8 ];
 
 
@@ -536,6 +534,8 @@ void read ( )
     pc_r.latchFrom ( pcbus_r.OUT ( ) );
 
     Clock::tick ( );
+
+    long  opc = ir_r ( REG_SIZE - 1, REG_SIZE - 6 );
 
     switch ( opc ) {
         // TODO double check these numbers
