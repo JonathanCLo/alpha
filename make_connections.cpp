@@ -213,14 +213,10 @@ void make_connections_read ( )
     r30.connectsTo ( auxbus_r.IN ( ) );
     r31.connectsTo ( auxbus_r.IN ( ) );
 
-    disp_r.connectsTo ( dispbus_r.IN ( ) );
-    disp_re.connectsTo ( dispbus_r.OUT ( ) );
-
-    li_r.connectsTo ( libus_r.IN ( ) );
-    li_re.connectsTo ( libus_r.OUT ( ) );
-
-    func_r.connectsTo ( funcbus_r.IN ( ) );
-    func_re.connectsTo ( funcbus_r.OUT ( ) );
+    ra_re.connectsTo ( rabus_r.OUT ( ) );
+    rb_re.connectsTo ( rbbus_r.OUT ( ) );
+    rc_re.connectsTo ( rcbus_r.OUT ( ) );
+    aux_re.connectsTo ( auxbus_r.OUT ( ) );
 
     lock_ir.connectsTo ( lockbus_r.IN ( ) );
     lock_re.connectsTo ( lockbus_r.OUT ( ) );

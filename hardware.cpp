@@ -30,7 +30,7 @@ Counter  pc_f ( "PC_FETCH", ADDR_SIZE );
 Bus      pcbus_f ( "PCBUS_FETCH", ADDR_SIZE );
 // AUX COMPONENTS
 // PIPELINE COMPONENTS
-Counter   pc_fi ( "PC_FETCH_ISSUE", ADDR_SIZE );
+Counter    pc_fi ( "PC_FETCH_ISSUE", ADDR_SIZE );
 Clearable  ir_fi ( "IR_FETCH_ISSUE", REG_SIZE );
 
 /**
@@ -47,7 +47,7 @@ Bus        irbus_i ( "IRBUS_ISSUE", REG_SIZE );
 BusALU     pc_alu ( "PC_ALU", REG_SIZE );
 // PIPELINE COMPONENTS
 Counter    pc_ir ( "PC_ISSUE_READ", ADDR_SIZE );
-Clearable   ir_ir ( "IR_ISSUE_READ", REG_SIZE );
+Clearable  ir_ir ( "IR_ISSUE_READ", REG_SIZE );
 Clearable  lock_ir ( "LOCK_ISSUE_READ", REG_SIZE );
 
 /**
@@ -56,15 +56,9 @@ Clearable  lock_ir ( "LOCK_ISSUE_READ", REG_SIZE );
 // REGISTERS
 Counter    pc_r ( "PC_READ", ADDR_SIZE );
 Clearable  ir_r ( "IR_READ", REG_SIZE );
-Clearable  disp_r ( "DISPLACE_READ", DATA_SIZE );
-Clearable  li_r ( "LITERAL_READ", DATA_SIZE );
-Clearable  func_r ( "FUNC_READ", DATA_SIZE );
 // BUSES
 Bus  pcbus_r ( "PCBUS_READ", ADDR_SIZE );
 Bus  irbus_r ( "IRBUS_READ", REG_SIZE );
-Bus  dispbus_r ( "DISPLACEBUS_READ", DATA_SIZE );
-Bus  libus_r ( "LITERALBUS_READ", DATA_SIZE );
-Bus  funcbus_r ( "FUNCBUS_READ", DATA_SIZE );
 Bus  rabus_r ( "RABUS_READ", REG_SIZE );
 Bus  rbbus_r ( "RBBUS_READ", REG_SIZE );
 Bus  rcbus_r ( "RCBUS_READ", REG_SIZE );
@@ -78,9 +72,6 @@ Counter    ra_re ( "RA_READ_EXECUTE", REG_SIZE );
 Counter    rb_re ( "RB_READ_EXECUTE", REG_SIZE );
 Counter    rc_re ( "RC_READ_EXECUTE", REG_SIZE );
 Counter    aux_re ( "AUX_READ_EXECUTE", REG_SIZE );
-Clearable  disp_re ( "DISPLACE_READ_EXECUTE", DATA_SIZE );
-Clearable  li_re ( "LITERAL_READ_EXECUTE", DATA_SIZE );
-Clearable  func_re ( "FUNC_READ_EXECUTE", DATA_SIZE );
 Clearable  lock_re ( "LOCK_READ_EXECUTE", DATA_SIZE );
 
 /**

@@ -33,12 +33,6 @@ extern Clearable  ir_re; // ir read execute
 extern Counter    aux_i; // aux issue
 extern Clearable  lock_ir; // lock issue read
 extern Clearable  lock_re; // lock read execute
-extern Clearable  disp_r; // disp read
-extern Clearable  disp_re; // disp read execute
-extern Clearable  li_r; // literal read
-extern Clearable  li_re; // literal read execute
-extern Clearable  func_r; // func read
-extern Clearable  func_re; // func read execute
 extern Counter    ra_re; // ra read execute
 extern Counter    rb_re; // rb read execute
 extern Counter    rc_re; // rc read execute
@@ -63,9 +57,6 @@ extern Bus  pcbus_i; // pcbus issue
 extern Bus  irbus_i; // irbus issue
 extern Bus  pcbus_r; // pcbus read
 extern Bus  irbus_r; // irbus read
-extern Bus  dispbus_r; // dispbus read
-extern Bus  libus_r; // literalbus read
-extern Bus  funcbus_r; // funcbus read
 extern Bus  rabus_r; // rabus read
 extern Bus  rbbus_r; // rbbus read
 extern Bus  rcbus_r; // rcbus read
@@ -137,7 +128,7 @@ extern Clearable  r31;        // used as a 'zero' register
 extern Memory  instr_cache;
 extern Memory  data_cache;
 
-extern bool done;
+extern bool    done;
 
 #endif
 
