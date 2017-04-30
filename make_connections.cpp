@@ -40,7 +40,7 @@ void make_connections_fetch ( )
 
     instr_cache.MAR ( ).connectsTo ( pcbus_f.OUT ( ) );
 
-    ir_fi.connectsTo ( m.READ ( ) );
+    ir_fi.connectsTo ( instr_cache.READ ( ) );
 }
 
 /**
@@ -55,14 +55,14 @@ void make_connections_issue ( )
     pc_i.connectsTo ( pcbus_i.IN ( ) );
     pc_i.connectsTo ( pc_alu.OP1 ( ) );
     pc_i.connectsTo ( pc_alu.OUT ( ) );
-    pc_ir.connectsTo ( pcbus_ir.OUT ( ) );
+    pc_ir.connectsTo ( pcbus_i.OUT ( ) );
 
     aux_i.connectsTo ( pc_alu.OP2 ( ) );
 
     ir_fi.connectsTo ( irbus_i.IN ( ) );
     ir_i.connectsTo ( irbus_i.OUT ( ) );
     ir_i.connectsTo ( irbus_i.IN ( ) );
-    ir_ir.connectsTo ( irbus_ir.OUT ( ) );
+    ir_ir.connectsTo ( irbus_i.OUT ( ) );
 
 } // make_connections_issue
 
@@ -84,11 +84,11 @@ void make_connections_read ( )
     disp_r.connectsTo ( dispbus_r.IN ( ) );
     disp_re.connectsTo ( dispbus_r.OUT ( ) );
 
-    li_r.connectsTo ( li_r.IN ( ) );
-    li_re.connectsTo ( li_r.OUT ( ) );
+    li_r.connectsTo ( libus_r.IN ( ) );
+    li_re.connectsTo ( libus_r.OUT ( ) );
 
-    func_r.connectsTo ( func_r.IN ( ) );
-    func_re.connectsTo ( func_r.OUT ( ) );
+    func_r.connectsTo ( funcbus_r.IN ( ) );
+    func_re.connectsTo ( funcbus_r.OUT ( ) );
 
     lock_ir.connectsTo ( lockbus_r.IN ( ) );
     lock_re.connectsTo ( lockbus_r.OUT ( ) );
@@ -102,7 +102,7 @@ void make_connections_read ( )
 void make_connections_execute ( )
 {
     fout_e.connectsTo ( outbus_em.OUT ( ) );
-    fout_e.connectsTo ( arith_ebus.IN ( ) );
+    fout_e.connectsTo ( outbus_em.IN ( ) );
 
     arith_op1.connectsTo ( arithop1_ebus.OUT ( ) );
     arith_op2.connectsTo ( arithop2_ebus.OUT ( ) );

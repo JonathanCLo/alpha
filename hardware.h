@@ -71,11 +71,17 @@ extern Bus  rbbus_r; // rbbus read
 extern Bus  rcbus_r; // rcbus read
 extern Bus  auxbus_r; // auxbus read
 extern Bus  lockbus_r; // lockbus read
-extern Bus  arith_ebus; // arith ebus execute
+extern Bus  arithop1_ebus; // arith op1 ebus execute
+extern Bus  arithop2_ebus; // arith op2 ebus execute
+extern Bus  shiftop1_ebus; // shift op1 ebus execute
+extern Bus  shiftop2_ebus; // shift op2 ebus execute
+extern Bus  addrop1_ebus; // addr op1 ebus execute
+extern Bus  addrop2_ebus; // addr op2 ebus execute
 extern Bus  shift_ebus; // shift ebus execute
 extern Bus  addr_ebus; // addr ebus execute
-extern Bus  outbus_em; // outbus execute memory
-extern Bus  addrbus_em; // outbus execute memory
+extern Bus  outbus_em; // out bus execute memory
+extern Bus  addrbus_em; // addr bus execute memory
+extern Bus  addrbus_m; // addr bus memory
 extern Bus  dbus_m; // dbus memory
 extern Bus  sbus1; // stage buses
 extern Bus  sbus2;
