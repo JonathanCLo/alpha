@@ -137,6 +137,8 @@ extern Clearable  r31;        // used as a 'zero' register
 extern Memory  instr_cache;
 extern Memory  data_cache;
 
+extern bool done;
+
 #endif
 
 // $(filename) END

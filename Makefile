@@ -1,5 +1,5 @@
 #
-# Created by gmakemake (Ubuntu Jul 25 2014) on Sat Apr 29 19:41:14 2017
+# Created by gmakemake (Ubuntu Jul 25 2014) on Sat Apr 29 20:02:54 2017
 #
 
 #
@@ -54,14 +54,14 @@ CCLIBFLAGS = $(LIBFLAGS)
 ########## End of flags from header.mak
 
 
-CPP_FILES =	alpha.cpp fetch.cpp hardware.cpp issue.cpp make_connections.cpp memory.cpp memory_ops.cpp registerRead.cpp run_simulation.cpp
+CPP_FILES =	alpha.cpp execute.cpp fetch.cpp hardware.cpp issue.cpp make_connections.cpp memory.cpp memory_ops.cpp read.cpp run_simulation.cpp
 C_FILES =	
 PS_FILES =	
 S_FILES =	
 H_FILES =	hardware.h includes.h prototypes.h
 SOURCEFILES =	$(H_FILES) $(CPP_FILES) $(C_FILES) $(S_FILES)
 .PRECIOUS:	$(SOURCEFILES)
-OBJFILES =	fetch.o hardware.o issue.o make_connections.o memory.o memory_ops.o registerRead.o run_simulation.o 
+OBJFILES =	execute.o fetch.o hardware.o issue.o make_connections.o memory.o memory_ops.o read.o run_simulation.o 
 
 #
 # Main targets
@@ -77,13 +77,14 @@ alpha:	alpha.o $(OBJFILES)
 #
 
 alpha.o:	hardware.h includes.h prototypes.h
-fetch.o:	
+execute.o:	
+fetch.o:	hardware.h includes.h prototypes.h
 hardware.o:	hardware.h includes.h prototypes.h
-issue.o:	
+issue.o:	hardware.h includes.h prototypes.h
 make_connections.o:	hardware.h includes.h prototypes.h
 memory.o:	hardware.h includes.h prototypes.h
 memory_ops.o:	hardware.h includes.h prototypes.h
-registerRead.o:	hardware.h includes.h prototypes.h
+read.o:	hardware.h includes.h prototypes.h
 run_simulation.o:	hardware.h includes.h prototypes.h
 
 #

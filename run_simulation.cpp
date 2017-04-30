@@ -21,7 +21,7 @@ void run_simulation ( char* objfile )
     pc_f.latchFrom ( instr_cache.READ ( ) );
     Clock::tick ( );
 
-    char [] buff = new char [ 32 ]; // sprintf buffer
+    char * buff = new char [ 32 ]; // sprintf buffer
 
     while ( ! done ) // until we stop the simulation
         fetch ( ); // fetch stage
