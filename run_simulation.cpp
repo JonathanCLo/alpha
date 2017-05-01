@@ -13,6 +13,7 @@
  */
 void run_simulation ( char* objfile )
 {
+    cout << "running";
     // step 1:  load the object file
     instr_cache.load ( objfile );
     data_cache.load ( objfile );
@@ -23,19 +24,19 @@ void run_simulation ( char* objfile )
 
     char  buff [ 128 ]; // sprintf buffer
 
-    sprintf ( buff, "|%-20s|%-20s|%-20s|%-20s|%-20s|\n",
-              char* f = "FETCH",
-              char* i = "ISSUE",
-              char* r = "READ",
-              char* e = "EXECUTE",
-              char* m = "MEMORY" );
+    sprintf ( buff, "|%-18s|%-18s|%-18s|%-18s|%-18s|\n",
+              "FETCH",
+              "ISSUE",
+              "READ",
+              "EXECUTE",
+              "MEMORY" );
     cout << buff;
-    sprintf ( buff, "|%-20s|%-20s|%-20s|%-20s|%-20s|\n",
-              char* f = "--------",
-              char* i = "--------",
-              char* r = "--------",
-              char* e = "--------",
-              char* m = "--------" );
+    sprintf ( buff, "|%-18s|%-18s|%-18s|%-18s|%-18s|\n",
+              "------------------",
+              "------------------",
+              "------------------",
+              "------------------",
+              "------------------" );
     cout << buff;
 
     while ( ! done ) // until we stop the simulation

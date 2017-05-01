@@ -86,6 +86,7 @@ Counter  shift_op2 ( "SHIFT_OP2", REG_SIZE );
 Counter  addr_op1 ( "ADDR_OP1", ADDR_SIZE );
 Counter  addr_op2 ( "ADDR_OP2", ADDR_SIZE );
 // BUSES
+Bus      pcbus_e ( "PCBUS_EXECUTE", ADDR_SIZE );
 Bus      arithop1_ebus ( "ARITH_OP1_EBUS", REG_SIZE );
 Bus      arithop2_ebus ( "ARITH_OP2_EBUS", REG_SIZE );
 Bus      shiftop1_ebus ( "SHIFT_OP1_EBUS", REG_SIZE );
@@ -97,6 +98,7 @@ BusALU   arith_alu ( "ARITHOP", REG_SIZE );
 BusALU   shift_alu ( "SHIFT_ALU", REG_SIZE );
 BusALU   addr_alu ( "ADDR_ALU", ADDR_SIZE );
 // PIPELINE COMPONENTS
+Counter  pc_em ( "PC_EXECUTE_MEMORY", REG_SIZE );
 Counter  out_em ( "OUT_EXECUTE_MEMORY", REG_SIZE );
 Counter  addr_em ( "ADDR_EXECUTE_MEMORY", ADDR_SIZE );
 Bus      outbus_em ( "OUTBUS_EXECUTE_MEMORY", REG_SIZE );
@@ -161,9 +163,12 @@ Bus  sbus5 ( "STAGE_BUS5", REG_SIZE );
  * Cache
  */
 // insstruction cache
-Memory  instr_cache ( "INSTRUCTION_CACHE", ADDR_SIZE, DATA_SIZE );
+Memory  instr_cache ( "INSTRUCTION_CACHE", ADDR_SIZE, DATA_SIZE,
+                     0xffff );
+
 // data cache
-Memory  data_cache ( "DATA_CACHE", ADDR_SIZE, DATA_SIZE );
+Memory  data_cache ( "DATA_CACHE", ADDR_SIZE, DATA_SIZE, 
+                     0xffff );
 
 /* Runtime control variables */
 bool  done ( false ); // is the simulation over?

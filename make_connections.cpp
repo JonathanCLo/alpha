@@ -25,7 +25,7 @@ void make_connections ( )
     make_connections_issue ( );
     make_connections_read ( );
     make_connections_execute ( );
-    make_connections_memory ( );
+    //TODO make_connections_memory ( );
 }
 
 /**
@@ -36,7 +36,8 @@ void make_connections ( )
 void make_connections_fetch ( )
 {
     pc_f.connectsTo ( pcbus_f.IN ( ) );
-    pc_fi.connectsTo ( pcbus_f.IN ( ) );
+    pc_f.connectsTo ( instr_cache.READ ( ) );
+    pc_fi.connectsTo ( pcbus_f.OUT ( ) );
 
     instr_cache.MAR ( ).connectsTo ( pcbus_f.OUT ( ) );
 
@@ -79,6 +80,8 @@ void make_connections_read ( )
     pc_re.connectsTo ( pcbus_r.OUT ( ) );
 
     ir_ir.connectsTo ( irbus_r.IN ( ) );
+    ir_r.connectsTo ( irbus_r.OUT ( ) );
+    ir_r.connectsTo ( irbus_r.IN ( ) );
     ir_re.connectsTo ( irbus_r.OUT ( ) );
 
     r0.connectsTo ( rabus_r.IN ( ) );
@@ -247,7 +250,8 @@ void make_connections_execute ( )
     addr_op2.connectsTo ( addrop2_ebus.OUT ( ) );
     addr_op1.connectsTo ( addr_alu.OP1 ( ) );
     addr_op2.connectsTo ( addr_alu.OP2 ( ) );
-
+    
+    pc_re.connectsTo ( pcbus_e.IN ( ) );
     pc_re.connectsTo ( arithop1_ebus.IN ( ) );
     pc_re.connectsTo ( arithop2_ebus.IN ( ) );
     ra_re.connectsTo ( arithop1_ebus.IN ( ) );
@@ -267,7 +271,8 @@ void make_connections_execute ( )
     aux_re.connectsTo ( shiftop2_ebus.IN ( ) );
 
     pc_re.connectsTo ( addrop1_ebus.IN ( ) );
-
+    
+    pc_em.connectsTo ( pcbus_e.IN ( ) );
     out_em.connectsTo ( arith_alu.OUT ( ) );
     out_em.connectsTo ( shift_alu.OUT ( ) );
     out_em.connectsTo ( outbus_em.IN ( ) );

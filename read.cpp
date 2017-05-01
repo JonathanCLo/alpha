@@ -521,11 +521,8 @@ void o ( )
  */
 void read ( )
 {
-    char  buff [ 8 ];
-
-
     // move ir
-    irbus_r.IN ( ).pullFrom ( ir_re );
+    irbus_r.IN ( ).pullFrom ( ir_ir );
     ir_r.latchFrom ( irbus_r.OUT ( ) );
 
     // move pc
@@ -535,8 +532,9 @@ void read ( )
     Clock::tick ( );
 
     long  opc = ir_r ( REG_SIZE - 1, REG_SIZE - 6 );
-
-    sprintf ( buff, "opc=%03lx", opc );
+    
+    char buff [32];
+    sprintf ( buff, "|pc=%02lx opc=%03lx     ", pc_r.value ( ), opc );
     cout << buff;
 
     switch ( opc ) {
