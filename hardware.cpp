@@ -111,6 +111,9 @@ Counter  addr_em ( "ADDR_EXECUTE_MEMORY", ADDR_SIZE );
 Bus      outbus_em ( "OUTBUS_EXECUTE_MEMORY", REG_SIZE );
 Bus      addrbus_em ( "ADDRBUS_EXECUTE_MEMORY", ADDR_SIZE );
 
+
+StorageObject exec_const_2("2", REG_SIZE, 2);
+StorageObject exec_const_3("3", REG_SIZE, 3);
 /**
  * MEMORY
  */

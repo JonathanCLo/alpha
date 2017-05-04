@@ -55,6 +55,9 @@ extern Clearable  out_m; // out memory
 extern Counter    addr_em; // addr execute memory
 extern Clearable  data_m; // data memory
 
+extern StorageObject exec_const_2;
+extern StorageObject exec_const_3;
+
 /**
  * BUSES
  */
