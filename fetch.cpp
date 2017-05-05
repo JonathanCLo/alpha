@@ -27,6 +27,9 @@ void fetch ( )
     pc_fi.latchFrom ( pcbus_f.OUT ( ) );
     Clock::tick ( );
 
+    char buff [32];
+    sprintf ( buff, "|pc=%02lx             ", pc_f.value ( ) );
+    cout << buff;
     issue ( );
 } // fetch
 

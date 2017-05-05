@@ -5,8 +5,8 @@
  *          Jonathan Lo <jcl5201>
  * global hardware instantiations
  */
-#ifndef _GLOBALS_H
-#define _GLOBALS_H
+#ifndef _HARDWARE_H
+#define _HARDWARE_H
 
 #include "includes.h"
 
@@ -25,6 +25,7 @@ extern Counter    pc_i; // pc issue
 extern Counter    pc_ir; // pc issue read
 extern Counter    pc_r; // pc read
 extern Counter    pc_re; // pc read execute
+extern Counter    pc_em; // pc execute memory
 extern Clearable  ir_fi; // ir fetch issue
 extern Clearable  ir_i; // ir issue
 extern Clearable  ir_ir; // ir issue read
@@ -64,12 +65,11 @@ extern StorageObject exec_const_4;
  */
 extern Bus  pcbus_f; // pcbus fetch
 extern Bus  pcbus_i; // pcbus issue
+extern Bus  pcbus_r; // pcbus read
+extern Bus  pcbus_e; // pcbus execute
 extern Bus  irbus_i; // irbus issue
 extern Bus  pcbus_r; // pcbus read
 extern Bus  irbus_r; // irbus read
-extern Bus  dispbus_r; // dispbus read
-extern Bus  libus_r; // literalbus read
-extern Bus  funcbus_r; // funcbus read
 extern Bus  rabus_r; // rabus read
 extern Bus  rbbus_r; // rbbus read
 extern Bus  rcbus_r; // rcbus read
@@ -141,7 +141,7 @@ extern Clearable  r31;        // used as a 'zero' register
 extern Memory  instr_cache;
 extern Memory  data_cache;
 
-extern bool done;
+extern bool    done;
 
 #endif
 

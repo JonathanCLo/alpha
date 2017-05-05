@@ -29,9 +29,9 @@ int main ( int   argc,
         make_connections ( );
         run_simulation ( argv [ 1 ] );
     } catch ( ArchLibError &err ) {
-        cout << endl << "Simulation aborted - ArchLib runtime error" << endl <<
-        "Cause:  " <<
-            err.what ( ) << endl;
+        cout << endl 
+             << "Simulation aborted - ArchLib runtime error" << endl 
+             << "Cause:  " << err.what ( ) << endl;
 
         return 1;
     }

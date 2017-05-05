@@ -30,7 +30,7 @@ Counter  pc_f ( "PC_FETCH", ADDR_SIZE );
 Bus      pcbus_f ( "PCBUS_FETCH", ADDR_SIZE );
 // AUX COMPONENTS
 // PIPELINE COMPONENTS
-Counter   pc_fi ( "PC_FETCH_ISSUE", ADDR_SIZE );
+Counter    pc_fi ( "PC_FETCH_ISSUE", ADDR_SIZE );
 Clearable  ir_fi ( "IR_FETCH_ISSUE", REG_SIZE );
 
 /**
@@ -47,7 +47,7 @@ Bus        irbus_i ( "IRBUS_ISSUE", REG_SIZE );
 BusALU     pc_alu ( "PC_ALU", REG_SIZE );
 // PIPELINE COMPONENTS
 Counter    pc_ir ( "PC_ISSUE_READ", ADDR_SIZE );
-Clearable   ir_ir ( "IR_ISSUE_READ", REG_SIZE );
+Clearable  ir_ir ( "IR_ISSUE_READ", REG_SIZE );
 Clearable  lock_ir ( "LOCK_ISSUE_READ", REG_SIZE );
 
 /**
@@ -56,15 +56,9 @@ Clearable  lock_ir ( "LOCK_ISSUE_READ", REG_SIZE );
 // REGISTERS
 Counter    pc_r ( "PC_READ", ADDR_SIZE );
 Clearable  ir_r ( "IR_READ", REG_SIZE );
-Clearable  disp_r ( "DISPLACE_READ", DATA_SIZE );
-Clearable  li_r ( "LITERAL_READ", DATA_SIZE );
-Clearable  func_r ( "FUNC_READ", DATA_SIZE );
 // BUSES
 Bus  pcbus_r ( "PCBUS_READ", ADDR_SIZE );
 Bus  irbus_r ( "IRBUS_READ", REG_SIZE );
-Bus  dispbus_r ( "DISPLACEBUS_READ", DATA_SIZE );
-Bus  libus_r ( "LITERALBUS_READ", DATA_SIZE );
-Bus  funcbus_r ( "FUNCBUS_READ", DATA_SIZE );
 Bus  rabus_r ( "RABUS_READ", REG_SIZE );
 Bus  rbbus_r ( "RBBUS_READ", REG_SIZE );
 Bus  rcbus_r ( "RCBUS_READ", REG_SIZE );
@@ -95,6 +89,7 @@ Counter  shift_op2 ( "SHIFT_OP2", REG_SIZE );
 Counter  addr_op1 ( "ADDR_OP1", ADDR_SIZE );
 Counter  addr_op2 ( "ADDR_OP2", ADDR_SIZE );
 // BUSES
+Bus      pcbus_e ( "PCBUS_EXECUTE", ADDR_SIZE );
 Bus      arithop1_ebus ( "ARITH_OP1_EBUS", REG_SIZE );
 Bus      arithop2_ebus ( "ARITH_OP2_EBUS", REG_SIZE );
 Bus      shiftop1_ebus ( "SHIFT_OP1_EBUS", REG_SIZE );
@@ -106,6 +101,7 @@ BusALU   arith_alu ( "ARITHOP", REG_SIZE );
 BusALU   shift_alu ( "SHIFT_ALU", REG_SIZE );
 BusALU   addr_alu ( "ADDR_ALU", ADDR_SIZE );
 // PIPELINE COMPONENTS
+Counter  pc_em ( "PC_EXECUTE_MEMORY", REG_SIZE );
 Counter  out_em ( "OUT_EXECUTE_MEMORY", REG_SIZE );
 Counter  addr_em ( "ADDR_EXECUTE_MEMORY", ADDR_SIZE );
 Bus      outbus_em ( "OUTBUS_EXECUTE_MEMORY", REG_SIZE );
@@ -174,9 +170,12 @@ Bus  sbus5 ( "STAGE_BUS5", REG_SIZE );
  * Cache
  */
 // insstruction cache
-Memory  instr_cache ( "INSTRUCTION_CACHE", ADDR_SIZE, DATA_SIZE );
+Memory  instr_cache ( "INSTRUCTION_CACHE", ADDR_SIZE, DATA_SIZE,
+                     0xffff );
+
 // data cache
-Memory  data_cache ( "DATA_CACHE", ADDR_SIZE, DATA_SIZE );
+Memory  data_cache ( "DATA_CACHE", ADDR_SIZE, DATA_SIZE, 
+                     0xffff );
 
 /* Runtime control variables */
 bool  done ( false ); // is the simulation over?
