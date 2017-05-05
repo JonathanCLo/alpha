@@ -62,14 +62,8 @@ void operate_exec(int opcode, int func){
 void operate_move(int opcode, int func){
     switch(func){
         case 0: //ADDL //Note this may not actually be necessary
-            //because register is only 32 bits to begin with in our sim
-            //arith_alu.perform(BusALU::op_rop1);
-            //arith_alu.OP1().pullFrom(rc_re);
-            //arith_alu.OP2().pullFrom(some_constant); //TODO - figure this out
-            //rc_re.latchFrom(arith_alu.OUT());
-            //Rc <- SignExt(temp)<31:0>
             break;
-        case 9: //SUBL //Do nothing here - assume rc_re is temp TODO verify this
+        case 9: //SUBL //Do nothing here - assume rc_re is temp 
             //Rc <- temp<31:0>
             break;
         case 2: // S4ADDL
@@ -308,66 +302,7 @@ void logical_move(int opcode, int func) {
             break;
     }
 }
-void mie_calc(int opcode, int func) { //candidates for removal
-    switch (func) {
-        case 22: //Extract Word Low EXTWL
-            break;
-        case 38: //Extract Longword Low EXTLL
-            break;
-        case 90: //Extract Word high EXTWH
-            break;
-        case 106: //Extract Lonword High EXTLH
-            break;
-        case 27: //Insert Word Low INSWL
-            break;
-        case 43: //Insert Longword Low INSLL
-            break;
-        case 87: //Insert Word high
-            break;
-        case 103: //Insert Longword High INSLH
-            break;
-        case 18: //Mask Word Low
-            break;
-        case 34: //Mask Longword Low
-            break;
-        case 82: //Mask Word High
-            break;
-        case 98: //Mask Longword High
-            break;
-        default:
-            break;
-    }
-}
-void mie_move(int opcode, int func) {
-    switch (func) {
-        case 22: //Extract Word Low EXTWL
-            break;
-        case 38: //Extract Longword Low EXTLL
-            break;
-        case 90: //Extract Word high EXTWH
-            break;
-        case 106: //Extract Lonword High EXTLH
-            break;
-        case 27: //Insert Word Low INSWL
-            break;
-        case 43: //Insert Longword Low INSLL
-            break;
-        case 87: //Insert Word high
-            break;
-        case 103: //Insert Longword High INSLH
-            break;
-        case 18: //Mask Word Low
-            break;
-        case 34: //Mask Longword Low
-            break;
-        case 82: //Mask Word High
-            break;
-        case 98: //Mask Longword High
-            break;
-        default:
-            break;
-    }
-}
+
 void exec_calc(int opcode, int func){
     switch(opcode) {
         case 9: //LDAH
@@ -392,14 +327,14 @@ void exec_calc(int opcode, int func){
         case 58: //BLT
         case 61: //BNE
         case 48: //BR
-        case 52: //BSR
+        case 52: //BSR //NOTE: multiplication by 4 is just shift left by two
             rc_re.latchFrom(arith_alu.OUT());
             arith_alu.OP1().pullFrom(disp_re);
-            arith_alu.OP2().pullFrom(exec_const_4);
-            arith_alu.perform(BusALU::op_mult);
+            arith_alu.OP2().pullFrom(exec_const_2);
+            arith_alu.perform(BusALU::op_lshift);
             //temp <- 4 * signExt(disp)
             break;
-        case 26: //JMP, JSR, RET, JSRC TODO - update phase 2
+        case 26: //JMP, JSR, RET, JSRC 
             rc_re.latchFrom(arith_alu.OUT());
             arith_alu.OP1().pullFrom(exec_const_3);
             arith_alu.perform(BusALU::op_not);
@@ -414,29 +349,45 @@ void exec_calc(int opcode, int func){
             break;
         case 28: //CLTZ, CTPOP, CTTZ, SEXTW
         case -28: //immediate version of above
-            //???
+            //??? //under consideration. TODO - make decision
             break;
         case 19: //MULL
             rc_re.latchFrom(arith_alu.OUT());
-            arith_alu.OP1().pullFrom(ra_re);
-            arith_alu.OP2().pullFrom(rb_re);
-            arith_alu.perform(BusALU::op_mul);
+            arith_alu.perform(BusALU::op_zero);
+            Clock::tick();
+            while(!rb_re.zero()){ //TODO - verify this is legal
+                rc_re.latchFrom(arith_alu.OUT());
+                arith_alu.OP1().pullFrom(ra_re);
+                arith_alu.OP2().pullFrom(ra_re);
+                arith_alu.perform(BusALU::op_add);
+                Clock::tick();
+                rb_re.decr();
+                Clock::tick();
+            }
             //temp <- Ra * Rb
             break;
         case -19: //MULL
             rc_re.latchFrom(arith_alu.OUT());
-            arith_alu.OP1().pullFrom(ra_re);
-            arith_alu.OP2().pullFrom(li_re);
-            arith_alu.perform(BusALU::op_mul);
-            //temp <- Ra * Li
+            arith_alu.perform(BusALU::op_zero);
+            Clock::tick();
+            while(!li_re.zero()){ //TODO - verify this is legal
+                rc_re.latchFrom(arith_alu.OUT());
+                arith_alu.OP1().pullFrom(ra_re);
+                arith_alu.OP2().pullFrom(ra_re);
+                arith_alu.perform(BusALU::op_add);
+                Clock::tick();
+                li_re.decr();
+                Clock::tick();
+            }
+            //temp <- Ra * Rb
             break;
         case 17:
         case -17:
             logical_calc(opcode, func);
             break;
         case 18: //mask, insert, extract
-        case -18:
-            mie_calc(opcode, func);
+        case -18: //selected for removal from spec
+            //mie_calc(opcode, func);
             break;
         default:
             break;
@@ -456,8 +407,9 @@ void exec_move(int opcode, int func){
         case 40:
         case 12:
             //MAR <- Rb
-            data_cache.MAR().latchFrom(dbus_m.OUT());
-            dbus_m.IN().pullFrom(rb_re);
+            addr_alu.OP1().pullFrom(rb_re);
+            addr_alu.perform(BusALU::op_rop1);
+            //TODO - figure out how memory stage is going to take this
             break;
         case 57: //BEQ
         case 62: //BGE
@@ -470,19 +422,14 @@ void exec_move(int opcode, int func){
         case 48: //BR
         case 52: //BSR
             //PC <- PC + Temp
-            pc_f.latchFrom(arith_alu.OUT()); //TODO - verify I'm allowed to touch this
-            arith_alu.OP1().pullFrom(pc_re);
-            arith_alu.OP2().pullFrom(rc_re);
-            arith_alu.perform(BusALU::op_add);
+            pc_alu.OP1().pullFrom(pc_re);
+            pc_alu.OP2().pullFrom(rc_re);
+            pc_alu.perform(BusALU::op_add);
             break;
         case 26: //JMP, JSR, RET, JSRC
-            rc_re.latchFrom(arith_alu.OUT());
-            arith_alu.OP1().pullFrom(rb_re);
-            arith_alu.OP2().pullFrom(rc_re);
-            arith_alu.perform(BusALU::op_and);
-            //PC <- temp
-            pc_f.latchFrom(pcbus_f.OUT());
-            pcbus_f.IN().pullFrom(rc_re);
+            pc_alu.OP1().pullFrom(rb_re);
+            pc_alu.OP2().pullFrom(rc_re);
+            pc_alu.perform(BusALU::op_add);
             break;
         case 16: //operations - Register
         case -16: //Operations - Immediate
@@ -490,22 +437,19 @@ void exec_move(int opcode, int func){
             break;
         case 28: //CLTZ, CTPOP, CTTZ, SEXTW
         case -28:
-            //???
+            //??? //not implemented, under consideration TODO - make decision
             break;
         case 19: //MULL
         case -19:
-            //rc_re.latchFrom(arith_alu.OUT());
-            //arith_alu.OP1().pullFrom(rc_re);
-            //arith_alu.perform(BusALU::op_rop1); 
-            //Rc <- signExt(temp)<31:0>
+            //currently handled all in phase 1. this will change
             break;
         case 17:
         case -17:
             logical_move(opcode, func);
             break;
         case 18: //mask, insert, extract
-        case -18:
-            mie_move(opcode, func);
+        case -18: //selected for removal from spec
+            //mie_move(opcode, func);
         default:
             break;
     }

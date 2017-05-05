@@ -79,7 +79,7 @@ Counter    rb_re ( "RB_READ_EXECUTE", REG_SIZE );
 Counter    rc_re ( "RC_READ_EXECUTE", REG_SIZE );
 Counter    aux_re ( "AUX_READ_EXECUTE", REG_SIZE );
 Clearable  disp_re ( "DISPLACE_READ_EXECUTE", DATA_SIZE );
-Clearable  li_re ( "LITERAL_READ_EXECUTE", DATA_SIZE );
+Counter    li_re ( "LITERAL_READ_EXECUTE", DATA_SIZE );
 Clearable  func_re ( "FUNC_READ_EXECUTE", DATA_SIZE );
 Clearable  lock_re ( "LOCK_READ_EXECUTE", DATA_SIZE );
 
@@ -114,6 +114,7 @@ Bus      addrbus_em ( "ADDRBUS_EXECUTE_MEMORY", ADDR_SIZE );
 
 StorageObject exec_const_2("2", REG_SIZE, 2);
 StorageObject exec_const_3("3", REG_SIZE, 3);
+StorageObject exec_const_4("4", REG_SIZE, 4);
 /**
  * MEMORY
  */

@@ -36,7 +36,7 @@ extern Clearable  lock_re; // lock read execute
 extern Clearable  disp_r; // disp read
 extern Clearable  disp_re; // disp read execute
 extern Clearable  li_r; // literal read
-extern Clearable  li_re; // literal read execute
+extern Counter    li_re; // literal read execute
 extern Clearable  func_r; // func read
 extern Clearable  func_re; // func read execute
 extern Counter    ra_re; // ra read execute
@@ -57,6 +57,7 @@ extern Clearable  data_m; // data memory
 
 extern StorageObject exec_const_2;
 extern StorageObject exec_const_3;
+extern StorageObject exec_const_4;
 
 /**
  * BUSES
