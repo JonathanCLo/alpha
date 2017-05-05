@@ -24,7 +24,7 @@ void operate_exec(int opcode, int func){
             }
             break;
         case 2: // S4ADDL
-        case 11: //S4SUBL //TODO - get constant working
+        case 11: //S4SUBL 
             shift_alu.OP1().pullFrom(ra_re);
             shift_alu.OP2().pullFrom(exec_const_2);
             rc_re.latchFrom(arith_alu.OUT());
@@ -32,26 +32,26 @@ void operate_exec(int opcode, int func){
             //temp <- leftShift(Ra, 2)
             break;
         case 18: // S8ADDL
-        case 27: // S8SUBL //TODO - get constant working
+        case 27: // S8SUBL 
             shift_alu.OP1().pullFrom(ra_re);
             shift_alu.OP2().pullFrom(exec_const_3);
             rc_re.latchFrom(arith_alu.OUT());
             arith_alu.perform(BusALU::op_lshift);
             //temp <- leftShift(Ra, 3)
             break;
-        case 9: // SUBL //TODO - figure out sign extension
+        case 9: // SUBL
             arith_alu.OP1().pullFrom(ra_re);
             arith_alu.perform(BusALU::op_sub);
             rc_re.latchFrom(arith_alu.OUT());
             if (opcode < 0) { //immediate
                 arith_alu.OP2().pullFrom(li_re);
-                //temp <- signExt(Ra - Li)
+                //temp <- Ra - Li
             } else { //register
                 arith_alu.OP2().pullFrom(rb_re);
-                //temp <- signExt(Ra - Rb)
+                //temp <- Ra - Rb
             }
             break;
-        case 15: //CMPBGE //TODO - figure this out
+        case 15: //CMPBGE Note: this was removed after implementation started.
             //???
             break;
         default:
@@ -63,17 +63,17 @@ void operate_move(int opcode, int func){
     switch(func){
         case 0: //ADDL //Note this may not actually be necessary
             //because register is only 32 bits to begin with in our sim
-            arith_alu.perform(BusALU::op_rop1);
-            arith_alu.OP1().pullFrom(rc_re);
+            //arith_alu.perform(BusALU::op_rop1);
+            //arith_alu.OP1().pullFrom(rc_re);
             //arith_alu.OP2().pullFrom(some_constant); //TODO - figure this out
-            rc_re.latchFrom(arith_alu.OUT());
+            //rc_re.latchFrom(arith_alu.OUT());
             //Rc <- SignExt(temp)<31:0>
             break;
         case 9: //SUBL //Do nothing here - assume rc_re is temp TODO verify this
             //Rc <- temp<31:0>
             break;
         case 2: // S4ADDL
-        case 18: //S8ADDL TODO - verify assumption that temp is RC
+        case 18: //S8ADDL 
             arith_alu.OP1().pullFrom(ra_re);
             arith_alu.perform(BusALU::op_add);
             rc_re.latchFrom(arith_alu.OUT());
@@ -86,7 +86,7 @@ void operate_move(int opcode, int func){
             }
             break;
         case 11: //S4SUBL
-        case 27: //S8SUBL - TODO - verify that temp is RC
+        case 27: //S8SUBL
             arith_alu.OP1().pullFrom(rc_re);
             arith_alu.perform(BusALU::op_sub);
             rc_re.latchFrom(arith_alu.OUT());
@@ -123,7 +123,7 @@ void logical_calc(int opcode, int func){
         case 8: // BIC
             rc_re.latchFrom(arith_alu.OUT());
             arith_alu.perform(BusALU::op_not);
-            if (opcode < 0) { //immediate TODO - update second phase to do AND
+            if (opcode < 0) { //immediate 
                 arith_alu.OP1().pullFrom(li_re);
                 //Rc <- Ra AND NOT Li
             } else {
@@ -131,7 +131,7 @@ void logical_calc(int opcode, int func){
                 //Rc <- Ra AND NOT Rb
             }
             break;
-        case 32: //BIS TODO - figure out implications of 'logical'
+        case 32: //BIS 
             rc_re.latchFrom(arith_alu.OUT());
             arith_alu.OP1().pullFrom(ra_re);
             arith_alu.perform(BusALU::op_or);
@@ -143,7 +143,7 @@ void logical_calc(int opcode, int func){
                 //Rc <- Ra logical OR Rb
             }
             break;
-        case 72: //EQV //TODO - update next phase to do XOR
+        case 72: //EQV 
             rc_re.latchFrom(arith_alu.OUT());
             arith_alu.perform(BusALU::op_not);
             if (opcode < 0) { //immediate
@@ -154,7 +154,7 @@ void logical_calc(int opcode, int func){
                 //Rc <- Ra XOR (NOT Rb)
             }
             break;
-        case 40: // ORNOT TODO - update next phase to do OR
+        case 40: // ORNOT 
             rc_re.latchFrom(arith_alu.OUT());
             arith_alu.perform(BusALU::op_not);
             if (opcode < 0) {
@@ -257,12 +257,29 @@ void logical_calc(int opcode, int func){
 void logical_move(int opcode, int func) {
     switch (func) {
         case 0: //AND
+            break; //no extra work needed
         case 8: // BIC
-        case 32: //BIS
-        case 72: //EQV
-        case 40: // ORNOT
-        case 64: //XOR
+            rc_re.latchFrom(arith_alu.OUT());
+            arith_alu.OP1().pullFrom(ra_re);
+            arith_alu.OP2().pullFrom(rc_re);
+            arith_alu.perform(BusALU::op_and);
+            //RC <- Ra AND RC (see part above)
             break;
+        case 32: //BIS
+            break; //no extra work needed
+        case 72: //EQV
+            rc_re.latchFrom(arith_alu.OUT());
+            arith_alu.OP1().pullFrom(ra_re);
+            arith_alu.OP2().pullFrom(rc_re);
+            arith_alu.perform(BusALU::op_xor);
+            break;
+        case 40: // ORNOT
+            rc_re.latchFrom(arith_alu.OUT());
+            arith_alu.OP1().pullFrom(ra_re);
+            arith_alu.OP2().pullFrom(rc_re);
+            arith_alu.perform(BusALU::op_or);
+            break;
+        case 64: //XOR
         case 36: //CMOVEQ
         case 70: //CMOVGE
         case 102: //CMOVGT
@@ -270,6 +287,7 @@ void logical_move(int opcode, int func) {
         case 20: //CMOVLBS
         case 100: //CMOVLE
         case 68: //CMOVLT
+            break; //no extra work needed for these instructions
         case 38: //CMOVNE
             rc_re.latchFrom(arith_alu.OUT());
             arith_alu.OP1().pullFrom(li_re);
@@ -290,7 +308,7 @@ void logical_move(int opcode, int func) {
             break;
     }
 }
-void mie_calc(int opcode, int func) {
+void mie_calc(int opcode, int func) { //candidates for removal
     switch (func) {
         case 22: //Extract Word Low EXTWL
             break;
@@ -375,10 +393,19 @@ void exec_calc(int opcode, int func){
         case 61: //BNE
         case 48: //BR
         case 52: //BSR
+            rc_re.latchFrom(arith_alu.OUT());
+            arith_alu.OP1().pullFrom(disp_re);
+            arith_alu.OP2().pullFrom(exec_const_4);
+            arith_alu.perform(BusALU::op_mult);
             //temp <- 4 * signExt(disp)
             break;
-        case 26: //JMP, JSR, RET, JSRC
+        case 26: //JMP, JSR, RET, JSRC TODO - update phase 2
+            rc_re.latchFrom(arith_alu.OUT());
+            arith_alu.OP1().pullFrom(exec_const_3);
+            arith_alu.perform(BusALU::op_not);
             //temp <- Rb AND NOT 3
+            ra_re.latchFrom(pcbus_r.OUT());
+            pcbus_r.IN().pullFrom(pc_re);
             //Ra <- PC
             break;
         case 16: //operations - register
@@ -390,9 +417,17 @@ void exec_calc(int opcode, int func){
             //???
             break;
         case 19: //MULL
+            rc_re.latchFrom(arith_alu.OUT());
+            arith_alu.OP1().pullFrom(ra_re);
+            arith_alu.OP2().pullFrom(rb_re);
+            arith_alu.perform(BusALU::op_mul);
             //temp <- Ra * Rb
             break;
         case -19: //MULL
+            rc_re.latchFrom(arith_alu.OUT());
+            arith_alu.OP1().pullFrom(ra_re);
+            arith_alu.OP2().pullFrom(li_re);
+            arith_alu.perform(BusALU::op_mul);
             //temp <- Ra * Li
             break;
         case 17:
@@ -441,6 +476,10 @@ void exec_move(int opcode, int func){
             arith_alu.perform(BusALU::op_add);
             break;
         case 26: //JMP, JSR, RET, JSRC
+            rc_re.latchFrom(arith_alu.OUT());
+            arith_alu.OP1().pullFrom(rb_re);
+            arith_alu.OP2().pullFrom(rc_re);
+            arith_alu.perform(BusALU::op_and);
             //PC <- temp
             pc_f.latchFrom(pcbus_f.OUT());
             pcbus_f.IN().pullFrom(rc_re);
@@ -455,9 +494,9 @@ void exec_move(int opcode, int func){
             break;
         case 19: //MULL
         case -19:
-            rc_re.latchFrom(arith_alu.OUT());
-            arith_alu.OP1().pullFrom(rc_re);
-            arith_alu.perform(BusALU::op_rop1); //TODO actually do sign extension
+            //rc_re.latchFrom(arith_alu.OUT());
+            //arith_alu.OP1().pullFrom(rc_re);
+            //arith_alu.perform(BusALU::op_rop1); 
             //Rc <- signExt(temp)<31:0>
             break;
         case 17:
