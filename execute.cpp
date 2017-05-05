@@ -306,13 +306,17 @@ void logical_move(int opcode, int func) {
 void exec_calc(int opcode, int func){
     switch(opcode) {
         case 9: //LDAH
-            //Rb <- Rb + signExt(disp * 65536)
+            //Rb <- Rb + signExt(disp lshift 16) TODO
             break;
         case 8: //LDA
         case 10:  //LDBU
         case 40: //LDL
         case 12: //LDWU
-            //Rb <- Rb + signExt(disp0
+            rb_re.latchFrom(arith_alu.OUT());
+            arith_alu.OP1().pullFrom(rb_re);
+            arith_alu.OP2().pullFrom(disp_re);
+            arith_alu.perform(BusALU::op_add);
+            //Rb <- Rb + disp
             break;
         case 44: //STL
             break;
@@ -379,7 +383,7 @@ void exec_calc(int opcode, int func){
                 li_re.decr();
                 Clock::tick();
             }
-            //temp <- Ra * Rb
+            //temp <- Ra * li
             break;
         case 17:
         case -17:
