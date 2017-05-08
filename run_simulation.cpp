@@ -24,19 +24,19 @@ void run_simulation ( char* objfile )
 
     char  buff [ 128 ]; // sprintf buffer
 
-    sprintf ( buff, "|%-18s|%-18s|%-18s|%-18s|%-18s|\n",
+    sprintf ( buff, "|%-24s|%-24s|%-24s|%-24s|%-24s|\n",
               "FETCH",
               "ISSUE",
               "READ",
               "EXECUTE",
               "MEMORY" );
     cout << buff;
-    sprintf ( buff, "|%-18s|%-18s|%-18s|%-18s|%-18s|\n",
-              "------------------",
-              "------------------",
-              "------------------",
-              "------------------",
-              "------------------" );
+    sprintf ( buff, "|%-24s|%-24s|%-24s|%-24s|%-24s|\n",
+              "------------------------",
+              "------------------------",
+              "------------------------",
+              "------------------------",
+              "------------------------" );
     cout << buff;
 
     while ( ! done ) // until we stop the simulation
