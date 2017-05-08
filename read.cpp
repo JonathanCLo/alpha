@@ -530,7 +530,7 @@ void read ( )
     pc_r.latchFrom ( pcbus_r.OUT ( ) );
 
     Clock::tick ( );
-
+    execute1();
     long  opc = ir_r ( REG_SIZE - 1, REG_SIZE - 6 );
     
     char buff [32];
@@ -577,7 +577,7 @@ void read ( )
 
     } // switch
 
-    execute ( );
+    execute2 ( );
 } // read
 
 // $(filename) end

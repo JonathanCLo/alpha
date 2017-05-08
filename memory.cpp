@@ -6,7 +6,6 @@
 #include "includes.h"
 
 void memory ( );
-
 /**
  * memory
  * memory stage of pipeline. writes/read to/from memory. Writes to registers
