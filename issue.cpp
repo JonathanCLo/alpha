@@ -21,7 +21,7 @@ void issue ( )
     issue2 ( );
 
     char  buff [ 32 ];
-    sprintf ( buff, "|pc=%02lx             ", pc_i.value ( ) );
+    sprintf ( buff, "|pc=%02lx                   ", pc_i.value ( ) );
     cout << buff;
     read ( );
 } // fetch
