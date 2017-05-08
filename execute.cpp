@@ -351,40 +351,6 @@ void exec_calc(int opcode, int func){
         case -16: //operations - immediate
             operate_exec(opcode, func);
             break;
-        case 28: //CLTZ, CTPOP, CTTZ, SEXTW
-        case -28: //immediate version of above
-            //??? //under consideration. TODO - make decision
-            break;
-        case 19: //MULL
-            rc_re.latchFrom(arith_alu.OUT());
-            arith_alu.perform(BusALU::op_zero);
-            Clock::tick();
-            while(!rb_re.zero()){ //TODO - verify this is legal
-                rc_re.latchFrom(arith_alu.OUT());
-                arith_alu.OP1().pullFrom(ra_re);
-                arith_alu.OP2().pullFrom(ra_re);
-                arith_alu.perform(BusALU::op_add);
-                Clock::tick();
-                rb_re.decr();
-                Clock::tick();
-            }
-            //temp <- Ra * Rb
-            break;
-        case -19: //MULL
-            rc_re.latchFrom(arith_alu.OUT());
-            arith_alu.perform(BusALU::op_zero);
-            Clock::tick();
-            while(!li_re.zero()){ //TODO - verify this is legal
-                rc_re.latchFrom(arith_alu.OUT());
-                arith_alu.OP1().pullFrom(ra_re);
-                arith_alu.OP2().pullFrom(ra_re);
-                arith_alu.perform(BusALU::op_add);
-                Clock::tick();
-                li_re.decr();
-                Clock::tick();
-            }
-            //temp <- Ra * li
-            break;
         case 17:
         case -17:
             logical_calc(opcode, func);
@@ -438,14 +404,6 @@ void exec_move(int opcode, int func){
         case 16: //operations - Register
         case -16: //Operations - Immediate
             operate_move(opcode, func);
-            break;
-        case 28: //CLTZ, CTPOP, CTTZ, SEXTW
-        case -28:
-            //??? //not implemented, under consideration TODO - make decision
-            break;
-        case 19: //MULL
-        case -19:
-            //currently handled all in phase 1. this will change
             break;
         case 17:
         case -17:
