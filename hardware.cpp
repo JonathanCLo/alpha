@@ -104,6 +104,8 @@ BusALU   addr_alu ( "ADDR_ALU", ADDR_SIZE );
 Counter  pc_em ( "PC_EXECUTE_MEMORY", REG_SIZE );
 Counter  out_em ( "OUT_EXECUTE_MEMORY", REG_SIZE );
 Counter  addr_em ( "ADDR_EXECUTE_MEMORY", ADDR_SIZE );
+Clearable r_addr_em ( "REGADDR_EXECUTE_MEMORY", ADDR_SIZE );
+Clearable mem_flag ( "MEMORY_WRITE_STORE_FLAG", ADDR_SIZE );
 Bus      outbus_em ( "OUTBUS_EXECUTE_MEMORY", REG_SIZE );
 Bus      addrbus_em ( "ADDRBUS_EXECUTE_MEMORY", ADDR_SIZE );
 
