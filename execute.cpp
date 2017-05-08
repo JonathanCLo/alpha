@@ -420,7 +420,7 @@ void exec_move(int opcode, int func){
  * execute
  *  executes the instruction
  */
-void execute ( )
+void execute1 ( )
 {
     int opcode;
     if (ir_re(12) == 0){
@@ -431,10 +431,21 @@ void execute ( )
     int func = ir_re(11, 5); // note: won't always use this one
     exec_calc(opcode, func);
     Clock::tick ( );
+    memory1();
+
+} // execute1
+
+void execute2 ( )
+{
+    int opcode;
+    if (ir_re(12) == 0){
+        opcode = ir_re(31, 26);
+    } else {
+        opcode = -ir_re(31, 26); //signals immediate value vs register value
+    }
+    int func = ir_re(11, 5); // note: won't always use this one
     exec_move(opcode, func);
     Clock::tick ( );
-
-    memory ( );
-} // execute
-
+    memory2 ( );
+} // execute2
 // $(filename) end
