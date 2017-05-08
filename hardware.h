@@ -52,7 +52,8 @@ extern Counter    shift_op2; // execute
 extern Counter    addr_op1; // execute
 extern Counter    addr_op2; // execute
 extern Counter    out_em; // out execute memory
-extern Clearable  r_addr_em; // reg_addr execute memory
+extern Counter    pc_em; // pc execute memory
+extern Clearable  ir_em; // reg_addr execute memory
 extern Clearable  mem_flag; // memory write store flag 
 // extern Clearable  out_m; // out memory
 extern Counter    addr_em; // addr execute memory
@@ -70,8 +71,8 @@ extern Bus  pcbus_i; // pcbus issue
 extern Bus  pcbus_r; // pcbus read
 extern Bus  pcbus_e; // pcbus execute
 extern Bus  irbus_i; // irbus issue
-extern Bus  pcbus_r; // pcbus read
 extern Bus  irbus_r; // irbus read
+extern Bus  irbus_e; // irbus execute
 extern Bus  rabus_r; // rabus read
 extern Bus  rbbus_r; // rbbus read
 extern Bus  rcbus_r; // rcbus read

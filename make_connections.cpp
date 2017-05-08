@@ -254,6 +254,10 @@ void make_connections_execute ( )
     pc_re.connectsTo ( pcbus_e.IN ( ) );
     pc_re.connectsTo ( arithop1_ebus.IN ( ) );
     pc_re.connectsTo ( arithop2_ebus.IN ( ) );
+    
+    ir_re.connectsTo ( irbus_e.IN ( ) );
+    ir_em.connectsTo ( irbus_e.OUT( ) );
+
     ra_re.connectsTo ( arithop1_ebus.IN ( ) );
     ra_re.connectsTo ( arithop2_ebus.IN ( ) );
     rb_re.connectsTo ( arithop1_ebus.IN ( ) );
@@ -272,7 +276,7 @@ void make_connections_execute ( )
 
     pc_re.connectsTo ( addrop1_ebus.IN ( ) );
     
-    pc_em.connectsTo ( pcbus_e.IN ( ) );
+    pc_em.connectsTo ( pcbus_e.OUT ( ) );
     out_em.connectsTo ( arith_alu.OUT ( ) );
     out_em.connectsTo ( shift_alu.OUT ( ) );
     out_em.connectsTo ( outbus_em.IN ( ) );
@@ -288,6 +292,7 @@ void make_connections_execute ( )
  */
 void make_connections_memory ( )
 {
+    
     addr_em.connectsTo ( addrbus_m.IN ( ) );
     data_cache.MAR ( ).connectsTo ( addrbus_m.OUT ( ) );
 
