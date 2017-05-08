@@ -118,7 +118,7 @@ StorageObject exec_const_4("4", REG_SIZE, 4);
  */
 // REGISTERS
 Clearable  data_m ( "DATA_MEMORY", DATA_SIZE );
-Clearable  out_m ( "OUT_MEMORY", REG_SIZE );
+// Clearable  out_m ( "OUT_MEMORY", REG_SIZE );
 // BUSES
 Bus  addrbus_m ( "ADDRBUS_MEMORY", REG_SIZE ); // TODO CONFLICTING SIZE!
 Bus  dbus_m ( "DATABUS_MEMORY", REG_SIZE ); // TODO CONFLICTING SIZE!

@@ -52,7 +52,9 @@ extern Counter    shift_op2; // execute
 extern Counter    addr_op1; // execute
 extern Counter    addr_op2; // execute
 extern Counter    out_em; // out execute memory
-extern Clearable  out_m; // out memory
+extern Clearable  r_addr_em; // reg_addr execute memory
+extern Clearable  mem_flag; // memory write store flag 
+// extern Clearable  out_m; // out memory
 extern Counter    addr_em; // addr execute memory
 extern Clearable  data_m; // data memory
 
