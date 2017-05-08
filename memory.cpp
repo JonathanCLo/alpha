@@ -6,6 +6,9 @@
 #include "includes.h"
 
 void memory ( );
+void memory1 ( );
+void memory2 ( );
+void memory_writeback ( );
 /**
  * memory
  * memory stage of pipeline. writes/read to/from memory. Writes to registers
@@ -20,7 +23,7 @@ void memory ( )
     char  buff [ 32 ];
 
 
-    sprintf ( buff, "|pc=%02lx o=%02lx a=%04lx        |\n",
+    sprintf ( buff, "|pc=%02lx mf=%02lx out=%02lx addr=%04lx        |\n",
               pc_em.value ( ),
               out_em.value ( ),
               addr_em.value ( ) );
@@ -34,9 +37,21 @@ void memory ( )
  */
 void memory1 ( )
 {
-    // TODO
+    // read mem_flag
+    long mem_type = mem_flag.value ( );
+    
+    switch ( mem_type ) {
+        case 0: // doesn't use memory
+            // write back 
+        case 1: // read to memory
+        case 2: // write to memory
+    }
+    // read ir for RC dest register
+    
     Clock::tick ( );
 }
+
+void memory_writeback ( )
 
 /**
  * memory2
