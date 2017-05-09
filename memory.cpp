@@ -243,6 +243,7 @@ void memory ( )
             write_rc ( );
             Clock::tick ( );
             Clock::tick ( );
+            break;
         case 1: // read from memory
             // set up MAR for read
             addrbus_m.IN ( ).pullFrom ( addr_em );
@@ -251,7 +252,7 @@ void memory ( )
 
             // read
             data_cache.read ( );
-
+            break;
         case 2: // write to memory
             // set up MAR for write
             addrbus_m.IN ( ).pullFrom ( addr_em );
@@ -262,7 +263,9 @@ void memory ( )
             data_cache.WRITE ( ).pullFrom ( out_em );
             data_cache.WRITE ( );
             Clock::tick ( );
+            break;
         default: // shouldn't happen
+            break;
     }
 
     // PIPELINE IS DONE
