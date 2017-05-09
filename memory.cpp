@@ -239,13 +239,13 @@ void memory ( )
 
     switch ( mem_type ) {
         case 0: // doesn't use memory
-            dbus_m.IN ( ).pullsFrom ( out_em ); // write to register
+            dbus_m.IN ( ).pullFrom ( out_em ); // write to register
             write_rc ( );
             Clock::tick ( );
             Clock::tick ( );
         case 1: // read from memory
             // set up MAR for read
-            addrbus_m.IN ( ).pullsFrom ( addr_em );
+            addrbus_m.IN ( ).pullFrom ( addr_em );
             data_cache.MAR ( ).latchFrom ( addrbus_m.OUT ( ) );
             Clock::tick ( );
 
@@ -254,12 +254,12 @@ void memory ( )
 
         case 2: // write to memory
             // set up MAR for write
-            addrbus_m.IN ( ).pullsFrom ( addr_em );
+            addrbus_m.IN ( ).pullFrom ( addr_em );
             data_cache.MAR ( ).latchFrom ( addrbus_m.OUT ( ) );
             Clock::tick ( );
 
             // perform write
-            data_cache.WRITE ( ).pulllFrom ( out_em );
+            data_cache.WRITE ( ).pullFrom ( out_em );
             data_cache.WRITE ( );
             Clock::tick ( );
         default: // shouldn't happen
