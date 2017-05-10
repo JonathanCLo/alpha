@@ -7,6 +7,7 @@
 #include "includes.h"
 
 void read ( );
+void noop ( );
 void md ( );
 void b ( );
 void mf ( );
@@ -360,6 +361,17 @@ void move_rc ( )
     } // switch
 } // move_rc
 
+
+/**
+ * noop
+ *
+ *
+ */
+void noop ( )
+{
+
+    Clock::tick ( );
+}
 /**
  * md
  * handles memory displacement instruction format, moves ra and rb into
@@ -537,38 +549,59 @@ void read ( )
     cout << buff;
 
     switch ( opc ) {
-        case 8:
-        case 9:
-        case 10:
-        case 40:
-        case 12:
-        case 44:
-        case 13: // MD
+        case OPC_NOOP:
+            noop ( );
+            break;
+        case OPC_LDA:
+        case OPC_LDAH:
+        case OPC_LDU:
+        case OPC_LDL:
+        case OPC_STL:
             md ( );
             break;
-        case 57:
-        case 62:
-        case 63:
-        case 56:
-        case 60:
-        case 59:
-        case 58:
-        case 61:
-        case 48:
-        case 52: // B
+        case OPC_BEQ:
+        case OPC_BGE:
+        case OPC_BGT:
+        case OPC_BLBC:
+        case OPC_BLBS:
+        case OPC_BLE:
+        case OPC_BLT:
+        case OPC_BNE:
+        case OPC_BR:
+        case OPC_BSR: // B
             b ( );
             break;
-        case 26: // mf
+        case OPC_JMP:
+        case OPC_JSR:
+        case OPC_RET:
+        case OPC_JSRC:
             mf ( );
             break;
-        case 24: // pcc
+        case OPC_RPCC: // pcc
             pcc ( );
             break;
-        case 16:
-        case 28:
-        case 19:
-        case 17:
-        case 18: // o
+        case OPC_ADDL:
+        case OPC_S4ADDL:
+        case OPC_S8ADDL:
+        case OPC_SUBL:
+        case OPC_S4SUBL:
+        case OPC_S8SUBL:
+        case OPC_AND:
+        case OPC_BIC:
+        case OPC_BIS:
+        case OPC_EQV:
+        case OPC_ORNOT:
+        case OPC_XOR:
+        case OPC_CMOVEQ:
+        case OPC_CMOVGE:
+        case OPC_CMOVGT:
+        case OPC_CMOVBLC:
+        case OPC_CMOVBLS:
+        case OPC_CMOVLE:
+        case OPC_CMOVLT:
+        case OPC_CMOVNE:
+        case OPC_SLL:
+        case OPC_SRL:
             o ( );
             break;
         default: // unknown
@@ -576,7 +609,7 @@ void read ( )
 
     } // switch
 
-    execute2 ( );
+    execute ( );
 } // read
 
 // $(filename) end

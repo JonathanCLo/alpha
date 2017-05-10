@@ -10,11 +10,66 @@
 
 #include "includes.h"
 
-/* GLOBAL SIZES */
+/**
+ * GLOBAL SIZES
+ */
 extern const unsigned int ADDR_SIZE;   //
 extern const unsigned int OPC_SIZE;    // OP SIZE
 extern const unsigned int REG_SIZE;    // REGISTER SIZE
 extern const unsigned int DATA_SIZE;   // DATA SIZE
+
+/**
+ * INSTRUCTION OPCODE CONSTANTS
+ */
+extern const unsigned long OPC_NOOP;
+// MD instructions
+extern const unsigned long OPC_LDA;
+extern const unsigned long OPC_LDAH;
+extern const unsigned long OPC_LDBU;
+extern const unsigned long OPC_LDL;
+extern const unsigned long OPC_LDWU;
+extern const unsigned long OPC_STL;
+extern const unsigned long OPC_STW;
+// branch
+extern const unsigned long OPC_BEQ;
+extern const unsigned long OPC_BGE;
+extern const unsigned long OPC_BGT;
+extern const unsigned long OPC_BLBC;
+extern const unsigned long OPC_BLBS;
+extern const unsigned long OPC_BLE;
+extern const unsigned long OPC_BLT;
+extern const unsigned long OPC_BNE;
+extern const unsigned long OPC_BR;
+extern const unsigned long OPC_BSR;
+// mf
+extern const unsigned long OPC_JMP;
+extern const unsigned long OPC_JSR;
+extern const unsigned long OPC_RET;
+extern const unsigned long OPC_JSRC;
+extern const unsigned long OPC_RPCC;
+// operate
+extern const unsigned long OPC_ADDL;
+extern const unsigned long OPC_S4ADDL;
+extern const unsigned long OPC_S8ADDL;
+extern const unsigned long OPC_SUBL;
+extern const unsigned long OPC_S4SUBL;
+extern const unsigned long OPC_S8SUBL;
+extern const unsigned long OPC_AND;
+extern const unsigned long OPC_BIC;
+extern const unsigned long OPC_BIS;
+extern const unsigned long OPC_EQV;
+extern const unsigned long OPC_ORNOT;
+extern const unsigned long OPC_XOR;
+extern const unsigned long OPC_CMOVEQ;
+extern const unsigned long OPC_CMOVGE;
+extern const unsigned long OPC_CMOVGT;
+extern const unsigned long OPC_CMOVLBC;
+extern const unsigned long OPC_CMOVLBS;
+extern const unsigned long OPC_CMOVLE;
+extern const unsigned long OPC_CMOVLT;
+extern const unsigned long OPC_CMOVNE;
+extern const unsigned long OPC_SLL;
+extern const unsigned long OPC_SRL;
 
 /**
  * SPECIAL RESERVED REGISTERS
