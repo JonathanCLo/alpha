@@ -20,6 +20,29 @@ const unsigned int REG_SIZE ( 32 );     // REGISTER SIZE
 const unsigned int DATA_SIZE ( 16 );    // DATA SIZE
 
 /**
+ * INSTRUCTION OPCODE CONSTANTS;
+ */
+const unsigned long OP_LDA	= 8;
+const unsigned long OP_LDAH = 9;
+const unsigned long OP_LDBU = 10;
+const unsigned long OP_LDA	= 8;
+const unsigned long OP_LDA	= 8;
+const unsigned long OP_LDA	= 8;
+const unsigned long OP_LDA	= 8;
+const unsigned long OP_LDA	= 8;
+const unsigned long OP_LDA	= 8;
+const unsigned long OP_LDA	= 8;
+const unsigned long OP_LDA	= 8;
+const unsigned long OP_LDA	= 8;
+const unsigned long OP_LDA	= 8;
+const unsigned long OP_LDA	= 8;
+const unsigned long OP_LDA	= 8;
+const unsigned long OP_LDA	= 8;
+const unsigned long OP_LDA	= 8;
+const unsigned long OP_LDA	= 8;
+const unsigned long OP_LDA	= 8;
+
+/**
  * SPECIAL RESERVED REGISTERS
  */
 Counter pcc ( "PCC", REG_SIZE );

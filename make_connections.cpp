@@ -376,7 +376,10 @@ void make_connections_memory ( )
  */
 void make_connections_auxillary ( )
 {
+    // noop register holds 0
     noop.connectsTo ( noopbus.IN ( ) );
+
+    // all ir connected to it.
     ir_fi.connectsTo ( noopbus.OUT ( ) );
     ir_i.connectsTo ( noopbus.OUT ( ) );
     ir_ir.connectsTo ( noopbus.OUT ( ) );
