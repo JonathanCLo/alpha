@@ -545,11 +545,13 @@ void read ( )
     long opc = ir_r ( REG_SIZE - 1, REG_SIZE - 6 );
 
     char buff [32];
-    sprintf ( buff, "|pc=%02lx opc=%03lx     ", pc_r.value ( ), opc );
+    sprintf ( buff, "|pc=%02lx opc=%03lx ", pc_r.value ( ), opc );
     cout << buff;
 
     switch ( opc ) {
         case OPC_NOOP:
+            sprintf ( buff, "ir=NOOP " );
+            cout << buff;
             noop ( );
             break;
         case OPC_LDA:
@@ -569,6 +571,8 @@ void read ( )
         case OPC_BNE:
         case OPC_BR:
         case OPC_BSR: // B
+            sprintf ( buff, "IR BRANCH " );
+            cout << buff;
             b ( );
             break;
         case OPC_JMP:
