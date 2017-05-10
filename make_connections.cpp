@@ -13,6 +13,7 @@ void make_connections_issue ( );
 void make_connections_read ( );
 void make_connections_execute ( );
 void make_connections_memory ( );
+void make_connections_auxillary ( );
 
 /**
  * make_connections
@@ -25,7 +26,8 @@ void make_connections ( )
     make_connections_issue ( );
     make_connections_read ( );
     make_connections_execute ( );
-    //TODO make_connections_memory ( );
+    make_connections_memory ( );
+    make_connections_auxillary ( );
 }
 
 /**
@@ -250,13 +252,13 @@ void make_connections_execute ( )
     addr_op2.connectsTo ( addrop2_ebus.OUT ( ) );
     addr_op1.connectsTo ( addr_alu.OP1 ( ) );
     addr_op2.connectsTo ( addr_alu.OP2 ( ) );
-    
+
     pc_re.connectsTo ( pcbus_e.IN ( ) );
     pc_re.connectsTo ( arithop1_ebus.IN ( ) );
     pc_re.connectsTo ( arithop2_ebus.IN ( ) );
-    
+
     ir_re.connectsTo ( irbus_e.IN ( ) );
-    ir_em.connectsTo ( irbus_e.OUT( ) );
+    ir_em.connectsTo ( irbus_e.OUT ( ) );
 
     ra_re.connectsTo ( arithop1_ebus.IN ( ) );
     ra_re.connectsTo ( arithop2_ebus.IN ( ) );
@@ -275,7 +277,7 @@ void make_connections_execute ( )
     aux_re.connectsTo ( shiftop2_ebus.IN ( ) );
 
     pc_re.connectsTo ( addrop1_ebus.IN ( ) );
-    
+
     pc_em.connectsTo ( pcbus_e.OUT ( ) );
     out_em.connectsTo ( arith_alu.OUT ( ) );
     out_em.connectsTo ( shift_alu.OUT ( ) );
@@ -292,7 +294,7 @@ void make_connections_execute ( )
  */
 void make_connections_memory ( )
 {
-    
+
     addr_em.connectsTo ( addrbus_m.IN ( ) );
     data_cache.MAR ( ).connectsTo ( addrbus_m.OUT ( ) );
 
@@ -366,5 +368,22 @@ void make_connections_memory ( )
     r31.connectsTo ( data_cache.READ ( ) );
 
 } // make_connections_memory
+
+/**
+ * make_connections_auxillary
+ *
+ *
+ */
+void make_connections_auxillary ( )
+{
+    noop.connectsTo ( noopbus.IN ( ) );
+    ir_fi.connectsTo ( noopbus.OUT ( ) );
+    ir_i.connectsTo ( noopbus.OUT ( ) );
+    ir_ir.connectsTo ( noopbus.OUT ( ) );
+    ir_r.connectsTo ( noopbus.OUT ( ) );
+    ir_re.connectsTo ( noopbus.OUT ( ) );
+    ir_e.connectsTo ( noopbus.OUT ( ) );
+    ir_em.connectsTo ( noopbus.OUT ( ) );
+}
 
 // $(filename) end
