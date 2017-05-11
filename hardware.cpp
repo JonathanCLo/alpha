@@ -77,6 +77,9 @@ const unsigned long OPC_SRL		= 17;
  */
 Counter pcc ( "PCC", REG_SIZE );
 Constant noop ( "NOOP", REG_SIZE, long value = 0 );
+Constant mult4 ( "MULT4", REG_SIZE, long value = 2 );
+Constant shift11 ( "DISP11", REG_SIZE, long value = 11 );
+Constant shift7 ( "DISP11", REG_SIZE, long value = 7 );
 /**
  * SPECIAL RESERVED BUSES FOR SRR
  */
@@ -99,16 +102,17 @@ Clearable ir_fi ( "IR_FETCH_ISSUE", REG_SIZE );
  * ISSUE
  */
 // REGISTERS
-Counter pc_i ( "PC_ISSUE", ADDR_SIZE );
 Counter aux_i ( "AUX_ISSUE", ADDR_SIZE );
-Clearable ir_i ( "IR_ISSUE", REG_SIZE );
+Constant dispmask_i ( "DISP_MASK_ISSUE", REG_SIZE, long value = 0x1fffff );
 // BUSES
 Bus pcbus_i ( "PCBUS_ISSUE", ADDR_SIZE );
 Bus irbus_i ( "IRBUS_ISSUE", REG_SIZE );
 // AUX COMPONENTS
-BusALU pc_alu ( "PC_ALU", REG_SIZE );
+BusALU mask_alu ( "MASK_ALU", REG_SIZE );
+BusALU rightShift_alu ( "rightShift_ALU", REG_SIZE );
 // PIPELINE COMPONENTS
 Counter pc_ir ( "PC_ISSUE_READ", ADDR_SIZE );
+Counter npc_ir ( "NPC_ISSUE_READ", ADDR_SIZE );
 Clearable ir_ir ( "IR_ISSUE_READ", REG_SIZE );
 Clearable lock_ir ( "LOCK_ISSUE_READ", REG_SIZE );
 
@@ -116,8 +120,7 @@ Clearable lock_ir ( "LOCK_ISSUE_READ", REG_SIZE );
  * READ
  */
 // REGISTERS
-Counter pc_r ( "PC_READ", ADDR_SIZE );
-Clearable ir_r ( "IR_READ", REG_SIZE );
+Counter aux_r ( "AUX_READ", ADDR_SIZE );
 // BUSES
 Bus pcbus_r ( "PCBUS_READ", ADDR_SIZE );
 Bus irbus_r ( "IRBUS_READ", REG_SIZE );
@@ -127,6 +130,7 @@ Bus rcbus_r ( "RCBUS_READ", REG_SIZE );
 Bus auxbus_r ( "AUXBUS_READ", REG_SIZE );
 Bus lockbus_r ( "LOCKBUS_READ", REG_SIZE );
 // AUX COMPONENTS
+BusALU dest_alu ( "DEST_ALU", REG_SIZE );
 // PIPELINE COMPONENTS
 Counter pc_re ( "PC_READ_EXECUTE", ADDR_SIZE );
 Clearable ir_re ( "IR_READ_EXECUTE", REG_SIZE );
@@ -183,8 +187,8 @@ StorageObject exec_const_4 ( "4", REG_SIZE, 4 );
 Clearable data_m ( "DATA_MEMORY", DATA_SIZE );
 // Clearable  out_m ( "OUT_MEMORY", REG_SIZE );
 // BUSES
-Bus addrbus_m ( "ADDRBUS_MEMORY", REG_SIZE );  // TODO CONFLICTING SIZE!
-Bus dbus_m ( "DATABUS_MEMORY", REG_SIZE );  // TODO CONFLICTING SIZE!
+Bus addrbus_m ( "ADDRBUS_MEMORY", REG_SIZE ); // TODO CONFLICTING SIZE!
+Bus dbus_m ( "DATABUS_MEMORY", REG_SIZE );    // TODO CONFLICTING SIZE!
 // AUX COMPONENTS
 // PIPELINE COMPONENTS
 

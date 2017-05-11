@@ -9,14 +9,29 @@
 void issue ( );
 void issue1 ( );
 void issue2 ( );
-void detect_branch ( );
+void detect ( );
 
 /**
- * detect_branch
+ * issue
  *
  *
  */
-void detect_branch ( )
+void issue ( )
+{
+    detect ( );
+
+    char buff [ 32 ];
+    sprintf ( buff, "|pc=%02lx ", pc_i.value ( ) );
+    cout << buff;
+    read ( );
+} // fetch
+
+/**
+ * detect
+ *
+ *
+ */
+void detect ( )
 {
     long opc = ir_i ( REG_SIZE - 1, REG_SIZE - 6 );
 
@@ -50,61 +65,44 @@ void detect_branch ( )
             break;
         default: // other formats
             // we don't care
-    }
-}
+    } // switch
+}     // detect
 
 /**
- * issue
- *
- *
- * $(javaparem)
- * @throws
- */
-void issue ( )
-{
-    issue1 ( );
-    issue2 ( );
-
-    char buff [ 32 ];
-    sprintf ( buff, "|pc=%02lx ", pc_i.value ( ) );
-    cout << buff;
-    read ( );
-} // fetch
-
-/**
- * issue1
- *
+ * set_npc
+ * calculate possible new pc
  *
  */
-void issue1 ( )
+void set_npc_branch ( )
 {
-    // move pc and ir
+    /**
+     *  C equivalent
+     *  long disp = ir_fi ( ADDR_SIZE - 12, 0 ); // get disp field
+     *  npx_ir = ( disp << 11 );
+     *
+     */
+
+    mask_alu.OP1 ( ).pullFrom ( ir_ir );
+    mask_alu.OP2 ( ).pullFrom ( dispmask_i );
+    aux_i.latchFrom ( mask_alu.OUT ( ) );
+    mask_alu.perform ( BusALU::op_and );
+    Clock::tick ( ); // found the required bits
+
+    // move pc
     pcbus_i.IN ( ).pullFrom ( pc_fi );
-    pc_i.latchFrom ( pcbus_i.OUT ( ) );
-
-    irbus_i.IN ( ).pullFrom ( ir_fi );
-    ir_i.latchFrom ( irbus_i.OUT ( ) );
-
-    Clock::tick ( );
-} // issue1
-
-/**
- * issue2
- *
- *
- */
-void issue2 ( )
-{
-    detect_branch ( );
-
-    // move pc to pipe
-    pcbus_i.IN ( ).pullFrom ( pc_i );
     pc_ir.latchFrom ( pcbus_i.OUT ( ) );
 
-    irbus_i.IN ( ).pullFrom ( ir_i );
+    //  move ir
+    irbus_i.IN ( ).pullFrom ( ir_fi );
     ir_ir.latchFrom ( irbus_i.OUT ( ) );
 
+    // prep npc for calculation in read
+    rightShift_alu.OP1 ( ).pullFrom ( aux_i );
+    rightShift_alu.OP2 ( ).pullFrom ( shift11 );
+    npc_ir.latchFrom ( rightShift_alu.OUT ( ) );
+
     Clock::tick ( );
-} // issue2
+
+} // set_npc_branch
 
 // $(filename) end

@@ -17,13 +17,259 @@ void o_imm ( );
 void o_reg ( );
 
 /**
+ * read
+ * read stage of pipeline. Moves required values into pipeline registers
+ * unused pipeline registers are not cleared, and hold unknown values
+ */
+void read ( )
+{
+    // move ir
+    irbus_r.IN ( ).pullFrom ( ir_ir );
+    ir_re.latchFrom ( irbus_r.OUT ( ) );
+
+    // move pc
+    pcbus_r.IN ( ).pullFrom ( pc_ir );
+    pc_re.latchFrom ( pcbus_r.OUT ( ) );
+    long opc = ir_re ( REG_SIZE - 1, REG_SIZE - 6 );
+
+    // npc >> 11 (sign extend);
+    leftShift_alu.OP1 ( ).pullFrom ( npc_ir );
+    leftShift_alu.OP2 ( ).pullFrom ( shift11 );
+    aux_r.latchFrom ( leftShift_alu );
+
+    Clock::tick ( );
+
+    char buff [32];
+    sprintf ( buff, "|pc=%02lx opc=%03lx ", pc_ir.value ( ), opc );
+    cout << buff;
+
+    switch ( opc ) {
+        case OPC_NOOP:
+            sprintf ( buff, "ir=NOOP " );
+            cout << buff;
+            noop ( );
+            break;
+        case OPC_LDA:
+        case OPC_LDAH:
+        case OPC_LDU:
+        case OPC_LDL:
+        case OPC_STL:
+            md ( );
+            break;
+        case OPC_BEQ:
+        case OPC_BGE:
+        case OPC_BGT:
+        case OPC_BLBC:
+        case OPC_BLBS:
+        case OPC_BLE:
+        case OPC_BLT:
+        case OPC_BNE:
+        case OPC_BR:
+        case OPC_BSR: // B
+            sprintf ( buff, "ir=BRANCH " );
+            cout << buff;
+            b ( );
+            break;
+        case OPC_JMP:
+        case OPC_JSR:
+        case OPC_RET:
+        case OPC_JSRC:
+            mf ( );
+            break;
+        case OPC_RPCC: // pcc
+            pcc ( );
+            break;
+        case OPC_ADDL:
+        case OPC_S4ADDL:
+        case OPC_S8ADDL:
+        case OPC_SUBL:
+        case OPC_S4SUBL:
+        case OPC_S8SUBL:
+        case OPC_AND:
+        case OPC_BIC:
+        case OPC_BIS:
+        case OPC_EQV:
+        case OPC_ORNOT:
+        case OPC_XOR:
+        case OPC_CMOVEQ:
+        case OPC_CMOVGE:
+        case OPC_CMOVGT:
+        case OPC_CMOVBLC:
+        case OPC_CMOVBLS:
+        case OPC_CMOVLE:
+        case OPC_CMOVLT:
+        case OPC_CMOVNE:
+        case OPC_SLL:
+        case OPC_SRL:
+            o ( );
+            break;
+        default: // unknown
+            done = true;
+
+    } // switch
+
+    Clock::tick ( );
+
+    execute ( );
+} // read
+
+/**
+ * noop
+ *
+ *
+ */
+void noop ( )
+{
+    // TODO
+}
+/**
+ * md
+ * handles memory displacement instruction format, moves ra and rb into
+ * pipeline registers
+ *
+ */
+void md ( )
+{
+    long disp = ir_re ( REG_SIZE - 17, 0 );
+
+    // move pc
+    pcbus_r.IN ( ).pullFrom ( pc_ir );
+    pc_re.latchFrom ( pcbus_r.OUT ( ) );
+
+    // move ra
+    move_ra ( );
+
+    // move rb
+    move_rb ( );
+} // md
+
+/**
+ * b
+ * handles branch instruction format, moves ra and rb into pipeline registers
+ *
+ */
+void b ( )
+{
+    // move pc
+    pcbus_r.IN ( ).pullFrom ( pc_r );
+    pc_re.latchFrom ( pcbus_r.OUT ( ) );
+
+    // move ra
+    move_ra ( );
+
+    // calculate if we are taking branch
+
+} // b
+
+/**
+ * mf
+ * handles memory instruction format, moves ra and rb into pipeline registers
+ *
+ */
+void mf ( )
+{
+    pcbus_r.IN ( ).pullFrom ( pc_r );
+    pc_re.latchFrom ( pcbus_r.OUT ( ) );
+
+    // move ra
+    move_ra ( );
+
+    // move rb
+    move_rb ( );
+} // mf
+
+/**
+ * pcc
+ * special mf instruction format for pcc
+ *
+ */
+void pcc ( )
+{
+    long rb	  = ir_re ( REG_SIZE - 12, REG_SIZE - 16 );
+    long disp = ir_re ( REG_SIZE - 17, 0 );
+
+    // move pc
+    pcbus_r.IN ( ).pullFrom ( pc_r );
+    pc_re.latchFrom ( pcbus_r.OUT ( ) );
+
+    // move ra
+    move_ra ( );
+
+    // check rb field
+    switch ( rb ) {
+        case 31:
+            break;
+        default:
+            done = true;
+    }
+
+    // check disp field
+    switch ( disp ) {
+        case 49152:
+            break;
+        default:
+            done = true;
+    }
+} // pcc
+
+/**
+ * o
+ * handles operate instruction format
+ *
+ */
+void o ( )
+{
+    long type = ir_re ( REG_SIZE - 20 );
+
+    // move pc
+    pcbus_r.IN ( ).pullFrom ( pc_r );
+    pc_re.latchFrom ( pcbus_r.OUT ( ) );
+
+    // move ra
+    move_ra ( );
+
+    // move rc
+    move_rc ( );
+
+    switch ( type ) {
+        case 0: // reg
+            o_reg ( );
+            break;
+        case 1: // literal
+            o_imm ( );
+            break;
+    }
+} // o
+
+/**
+ * o_imm
+ *
+ *
+ */
+void o_imm ( )
+{
+    // DO NOTHING
+}
+
+/**
+ * o_reg
+ * pass register to rb;
+ *
+ */
+void o_reg ( )
+{
+    // move_rb
+    move_rb ( );
+}
+
+/**
  * move_ra
  * support function to move a PVR to RA
  *
  */
 void move_ra ( )
 {
-    long ra = ir_r ( REG_SIZE - 7, REG_SIZE - 11 );
+    long ra = ir_re ( REG_SIZE - 7, REG_SIZE - 11 );
 
     // move ra
     ra_re.latchFrom ( rabus_r.OUT ( ) );
@@ -128,7 +374,7 @@ void move_ra ( )
         default: // unknown
             done = true;
     } // switch
-} // move_ra
+}     // move_ra
 
 /**
  * move_rb
@@ -137,8 +383,7 @@ void move_ra ( )
  */
 void move_rb ( )
 {
-    long rb = ir_r ( REG_SIZE - 12, REG_SIZE - 16 );
-
+    long rb = ir_re ( REG_SIZE - 12, REG_SIZE - 16 );
 
     // move rb
     rb_re.latchFrom ( rbbus_r.OUT ( ) );
@@ -253,8 +498,7 @@ void move_rb ( )
  */
 void move_rc ( )
 {
-    long rc = ir_r ( REG_SIZE - 28, 0 );
-
+    long rc = ir_re ( REG_SIZE - 28, 0 );
 
     // move rc
     rc_re.latchFrom ( rcbus_r.OUT ( ) );
@@ -359,261 +603,6 @@ void move_rc ( )
         default: // unknown
             done = true;
     } // switch
-} // move_rc
+}     // move_rc
 
-
-/**
- * noop
- *
- *
- */
-void noop ( )
-{
-
-    Clock::tick ( );
-}
-/**
- * md
- * handles memory displacement instruction format, moves ra and rb into
- * pipeline registers
- * TICK TERMINATING
- */
-void md ( )
-{
-    long disp = ir_r ( REG_SIZE - 17, 0 );
-
-
-    // move pc
-    pcbus_r.IN ( ).pullFrom ( pc_r );
-    pc_re.latchFrom ( pcbus_r.OUT ( ) );
-
-    // move ra
-    move_ra ( );
-
-    // move rb
-    move_rb ( );
-
-    Clock::tick ( );
-} // md
-
-/**
- * b
- * handles branch instruction format, moves ra and rb into pipeline registers
- * TICK TERMINATING
- */
-void b ( )
-{
-    // move pc
-    pcbus_r.IN ( ).pullFrom ( pc_r );
-    pc_re.latchFrom ( pcbus_r.OUT ( ) );
-
-    // move ra
-    move_ra ( );
-
-    Clock::tick ( );
-
-} // b
-
-/**
- * mf
- * handles memory instruction format, moves ra and rb into pipeline registers
- * TICK TERMINATING
- */
-void mf ( )
-{
-    pcbus_r.IN ( ).pullFrom ( pc_r );
-    pc_re.latchFrom ( pcbus_r.OUT ( ) );
-
-    // move ra
-    move_ra ( );
-
-    // move rb
-    move_rb ( );
-
-    Clock::tick ( );
-} // mf
-
-/**
- * pcc
- * special mf instruction format for pcc
- * TICK TERMINATING
- */
-void pcc ( )
-{
-    long rb	  = ir_r ( REG_SIZE - 12, REG_SIZE - 16 );
-    long disp = ir_r ( REG_SIZE - 17, 0 );
-
-
-    // move pc
-    pcbus_r.IN ( ).pullFrom ( pc_r );
-    pc_re.latchFrom ( pcbus_r.OUT ( ) );
-
-    // move ra
-    move_ra ( );
-
-    // check rb field
-    switch ( rb ) {
-        case 31:
-            break;
-        default:
-            done = true;
-    }
-
-    // check disp field
-    switch ( disp ) {
-        case 49152:
-            break;
-        default:
-            done = true;
-    }
-
-    Clock::tick ( );
-
-} // pcc
-
-/**
- * o_imm
- *
- *
- */
-void o_imm ( )
-{
-    // DO NOTHING
-}
-
-/**
- * o_reg
- * pass register to rb;
- *
- */
-void o_reg ( )
-{
-    // move_rb
-    move_rb ( );
-}
-
-/**
- * o
- * handles operate instr_cache format
- * TICK TERMINATING
- */
-void o ( )
-{
-    long type = ir_r ( REG_SIZE - 20 );
-
-
-    // move pc
-    pcbus_r.IN ( ).pullFrom ( pc_r );
-    pc_re.latchFrom ( pcbus_r.OUT ( ) );
-
-    // move ra
-    move_ra ( );
-
-    // move rc
-    move_rc ( );
-
-    switch ( type ) {
-        case 0: // reg
-            o_reg ( );
-            break;
-        case 1: // literal
-            o_imm ( );
-            break;
-    }
-
-    Clock::tick ( );
-
-} // o
-
-/**
- * read
- * read stage of pipeline. Moves required values into pipeline registers
- * unused pipeline registers are not cleared, and hold unknown values
- */
-void read ( )
-{
-    // move ir
-    irbus_r.IN ( ).pullFrom ( ir_ir );
-    ir_r.latchFrom ( irbus_r.OUT ( ) );
-
-    // move pc
-    pcbus_r.IN ( ).pullFrom ( pc_ir );
-    pc_r.latchFrom ( pcbus_r.OUT ( ) );
-
-    Clock::tick ( );
-    execute1 ( );
-    long opc = ir_r ( REG_SIZE - 1, REG_SIZE - 6 );
-
-    char buff [32];
-    sprintf ( buff, "|pc=%02lx opc=%03lx ", pc_r.value ( ), opc );
-    cout << buff;
-
-    switch ( opc ) {
-        case OPC_NOOP:
-            sprintf ( buff, "ir=NOOP " );
-            cout << buff;
-            noop ( );
-            break;
-        case OPC_LDA:
-        case OPC_LDAH:
-        case OPC_LDU:
-        case OPC_LDL:
-        case OPC_STL:
-            md ( );
-            break;
-        case OPC_BEQ:
-        case OPC_BGE:
-        case OPC_BGT:
-        case OPC_BLBC:
-        case OPC_BLBS:
-        case OPC_BLE:
-        case OPC_BLT:
-        case OPC_BNE:
-        case OPC_BR:
-        case OPC_BSR: // B
-            sprintf ( buff, "IR BRANCH " );
-            cout << buff;
-            b ( );
-            break;
-        case OPC_JMP:
-        case OPC_JSR:
-        case OPC_RET:
-        case OPC_JSRC:
-            mf ( );
-            break;
-        case OPC_RPCC: // pcc
-            pcc ( );
-            break;
-        case OPC_ADDL:
-        case OPC_S4ADDL:
-        case OPC_S8ADDL:
-        case OPC_SUBL:
-        case OPC_S4SUBL:
-        case OPC_S8SUBL:
-        case OPC_AND:
-        case OPC_BIC:
-        case OPC_BIS:
-        case OPC_EQV:
-        case OPC_ORNOT:
-        case OPC_XOR:
-        case OPC_CMOVEQ:
-        case OPC_CMOVGE:
-        case OPC_CMOVGT:
-        case OPC_CMOVBLC:
-        case OPC_CMOVBLS:
-        case OPC_CMOVLE:
-        case OPC_CMOVLT:
-        case OPC_CMOVNE:
-        case OPC_SLL:
-        case OPC_SRL:
-            o ( );
-            break;
-        default: // unknown
-            done = true;
-
-    } // switch
-
-    execute ( );
-} // read
-
-// $(filename) end
+// read.cpp end

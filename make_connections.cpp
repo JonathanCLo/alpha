@@ -44,7 +44,7 @@ void make_connections_fetch ( )
     instr_cache.MAR ( ).connectsTo ( pcbus_f.OUT ( ) );
 
     ir_fi.connectsTo ( instr_cache.READ ( ) );
-}
+} // make_connections_fetch
 
 /**
  * make_connections_issue
@@ -54,18 +54,18 @@ void make_connections_fetch ( )
 void make_connections_issue ( )
 {
     pc_fi.connectsTo ( pcbus_i.IN ( ) );
-    pc_i.connectsTo ( pcbus_i.OUT ( ) );
-    pc_i.connectsTo ( pcbus_i.IN ( ) );
-    pc_i.connectsTo ( pc_alu.OP1 ( ) );
-    pc_i.connectsTo ( pc_alu.OUT ( ) );
     pc_ir.connectsTo ( pcbus_i.OUT ( ) );
 
-    aux_i.connectsTo ( pc_alu.OP2 ( ) );
-
     ir_fi.connectsTo ( irbus_i.IN ( ) );
-    ir_i.connectsTo ( irbus_i.OUT ( ) );
-    ir_i.connectsTo ( irbus_i.IN ( ) );
     ir_ir.connectsTo ( irbus_i.OUT ( ) );
+
+    ir_ir.connectsTo ( mask_alu.OP1 ( ) );
+    dispmask_i.connectsTo ( mask_alu.OP2 ( ) );
+    aux_i.connectsTo ( mask_alu.OUT ( ) );
+
+    aux_i.connectsTo ( rightShift_alu.OP1 ( ) );
+    shift11.connectsTo ( rightShift_alu.OP2 ( ) );
+    npc_ir.connectsTo ( rightShift_alu.OUT ( ) );
 
 } // make_connections_issue
 
@@ -77,14 +77,14 @@ void make_connections_issue ( )
 void make_connections_read ( )
 {
     pc_ir.connectsTo ( pcbus_r.IN ( ) );
-    pc_r.connectsTo ( pcbus_r.OUT ( ) );
-    pc_r.connectsTo ( pcbus_r.IN ( ) );
     pc_re.connectsTo ( pcbus_r.OUT ( ) );
 
     ir_ir.connectsTo ( irbus_r.IN ( ) );
-    ir_r.connectsTo ( irbus_r.OUT ( ) );
-    ir_r.connectsTo ( irbus_r.IN ( ) );
     ir_re.connectsTo ( irbus_r.OUT ( ) );
+
+    npc_ir.connectsTo ( leftShift_alu.OP1 ( ) );
+    shift7.connectsTo ( leftShift_alu.OP2 ( ) );
+    aux_r.connectsTo ( leftShift_alu.OUT ( ) );
 
     r0.connectsTo ( rabus_r.IN ( ) );
     r1.connectsTo ( rabus_r.IN ( ) );
@@ -387,6 +387,6 @@ void make_connections_auxillary ( )
     ir_re.connectsTo ( noopbus.OUT ( ) );
     ir_e.connectsTo ( noopbus.OUT ( ) );
     ir_em.connectsTo ( noopbus.OUT ( ) );
-}
+} // make_connections_auxillary
 
 // $(filename) end
