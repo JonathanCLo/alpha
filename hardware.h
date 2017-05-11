@@ -74,10 +74,10 @@ extern unsigned long OPC_SRL;
 /**
  * SPECIAL RESERVED REGISTERS
  */
-extern Constant noop;
-extern Constant mult4;
-extern Constant shift11;
-extern Constant shift7;
+extern Clearable noop;
+extern Clearable mult4;
+extern Clearable shift11;
+extern Clearable shift7;
 
 /**
  * SPECIAL RESERVED BUSES FOR SRR
