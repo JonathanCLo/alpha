@@ -67,7 +67,7 @@ enum OPC : long {
     OPC_CMOVNE	= 17,
     OPC_SLL		= 17,
     OPC_SRL		= 17
-}
+};
 /**
  * SPECIAL RESERVED REGISTERS
  */

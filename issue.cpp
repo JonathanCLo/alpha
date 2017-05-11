@@ -33,7 +33,6 @@ void issue ( )
 void detect ( )
 {
     long opc = ir_i ( REG_SIZE - 1, REG_SIZE - 6 );
-
     char buff [ 32 ];
 
     switch ( opc ) {
@@ -65,6 +64,7 @@ void detect ( )
             break;
         default: // other formats
             // we don't care
+            break;
     } // switch
 }     // detect
 
