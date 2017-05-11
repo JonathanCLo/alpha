@@ -104,6 +104,7 @@ extern Clearable ir_ir;    // ir issue read
 extern Clearable ir_re;    // ir read execute
 extern Counter aux_i;      // aux issue
 extern Counter aux_r;      // aux read
+extern Clearable dispmask_i;
 extern Clearable lock_ir;  // lock issue read
 extern Clearable lock_re;  // lock read execute
 extern Clearable disp_r;   // disp read

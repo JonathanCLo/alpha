@@ -78,8 +78,8 @@ unsigned long OPC_SRL	  = 17;
 Counter pcc ( "PCC", REG_SIZE );
 Clearable noop ( "NOOP", REG_SIZE, 0 );
 Clearable mult4 ( "MULT4", REG_SIZE, 2 );
-Clearable shift11 ( "DISP11", REG_SIZE, 11 );
-Clearable shift7 ( "DISP11", REG_SIZE, 7 );
+Clearable shift11 ( "SHIFT11", REG_SIZE, 11 );
+Clearable shift7 ( "SHIFT7", REG_SIZE, 7 );
 /**
  * SPECIAL RESERVED BUSES FOR SRR
  */
