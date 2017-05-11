@@ -20,57 +20,6 @@ const unsigned int REG_SIZE ( 32 );     // REGISTER SIZE
 const unsigned int DATA_SIZE ( 16 );    // DATA SIZE
 
 /**
- * INSTRUCTION OPCODE CONSTANTS;
- */
-enum OPC : long {
-    OPC_NOOP	= 0, // MD instructions
-    OPC_LDA		= 8,
-    OPC_LDAH	= 9,
-    OPC_LDBU	= 10,
-    OPC_LDL		= 40,
-    OPC_LDWU	= 12,
-    OPC_STL		= 44,
-    OPC_STW		= 13,
-    OPC_BEQ		= 57, // branch
-    OPC_BGE		= 62,
-    OPC_BGT		= 63,
-    OPC_BLBC	= 56,
-    OPC_BLBS	= 60,
-    OPC_BLE		= 59,
-    OPC_BLT		= 58,
-    OPC_BNE		= 61,
-    OPC_BR		= 48,
-    OPC_BSR		= 52,
-    OPC_JMP		= 26, // mf
-    OPC_JSR		= 26,
-    OPC_RET		= 26,
-    OPC_JSRC	= 26,
-    OPC_RPCC	= 24,
-    OPC_ADDL	= 16, // op
-    OPC_S4ADDL	= 16,
-    OPC_S8ADDL	= 16,
-    OPC_SUBL	= 16,
-    OPC_S4SUBL	= 16,
-    OPC_S8SUBL	= 16,
-    OPC_AND		= 17,
-    OPC_BIC		= 17,
-    OPC_BIS		= 17,
-    OPC_EQV		= 17,
-    OPC_ORNOT	= 17,
-    OPC_XOR		= 17,
-    OPC_CMOVEQ	= 17,
-    OPC_CMOVGE	= 17,
-    OPC_CMOVGT	= 17,
-    OPC_CMOVLBC = 17,
-    OPC_CMOVLBS = 17,
-    OPC_CMOVLE	= 17,
-    OPC_CMOVLT	= 17,
-    OPC_CMOVNE	= 17,
-    OPC_SLL		= 17,
-    OPC_SRL		= 17
-}
-
-/**
  * SPECIAL RESERVED REGISTERS
  */
 Counter pcc ( "PCC", REG_SIZE );
