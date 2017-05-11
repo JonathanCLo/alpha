@@ -7,9 +7,8 @@
 #include "includes.h"
 
 void issue ( );
-void issue1 ( );
-void issue2 ( );
 void detect ( );
+void set_npc_branch ( );
 
 /**
  * issue
@@ -54,6 +53,7 @@ void detect ( )
         case OPC_BSR: // branches
             sprintf ( buff, "IR=BRANCH " );
             cout << buff;
+            set_npc_branch ( );
             break;
         case OPC_JMP:
         case OPC_JSR:

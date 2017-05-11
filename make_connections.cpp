@@ -86,6 +86,11 @@ void make_connections_read ( )
     shift7.connectsTo ( leftShift_alu.OP2 ( ) );
     aux_r.connectsTo ( leftShift_alu.OUT ( ) );
 
+    pc_ir.connectsTo ( dest_alu.OP1 ( ) );
+    aux_r.connectsTo ( dest_alu.OP2 ( ) );
+    pc_f.connectsTo ( dest_alu.OUT ( ) );
+
+    pc_ir.connectsTo ( rabus_r.IN ( ) );
     r0.connectsTo ( rabus_r.IN ( ) );
     r1.connectsTo ( rabus_r.IN ( ) );
     r2.connectsTo ( rabus_r.IN ( ) );
@@ -377,16 +382,18 @@ void make_connections_memory ( )
 void make_connections_auxillary ( )
 {
     // noop register holds 0
-    noop.connectsTo ( noopbus.IN ( ) );
+    noop.connectsTo ( irfi_noop_bus.IN ( ) );
+    noop.connectsTo ( irir_noop_bus.IN ( ) );
+    noop.connectsTo ( irre_noop_bus.IN ( ) );
+    noop.connectsTo ( ire_noop_bus.IN ( ) );
+    noop.connectsTo ( irem_noop_bus.IN ( ) );
 
     // all ir connected to it.
-    ir_fi.connectsTo ( noopbus.OUT ( ) );
-    ir_i.connectsTo ( noopbus.OUT ( ) );
-    ir_ir.connectsTo ( noopbus.OUT ( ) );
-    ir_r.connectsTo ( noopbus.OUT ( ) );
-    ir_re.connectsTo ( noopbus.OUT ( ) );
-    ir_e.connectsTo ( noopbus.OUT ( ) );
-    ir_em.connectsTo ( noopbus.OUT ( ) );
+    ir_fi.connectsTo ( irfi_noop_bus.OUT ( ) );
+    ir_ir.connectsTo ( irir_noop_bus.OUT ( ) );
+    ir_re.connectsTo ( irre_noop_bus.OUT ( ) );
+    ir_e.connectsTo ( ire_noop_bus.OUT ( ) );
+    ir_em.connectsTo ( irem_noop_bus.OUT ( ) );
 } // make_connections_auxillary
 
 // $(filename) end

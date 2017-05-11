@@ -82,7 +82,11 @@ extern Constant shift7;
 /**
  * SPECIAL RESERVED BUSES FOR SRR
  */
-extern Bus noopbus;
+extern Bus irfi_noop_bus;
+extern Bus irir_noop_bus;
+extern Bus irre_noop_bus;
+extern Bus ire_noop_bus;
+extern Bus irem_noop_bus;
 
 /**
  * PIPELINE REGISTERS

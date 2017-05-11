@@ -83,7 +83,11 @@ Constant shift7 ( "DISP11", REG_SIZE, long value = 7 );
 /**
  * SPECIAL RESERVED BUSES FOR SRR
  */
-Bus noopbus ( "NOOPBUS", REG_SIZE );
+Bus irfi_noop_bus ( "IRFI_NOOP_BUS", REG_SIZE );
+Bus irir_noop_bus ( "IRIR_NOOP_BUS", REG_SIZE );
+Bus irre_noop_bus ( "IRRE_NOOP_BUS", REG_SIZE );
+Bus ire_noop_bus ( "IRE_NOOP_BUS", REG_SIZE );
+Bus irem_noop_bus ( "IREM_NOOP_BUS", REG_SIZE );
 
 
 /**
