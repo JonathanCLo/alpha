@@ -74,10 +74,10 @@ extern const unsigned long OPC_SRL;
 /**
  * SPECIAL RESERVED REGISTERS
  */
-extern Constant noop;
-extern Constant mult4;
-extern Constant shift11;
-extern Constant shift7;
+extern Clearable noop;
+extern Clearable mult4;
+extern Clearable shift11;
+extern Clearable shift7;
 
 /**
  * SPECIAL RESERVED BUSES FOR SRR
@@ -104,6 +104,7 @@ extern Clearable ir_ir;    // ir issue read
 extern Clearable ir_re;    // ir read execute
 extern Counter aux_i;      // aux issue
 extern Counter aux_r;      // aux read
+extern Clearable dispmask_i;
 extern Clearable lock_ir;  // lock issue read
 extern Clearable lock_re;  // lock read execute
 extern Clearable disp_r;   // disp read

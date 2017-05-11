@@ -21,6 +21,7 @@
 #include <StorageObject.h>
 #include <Clearable.h>
 #include <Counter.h>
+#include <Constant.h>
 #include <Memory.h>
 #include <BusALU.h>
 

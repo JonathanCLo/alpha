@@ -24,28 +24,28 @@ const unsigned int DATA_SIZE ( 16 );    // DATA SIZE
  */
 const unsigned long OPC_NOOP	= 0;
 // MD instructions
-const unsigned long OPC_LDA		= 8;
+const unsigned long OPC_LDA 	= 8;
 const unsigned long OPC_LDAH	= 9;
 const unsigned long OPC_LDBU	= 10;
-const unsigned long OPC_LDL		= 40;
+const unsigned long OPC_LDL 	= 40;
 const unsigned long OPC_LDWU	= 12;
-const unsigned long OPC_STL		= 44;
-const unsigned long OPC_STW		= 13;
+const unsigned long OPC_STL 	= 44;
+const unsigned long OPC_STW 	= 13;
 // branch
-const unsigned long OPC_BEQ		= 57;
-const unsigned long OPC_BGE		= 62;
-const unsigned long OPC_BGT		= 63;
+const unsigned long OPC_BEQ 	= 57;
+const unsigned long OPC_BGE 	= 62;
+const unsigned long OPC_BGT 	= 63;
 const unsigned long OPC_BLBC	= 56;
 const unsigned long OPC_BLBS	= 60;
-const unsigned long OPC_BLE		= 59;
-const unsigned long OPC_BLT		= 58;
-const unsigned long OPC_BNE		= 61;
-const unsigned long OPC_BR		= 48;
-const unsigned long OPC_BSR		= 52;
+const unsigned long OPC_BLE 	= 59;
+const unsigned long OPC_BLT 	= 58;
+const unsigned long OPC_BNE 	= 61;
+const unsigned long OPC_BR  	= 48;
+const unsigned long OPC_BSR 	= 52;
 // mf
-const unsigned long OPC_JMP		= 26;
-const unsigned long OPC_JSR		= 26;
-const unsigned long OPC_RET		= 26;
+const unsigned long OPC_JMP 	= 26;
+const unsigned long OPC_JSR 	= 26;
+const unsigned long OPC_RET 	= 26;
 const unsigned long OPC_JSRC	= 26;
 const unsigned long OPC_RPCC	= 24;
 // operate
@@ -55,12 +55,12 @@ const unsigned long OPC_S8ADDL	= 16;
 const unsigned long OPC_SUBL	= 16;
 const unsigned long OPC_S4SUBL	= 16;
 const unsigned long OPC_S8SUBL	= 16;
-const unsigned long OPC_AND		= 17;
-const unsigned long OPC_BIC		= 17;
-const unsigned long OPC_BIS		= 17;
-const unsigned long OPC_EQV		= 17;
+const unsigned long OPC_AND 	= 17;
+const unsigned long OPC_BIC 	= 17;
+const unsigned long OPC_BIS 	= 17;
+const unsigned long OPC_EQV 	= 17;
 const unsigned long OPC_ORNOT	= 17;
-const unsigned long OPC_XOR		= 17;
+const unsigned long OPC_XOR 	= 17;
 const unsigned long OPC_CMOVEQ	= 17;
 const unsigned long OPC_CMOVGE	= 17;
 const unsigned long OPC_CMOVGT	= 17;
@@ -69,17 +69,17 @@ const unsigned long OPC_CMOVLBS = 17;
 const unsigned long OPC_CMOVLE	= 17;
 const unsigned long OPC_CMOVLT	= 17;
 const unsigned long OPC_CMOVNE	= 17;
-const unsigned long OPC_SLL		= 17;
-const unsigned long OPC_SRL		= 17;
+const unsigned long OPC_SLL	= 17;
+const unsigned long OPC_SRL	= 17;
 
 /**
  * SPECIAL RESERVED REGISTERS
  */
 Counter pcc ( "PCC", REG_SIZE );
-Constant noop ( "NOOP", REG_SIZE, long value = 0 );
-Constant mult4 ( "MULT4", REG_SIZE, long value = 2 );
-Constant shift11 ( "DISP11", REG_SIZE, long value = 11 );
-Constant shift7 ( "DISP11", REG_SIZE, long value = 7 );
+Clearable noop ( "NOOP", REG_SIZE, 0 );
+Clearable mult4 ( "MULT4", REG_SIZE, 2 );
+Clearable shift11 ( "DISP11", REG_SIZE, 11 );
+Clearable shift7 ( "DISP11", REG_SIZE, 7 );
 /**
  * SPECIAL RESERVED BUSES FOR SRR
  */
@@ -107,7 +107,7 @@ Clearable ir_fi ( "IR_FETCH_ISSUE", REG_SIZE );
  */
 // REGISTERS
 Counter aux_i ( "AUX_ISSUE", ADDR_SIZE );
-Constant dispmask_i ( "DISP_MASK_ISSUE", REG_SIZE, long value = 0x1fffff );
+Clearable dispmask_i ( "DISP_MASK_ISSUE", REG_SIZE, 0x1fffff );
 // BUSES
 Bus pcbus_i ( "PCBUS_ISSUE", ADDR_SIZE );
 Bus irbus_i ( "IRBUS_ISSUE", REG_SIZE );
