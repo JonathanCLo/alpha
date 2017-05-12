@@ -10,7 +10,7 @@ long ra_value = 0;
 char buff [32];
 
 void read ( );
-void noop ( );
+void fnoop ( );
 void md ( );
 void b ( );
 void mf ( );
@@ -18,7 +18,14 @@ void pcc ( );
 void o ( );
 void o_imm ( );
 void o_reg ( );
-
+void move_ra ();
+void move_rb ();
+void move_rc ();
+void use_pc ();
+void pass_rc ();
+void use_npc();
+void pass_ir();
+void purge_ir();
 /**
  * read
  * read stage of pipeline. Moves required values into pipeline registers
@@ -38,7 +45,7 @@ void read ( )
     // aux = npc >> 7
     leftShift_alu.OP1 ( ).pullFrom ( npc_ir );
     leftShift_alu.OP2 ( ).pullFrom ( shift7 );
-    aux_r.latchFrom ( leftShift_alu );
+    aux_r.latchFrom ( leftShift_alu.OUT() );
 
     Clock::tick ( );
     long opc = ir_re ( REG_SIZE - 1, REG_SIZE - 6 );
@@ -50,11 +57,11 @@ void read ( )
         case OPC_NOOP:
             sprintf ( buff, "ir=NOOP " );
             cout << buff;
-            noop ( );
+            fnoop ( );
             break;
         case OPC_LDA:
         case OPC_LDAH:
-        case OPC_LDU:
+        case OPC_LDWU:
         case OPC_LDL:
         case OPC_STL:
             md ( );
@@ -74,36 +81,36 @@ void read ( )
             b ( );
             break;
         case OPC_JMP:
-        case OPC_JSR:
-        case OPC_RET:
-        case OPC_JSRC:
+        //case OPC_JSR:
+        //case OPC_RET:
+        //case OPC_JSRC:
             mf ( );
             break;
         case OPC_RPCC: // pcc
             pcc ( );
             break;
         case OPC_ADDL:
-        case OPC_S4ADDL:
-        case OPC_S8ADDL:
-        case OPC_SUBL:
-        case OPC_S4SUBL:
-        case OPC_S8SUBL:
-        case OPC_AND:
-        case OPC_BIC:
-        case OPC_BIS:
-        case OPC_EQV:
-        case OPC_ORNOT:
-        case OPC_XOR:
-        case OPC_CMOVEQ:
-        case OPC_CMOVGE:
-        case OPC_CMOVGT:
-        case OPC_CMOVBLC:
-        case OPC_CMOVBLS:
-        case OPC_CMOVLE:
-        case OPC_CMOVLT:
-        case OPC_CMOVNE:
-        case OPC_SLL:
-        case OPC_SRL:
+        //case OPC_S4ADDL:
+        //case OPC_S8ADDL:
+        //case OPC_SUBL:
+        //case OPC_S4SUBL:
+        //case OPC_S8SUBL:
+        //case OPC_AND:
+        //case OPC_BIC:
+        //case OPC_BIS:
+        //case OPC_EQV:
+        //case OPC_ORNOT:
+        //case OPC_XOR:
+        //case OPC_CMOVEQ:
+        //case OPC_CMOVGE:
+        //case OPC_CMOVGT:
+        //case OPC_CMOVBLC:
+        //case OPC_CMOVBLS:
+        //case OPC_CMOVLE:
+        //case OPC_CMOVLT:
+        //case OPC_CMOVNE:
+        //case OPC_SLL:
+        //case OPC_SRL:
             o ( );
             break;
         default: // unknown
@@ -121,7 +128,7 @@ void read ( )
  *
  *
  */
-void noop ( )
+void fnoop ( )
 {
     // TODO
 }
@@ -242,6 +249,7 @@ void b ( )
             ra_re.latchFrom ( rabus_r.OUT ( ) );
             break;
         default: // dont care
+            break;
     } // switch
 
 
@@ -346,6 +354,7 @@ void o_reg ( )
     // move_rb
     move_rb ( );
 }
+
 
 /**
  * move_ra
@@ -731,7 +740,8 @@ void use_pc ( )
 {
 
     // move pc
-    pcbus_r.IN ( ).pullFrom ( npc_r );
+    // TODO made npc_r to pc_ir because npc_r wasn't defined
+    pcbus_r.IN ( ).pullFrom ( pc_ir );
     pc_re.latchFrom ( pcbus_r.OUT ( ) );
 }
 
@@ -753,7 +763,8 @@ void pass_ir ( )
  */
 void use_npc ( )
 {
-    long npc = pc.value ( ) + aux_r.value ( );
+    //TODO - verify this is right; pc wasn't defined so made it pc_ir
+    long npc = pc_ir.value ( ) + aux_r.value ( );
 
     sprintf ( buff, "npc=%02lx ", npc );
     cout << buff;

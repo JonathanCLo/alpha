@@ -272,7 +272,7 @@ void memory ( )
     char buff [ 32 ];
 
 
-    sprintf ( buff, "|pc=%02lx mf=%02lx out=%02lx addr=%04lx        |\n",
+    sprintf ( buff, "|pc=%02lx mf=undef out=%02lx addr=%04lx        |\n",
               pc_em.value ( ),
               out_em.value ( ),
               addr_em.value ( ) );

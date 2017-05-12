@@ -20,59 +20,6 @@ unsigned int REG_SIZE ( 32 );     // REGISTER SIZE
 unsigned int DATA_SIZE ( 16 );    // DATA SIZE
 
 /**
- * INSTRUCTION OPCODE CONSTANTS;
- */
-unsigned long OPC_NOOP	  = 0;
-// MD instructions
-unsigned long OPC_LDA	  = 8;
-unsigned long OPC_LDAH	  = 9;
-unsigned long OPC_LDBU	  = 10;
-unsigned long OPC_LDL	  = 40;
-unsigned long OPC_LDWU	  = 12;
-unsigned long OPC_STL	  = 44;
-unsigned long OPC_STW	  = 13;
-// branch
-unsigned long OPC_BEQ	  = 57;
-unsigned long OPC_BGE	  = 62;
-unsigned long OPC_BGT	  = 63;
-unsigned long OPC_BLBC	  = 56;
-unsigned long OPC_BLBS	  = 60;
-unsigned long OPC_BLE	  = 59;
-unsigned long OPC_BLT	  = 58;
-unsigned long OPC_BNE	  = 61;
-unsigned long OPC_BR	  = 48;
-unsigned long OPC_BSR	  = 52;
-// mf
-unsigned long OPC_JMP	  = 26;
-unsigned long OPC_JSR	  = 26;
-unsigned long OPC_RET	  = 26;
-unsigned long OPC_JSRC	  = 26;
-unsigned long OPC_RPCC	  = 24;
-// operate
-unsigned long OPC_ADDL	  = 16;
-unsigned long OPC_S4ADDL  = 16;
-unsigned long OPC_S8ADDL  = 16;
-unsigned long OPC_SUBL	  = 16;
-unsigned long OPC_S4SUBL  = 16;
-unsigned long OPC_S8SUBL  = 16;
-unsigned long OPC_AND	  = 17;
-unsigned long OPC_BIC	  = 17;
-unsigned long OPC_BIS	  = 17;
-unsigned long OPC_EQV	  = 17;
-unsigned long OPC_ORNOT	  = 17;
-unsigned long OPC_XOR	  = 17;
-unsigned long OPC_CMOVEQ  = 17;
-unsigned long OPC_CMOVGE  = 17;
-unsigned long OPC_CMOVGT  = 17;
-unsigned long OPC_CMOVLBC = 17;
-unsigned long OPC_CMOVLBS = 17;
-unsigned long OPC_CMOVLE  = 17;
-unsigned long OPC_CMOVLT  = 17;
-unsigned long OPC_CMOVNE  = 17;
-unsigned long OPC_SLL	  = 17;
-unsigned long OPC_SRL	  = 17;
-
-/**
  * SPECIAL RESERVED REGISTERS
  */
 Counter pcc ( "PCC", REG_SIZE );
@@ -113,11 +60,13 @@ Bus pcbus_i ( "PCBUS_ISSUE", ADDR_SIZE );
 Bus irbus_i ( "IRBUS_ISSUE", REG_SIZE );
 // AUX COMPONENTS
 BusALU mask_alu ( "MASK_ALU", REG_SIZE );
+BusALU leftShift_alu ("leftShift_ALU", REG_SIZE);
 BusALU rightShift_alu ( "rightShift_ALU", REG_SIZE );
 // PIPELINE COMPONENTS
 Counter pc_ir ( "PC_ISSUE_READ", ADDR_SIZE );
 Counter npc_ir ( "NPC_ISSUE_READ", ADDR_SIZE );
 Clearable ir_ir ( "IR_ISSUE_READ", REG_SIZE );
+Clearable ir_i ("IR Issue", REG_SIZE);
 Clearable lock_ir ( "LOCK_ISSUE_READ", REG_SIZE );
 
 /**

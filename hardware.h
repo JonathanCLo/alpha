@@ -21,56 +21,45 @@ extern unsigned int DATA_SIZE;   // DATA SIZE
 /**
  * INSTRUCTION OPCODE CONSTANTS
  */
-extern unsigned long OPC_NOOP;
-// MD instructions
-extern unsigned long OPC_LDA;
-extern unsigned long OPC_LDAH;
-extern unsigned long OPC_LDBU;
-extern unsigned long OPC_LDL;
-extern unsigned long OPC_LDWU;
-extern unsigned long OPC_STL;
-extern unsigned long OPC_STW;
-// branch
-extern unsigned long OPC_BEQ;
-extern unsigned long OPC_BGE;
-extern unsigned long OPC_BGT;
-extern unsigned long OPC_BLBC;
-extern unsigned long OPC_BLBS;
-extern unsigned long OPC_BLE;
-extern unsigned long OPC_BLT;
-extern unsigned long OPC_BNE;
-extern unsigned long OPC_BR;
-extern unsigned long OPC_BSR;
-// mf
-extern unsigned long OPC_JMP;
-extern unsigned long OPC_JSR;
-extern unsigned long OPC_RET;
-extern unsigned long OPC_JSRC;
-extern unsigned long OPC_RPCC;
-// operate
-extern unsigned long OPC_ADDL;
-extern unsigned long OPC_S4ADDL;
-extern unsigned long OPC_S8ADDL;
-extern unsigned long OPC_SUBL;
-extern unsigned long OPC_S4SUBL;
-extern unsigned long OPC_S8SUBL;
-extern unsigned long OPC_AND;
-extern unsigned long OPC_BIC;
-extern unsigned long OPC_BIS;
-extern unsigned long OPC_EQV;
-extern unsigned long OPC_ORNOT;
-extern unsigned long OPC_XOR;
-extern unsigned long OPC_CMOVEQ;
-extern unsigned long OPC_CMOVGE;
-extern unsigned long OPC_CMOVGT;
-extern unsigned long OPC_CMOVLBC;
-extern unsigned long OPC_CMOVLBS;
-extern unsigned long OPC_CMOVLE;
-extern unsigned long OPC_CMOVLT;
-extern unsigned long OPC_CMOVNE;
-extern unsigned long OPC_SLL;
-extern unsigned long OPC_SRL;
+enum INSTRS{
+    OPC_NOOP = 0, OPC_LDA = 8,
+    OPC_LDAH = 9, OPC_LDBU = 10,
+    OPC_LDL = 40, OPC_LDWU = 12,
+    OPC_STL = 44, OPC_STW = 13,
+    OPC_JMP = 26, OPC_RPCC = 24,
+    OPC_ADDL = 16, 
+    OPC_AND = 17,
+    OPC_BGE = 62, OPC_JSR = 260,
+    OPC_RET = 2600, OPC_JSRC=26000,
+    OPC_BGT = 63, OPC_BEQ = 57,
+    OPC_BLBS=60, OPC_BLE=58,
+    OPC_BLBC=56, OPC_BLT=580,
 
+    OPC_BNE=61, OPC_BR=48, 
+    OPC_BSR=52
+};
+//Note: because these instructions all share opcodes, decisions should not be made based on their values
+//eg. reading an opcode of 16 could mean many things. Once you decode the true function, store it separately
+#define OPC_ADDL 16
+#define OPC_S4ADDL 16
+#define OPC_S8ADDL 16
+#define OPC_S4SUBL 16
+#define OPC_S8SUBL 16
+#define OPC_BIC 17
+#define OPC_BIS 17
+#define OPC_EQV 17
+#define OPC_ORNOT 17
+#define OPC_XOR 17
+#define OPC_CMOVEQ 17
+#define OPC_CMOVGE 17
+#define OPC_CMOVGT 17
+#define OPC_CMOVBLC 17
+#define OPC_CMOVBLS 17
+#define OPC_CMOVLE 17
+#define OPC_CMOVLT 17
+#define OPC_CMOVNE 17
+#define OPC_SLL 17
+#define OPC_SRL 17
 /**
  * SPECIAL RESERVED REGISTERS
  */

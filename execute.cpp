@@ -392,14 +392,14 @@ void exec_move(int opcode, int func){
         case 48: //BR
         case 52: //BSR
             //PC <- PC + Temp
-            pc_alu.OP1().pullFrom(pc_re);
-            pc_alu.OP2().pullFrom(rc_re);
-            pc_alu.perform(BusALU::op_add);
+            //pc_alu.OP1().pullFrom(pc_re);
+            //pc_alu.OP2().pullFrom(rc_re);
+            //pc_alu.perform(BusALU::op_add);
             break;
         case 26: //JMP, JSR, RET, JSRC
-            pc_alu.OP1().pullFrom(rb_re);
-            pc_alu.OP2().pullFrom(rc_re);
-            pc_alu.perform(BusALU::op_add);
+            //pc_alu.OP1().pullFrom(rb_re);
+            //pc_alu.OP2().pullFrom(rc_re);
+            //pc_alu.perform(BusALU::op_add);
             break;
         case 16: //operations - Register
         case -16: //Operations - Immediate
@@ -416,6 +416,12 @@ void exec_move(int opcode, int func){
             break;
     }
 }
+
+void execute() {
+    execute1();
+    execute2();
+    memory();
+}
 /**
  * execute
  *  executes the instruction
@@ -431,7 +437,6 @@ void execute1 ( )
     int func = ir_re(11, 5); // note: won't always use this one
     exec_calc(opcode, func);
     Clock::tick ( );
-    memory1();
 
 } // execute1
 
@@ -446,6 +451,5 @@ void execute2 ( )
     int func = ir_re(11, 5); // note: won't always use this one
     exec_move(opcode, func);
     Clock::tick ( );
-    memory2 ( );
 } // execute2
 // $(filename) end

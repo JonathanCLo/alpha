@@ -392,8 +392,8 @@ void make_connections_auxillary ( )
     ir_fi.connectsTo ( irfi_noop_bus.OUT ( ) );
     ir_ir.connectsTo ( irir_noop_bus.OUT ( ) );
     ir_re.connectsTo ( irre_noop_bus.OUT ( ) );
-    ir_e.connectsTo ( ire_noop_bus.OUT ( ) );
-    ir_em.connectsTo ( irem_noop_bus.OUT ( ) );
+    //ir_e.connectsTo ( ire_noop_bus.OUT ( ) );
+    //ir_em.connectsTo ( irem_noop_bus.OUT ( ) );
 } // make_connections_auxillary
 
 // $(filename) end
