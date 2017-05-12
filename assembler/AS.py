@@ -152,16 +152,20 @@ def main():
                     continue
                 program.append(Instruction(line.strip()))
         with open(outarg, 'w') as outfile:
+            accumulator = 0
             for instr in program:
                 b = instr.toBinary()
                 if b != "":
                     print(b)
                     print(instr.raw_string)
+                    outfile.write(str(hex(accumulator))[2:] + " 4 ")
+                    accumulator = accumulator + 4
                     one, two, three, four = b[24:31], b[16:23], b[8:15], b[0:7]
                     outfile.write(str(hex(int(one, 2)))[2:] + " ")
                     outfile.write(str(hex(int(two, 2)))[2:] + " ")
                     outfile.write(str(hex(int(three,2)))[2:] + " ")
                     outfile.write(str(hex(int(four, 2)))[2:] + "\n")
+            outfile.write("0\n")
 
 if __name__ =="__main__":
     main()
