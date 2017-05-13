@@ -21,22 +21,22 @@ extern unsigned int DATA_SIZE;   // DATA SIZE
 /**
  * INSTRUCTION OPCODE CONSTANTS
  */
-enum INSTRS{
+enum INSTRS {
     OPC_NOOP = 0, OPC_LDA = 8,
     OPC_LDAH = 9, OPC_LDBU = 10,
-    OPC_LDL = 40, OPC_LDWU = 12,
-    OPC_STL = 44, OPC_STW = 13,
-    OPC_JMP = 26, OPC_RPCC = 24,
-    OPC_ADDL = 16, 
-    OPC_AND = 17,
-    OPC_BGE = 62, OPC_JSR = 260,
-    OPC_RET = 2600, OPC_JSRC=26000,
-    OPC_BGT = 63, OPC_BEQ = 57,
-    OPC_BLBS=60, OPC_BLE=58,
-    OPC_BLBC=56, OPC_BLT=59,
+    OPC_LDL	 = 40, OPC_LDWU = 12,
+    OPC_STL	 = 44, OPC_STW = 13,
+    OPC_JMP	 = 26, OPC_RPCC = 24,
+    OPC_ADDL = 16,
+    OPC_AND	 = 17,
+    OPC_BGE	 = 62, OPC_JSR = 260,
+    OPC_RET	 = 2600, OPC_JSRC = 26000,
+    OPC_BGT	 = 63, OPC_BEQ = 57,
+    OPC_BLBS = 60, OPC_BLE = 58,
+    OPC_BLBC = 56, OPC_BLT = 59,
 
-    OPC_BNE=61, OPC_BR=48, 
-    OPC_BSR=52
+    OPC_BNE	 = 61, OPC_BR = 48,
+    OPC_BSR	 = 52
 };
 //Note: because these instructions all share opcodes, decisions should not be made based on their values
 //eg. reading an opcode of 16 could mean many things. Once you decode the true function, store it separately
@@ -63,10 +63,10 @@ enum INSTRS{
 /**
  * SPECIAL RESERVED REGISTERS
  */
-extern Clearable noop;
-extern Clearable mult4;
-extern Clearable shift11;
-extern Clearable shift7;
+extern Clearable noop_g;
+extern Clearable not3_g;
+extern Clearable mult4_g;
+extern Clearable shift11_g;
 
 /**
  * SPECIAL RESERVED BUSES FOR SRR
@@ -168,7 +168,7 @@ extern Bus sbus5;
 
 //forwarding
 extern Bus forward_bus_nodelay; //RAW - two sequential
-extern Bus forward_bus_delay; //RAW - independent instruction in between
+extern Bus forward_bus_delay;   //RAW - independent instruction in between
 extern Clearable forward_delay_slot;
 
 

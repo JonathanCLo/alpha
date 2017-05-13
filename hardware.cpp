@@ -24,10 +24,9 @@ unsigned int DATA_SIZE ( 16 );    // DATA SIZE
  */
 Counter pcc ( "PCC", REG_SIZE );
 Clearable noop ( "NOOP", REG_SIZE, 0 );
-Clearable not3 ( "NOOP", REG_SIZE, 0 );
+Clearable not3 ( "NOT3", REG_SIZE, 0xFFFFFFFC ); // TODO does this work?
 Clearable mult4 ( "MULT4", REG_SIZE, 2 );
-Clearable shift11 ( "SHIFT11", REG_SIZE, 11 );
-Clearable shift7 ( "SHIFT7", REG_SIZE, 7 );
+Clearable shift10 ( "SHIFT10", REG_SIZE, 10 );
 /**
  * SPECIAL RESERVED BUSES FOR SRR
  */
@@ -55,20 +54,20 @@ Clearable ir_fi ( "IR_FETCH_ISSUE", REG_SIZE );
  */
 // REGISTERS
 Counter aux_i ( "AUX_ISSUE", ADDR_SIZE );
-Clearable dispmask_i ( "DISP_MASK_ISSUE", REG_SIZE, 0x1fffff );
+Clearable dispmask_i ( "DISP_MASK_ISSUE", REG_SIZE, 0x1FFFFF );
 // BUSES
 Bus pcbus_i ( "PCBUS_ISSUE", ADDR_SIZE );
 Bus irbus_i ( "IRBUS_ISSUE", REG_SIZE );
 // AUX COMPONENTS
 BusALU mask_alu ( "MASK_ALU", REG_SIZE );
-BusALU leftShift_alu ("leftShift_ALU", REG_SIZE);
+BusALU leftShift_alu ( "leftShift_ALU", REG_SIZE );
 BusALU rightShift_alu ( "rightShift_ALU", REG_SIZE );
 BusALU destalu_i ( "DESTALU_ISSUE", REG_SIZE );
 // PIPELINE COMPONENTS
 Counter pc_ir ( "PC_ISSUE_READ", ADDR_SIZE );
 Counter npc_ir ( "NPC_ISSUE_READ", ADDR_SIZE );
 Clearable ir_ir ( "IR_ISSUE_READ", REG_SIZE );
-Clearable ir_i ("IR Issue", REG_SIZE);
+Clearable ir_i ( "IR Issue", REG_SIZE );
 Clearable lock_ir ( "LOCK_ISSUE_READ", REG_SIZE );
 
 /**
@@ -102,19 +101,19 @@ Clearable lock_re ( "LOCK_READ_EXECUTE", DATA_SIZE );
  * EXECUTE
  */
 // REGISTERS
-Counter ex_out_addr ( "OUT_EXECUTE_ADDR", REG_SIZE);
-Counter ex_out_arith( "OUT_EXECUTE_ARTH", REG_SIZE);
-Counter ex_internal_arith ("EX_INT_ARTH", REG_SIZE);
-Counter ex_internal_shift ("EX_INT_SHFT", REG_SIZE);
-Counter ex_internal_addr  ("EX_INT_ADDR", REG_SIZE);
-Counter ex_internal_ir ("EX_INT_IR", REG_SIZE);
+Counter ex_out_addr ( "OUT_EXECUTE_ADDR", REG_SIZE );
+Counter ex_out_arith ( "OUT_EXECUTE_ARTH", REG_SIZE );
+Counter ex_internal_arith ( "EX_INT_ARTH", REG_SIZE );
+Counter ex_internal_shift ( "EX_INT_SHFT", REG_SIZE );
+Counter ex_internal_addr ( "EX_INT_ADDR", REG_SIZE );
+Counter ex_internal_ir ( "EX_INT_IR", REG_SIZE );
 
 // BUSES
 // AUX COMPONENTS
 BusALU arith_alu ( "ARITHOP", REG_SIZE );
 BusALU shift_alu ( "SHIFT_ALU", REG_SIZE );
 BusALU addr_alu ( "ADDR_ALU", ADDR_SIZE );
-Bus irbus_e ("IRBUS_EXEC", REG_SIZE);
+Bus irbus_e ( "IRBUS_EXEC", REG_SIZE );
 // PIPELINE COMPONENTS
 Counter pc_em ( "PC_EXECUTE_MEMORY", REG_SIZE );
 Counter out_em ( "OUT_EXECUTE_MEMORY", REG_SIZE );
@@ -126,20 +125,20 @@ Bus addrbus_em ( "ADDRBUS_EXECUTE_MEMORY", ADDR_SIZE );
 
 StorageObject exec_const_2 ( "2", REG_SIZE, 2 );
 StorageObject exec_const_3 ( "3", REG_SIZE, 3 );
-StorageObject exec_const_16 ("16", REG_SIZE, 16);
-StorageObject exec_const_not_3 ("not 3", REG_SIZE, ~3); 
+StorageObject exec_const_16 ( "16", REG_SIZE, 16 );
+StorageObject exec_const_not_3 ( "not 3", REG_SIZE, ~3 );
 
-Constant no_mem("CONST_NO_MEM", REG_SIZE, 0);
-Constant read_mem("CONST_RD_MEM", REG_SIZE, 1);
-Constant write_mem("CONST_WR_MEM", REG_SIZE, 2);
-Constant writeback("CONST_WB_MEM", REG_SIZE, 3);
+Constant no_mem ( "CONST_NO_MEM", REG_SIZE, 0 );
+Constant read_mem ( "CONST_RD_MEM", REG_SIZE, 1 );
+Constant write_mem ( "CONST_WR_MEM", REG_SIZE, 2 );
+Constant writeback ( "CONST_WB_MEM", REG_SIZE, 3 );
 /**
  * MEMORY
  */
 // REGISTERS
-Counter mm_internal_type ("MMINTTYPE", REG_SIZE);
-Counter mm_internal_arith("MMINTARITH", REG_SIZE);
-Bus mm_controlbus ("MM_CTRL_BUS", REG_SIZE);
+Counter mm_internal_type ( "MMINTTYPE", REG_SIZE );
+Counter mm_internal_arith ( "MMINTARITH", REG_SIZE );
+Bus mm_controlbus ( "MM_CTRL_BUS", REG_SIZE );
 
 Clearable data_m ( "DATA_MEMORY", DATA_SIZE );
 // Clearable  out_m ( "OUT_MEMORY", REG_SIZE );
@@ -193,9 +192,9 @@ Bus sbus4 ( "STAGE_BUS4", REG_SIZE );
 Bus sbus5 ( "STAGE_BUS5", REG_SIZE );
 
 //forwarding
-Bus forward_bus_nodelay("F_BUS_ND", REG_SIZE);
-Bus forward_bus_delay("F_BUS_D", REG_SIZE);
-Clearable forward_delay_slot("f_delay_slot", REG_SIZE);
+Bus forward_bus_nodelay ( "F_BUS_ND", REG_SIZE );
+Bus forward_bus_delay ( "F_BUS_D", REG_SIZE );
+Clearable forward_delay_slot ( "f_delay_slot", REG_SIZE );
 
 /**
  * Cache

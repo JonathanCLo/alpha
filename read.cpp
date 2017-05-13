@@ -6,78 +6,35 @@
 
 #include "includes.h"
 
-long ra_value = 0;
-char buff [32];
-
-void read1 ( );
-void read2 ( );
-void fnoop ( );
-void md ( );
-void b ( );
-void mf ( );
-void pcc ( );
-void o ( );
-void o_imm ( );
-void o_reg ( );
-void move_ra ( );
-void move_rb ( );
-void move_rc ( );
-void use_pc ( );
-void pass_rc ( );
-void use_npc ( );
-void pass_ir ( );
-void purge_ir ( );
 /**
- * $(fclass)
  * read1
  *
  *
- * $(gavaparam)
- * @throws
  */
 void read1 ( )
 {
+    // reset indicator. this does not get used until tick2
+    ir_purge = false;
     // move ir
-    irbus_r.IN ( ).pullFrom ( ir_ir );
-    ir_re.latchFrom ( irbus_r.OUT ( ) );
+    irbus_r1.IN ( ).pullFrom ( ir_ir );
+    ir_r.latchFrom ( irbus_r1.OUT ( ) );
 
     // move pc
-    pcbus_r.IN ( ).pullFrom ( pc_ir );
-    pc_re.latchFrom ( pcbus_r.OUT ( ) );
+    pcbus_r1.IN ( ).pullFrom ( pc_ir );
+    pc_r.latchFrom ( pcbus_r1.OUT ( ) );
 
-    // aux = 4 * (npc >> 11 (sign extend) );
-    // aux = npc >> 7
-    destalu_r.OP1 ( ).pullFrom ( npc_ir );
-    destalu_r.OP2 ( ).pullFrom ( const2_r );
-    aux_r.latchFrom ( destalu_r.OUT ( ) );
-
-    read2 ( );
-} // read1
-
-/**
- * read
- * read stage of pipeline. Moves required values into pipeline registers
- * unused pipeline registers are not cleared, and hold unknown values
- */
-void read2 ( )
-{
     long opc = ir_re ( REG_SIZE - 1, REG_SIZE - 6 );
-
-    sprintf ( buff, "|pc=%02lx opc=%03lx ", pc_ir.value ( ), opc );
-    cout << buff;
 
     switch ( opc ) {
         case OPC_NOOP:
-            sprintf ( buff, "ir=NOOP " );
-            cout << buff;
-            fnoop ( );
+            noop1 ( );
             break;
         case OPC_LDA:
         case OPC_LDAH:
         case OPC_LDWU:
         case OPC_LDL:
         case OPC_STL:
-            md ( );
+            memdisp1 ( );
             break;
         case OPC_BEQ:
         case OPC_BGE:
@@ -89,286 +46,462 @@ void read2 ( )
         case OPC_BNE:
         case OPC_BR:
         case OPC_BSR: // B
-            sprintf ( buff, "ir=BRANCH " );
-            cout << buff;
-            b ( );
+            branch1 ( );
             break;
         case OPC_JMP:
-            //case OPC_JSR:
-            //case OPC_RET:
-            //case OPC_JSRC:
-            mf ( );
+            jump1 ( );
             break;
         case OPC_RPCC: // pcc
-            pcc ( );
+            // pcc ( );
             break;
         case OPC_ADDL:
-            //case OPC_S4ADDL:
-            //case OPC_S8ADDL:
-            //case OPC_SUBL:
-            //case OPC_S4SUBL:
-            //case OPC_S8SUBL:
-            //case OPC_AND:
-            //case OPC_BIC:
-            //case OPC_BIS:
-            //case OPC_EQV:
-            //case OPC_ORNOT:
-            //case OPC_XOR:
-            //case OPC_CMOVEQ:
-            //case OPC_CMOVGE:
-            //case OPC_CMOVGT:
-            //case OPC_CMOVBLC:
-            //case OPC_CMOVBLS:
-            //case OPC_CMOVLE:
-            //case OPC_CMOVLT:
-            //case OPC_CMOVNE:
-            //case OPC_SLL:
-            //case OPC_SRL:
-            o ( );
+            operate1 ( );
             break;
         default: // unknown
             done = true;
 
     } // switch
 
+    execute1 ( );
+} // read1
+
+/**
+ * read2
+ *
+ *
+ */
+void read2 ( )
+{
+
+    long opc = ir_r ( REG_SIZE - 1, REG_SIZE - 6 );
+
+    switch ( opc ) {
+        case OPC_NOOP:
+            noop2 ( );
+            break;
+        case OPC_LDA:
+        case OPC_LDAH:
+        case OPC_LDWU:
+        case OPC_LDL:
+        case OPC_STL:
+            memdisp2 ( );
+            break;
+        case OPC_BEQ:
+        case OPC_BGE:
+        case OPC_BGT:
+        case OPC_BLBC:
+        case OPC_BLBS:
+        case OPC_BLE:
+        case OPC_BLT:
+        case OPC_BNE:
+        case OPC_BR:
+        case OPC_BSR: // B
+            branch2 ( );
+            break;
+        case OPC_JMP:
+            jump2 ( );
+            break;
+        case OPC_RPCC: // pcc
+            // pcc ( );
+            break;
+        case OPC_ADDL:
+            operate2 ( );
+            break;
+        default: // unknown
+            done = true;
+
+    } // switch
+    execute2 ( );
 } // read
 
+
 /**
- * noop
+ * noop1
  *
  *
  */
-void fnoop ( )
+void noop1 ( )
 {
-    // TODO
+    // nothing
 }
+
 /**
- * md
- * handles memory displacement instruction format, moves ra and rb into
- * pipeline registers
+ * noop2
+ *
  *
  */
-void md ( )
+void noop2 ( )
 {
-    long disp = ir_re ( REG_SIZE - 17, 0 );
-
-    use_pc ( );
-    pass_ir ( );
-
-    // move ra
-    move_ra ( );
-
-    // move rb
-    move_rb ( );
-
-} // md
+    // nothing
+}
 
 /**
- * b
- * handles branch instruction format, moves ra and rb into pipeline registers
+ * memdisp1
+ *
  *
  */
-void b ( )
+void memdisp1 ( )
+{
+    // sign extend
+    signExtalu_r.OP1 ( ).pullFrom ( npc_ir );
+    signExtalu_r.OP2 ( ).pullFrom ( dispmask_g );
+    dest_r.latchFrom ( signExtalu_r.OUT ( ) );
+    signExtalu_r.perform ( BusALU::op_extendSign );
+}
+
+/**
+ * memdisp2
+ *
+ *
+ */
+void memdisp2 ( )
+{
+    // move ir
+    irbus_r2.IN ( ).pullFrom ( ir_ir );
+    ir_r.latchFrom ( irbus_r2.OUT ( ) );
+
+    // move pc
+    pcbus_r2.IN ( ).pullFrom ( pc_ir );
+    pc_r.latchFrom ( pcbus_r2.OUT ( ) );
+
+    // move disp
+    destbus_r.IN ( ).pullFrom ( dest_r );
+    disp_re.latchFrom ( destbus_r.OUT ( ) );
+} // memdisp2
+
+/**
+ * branch1
+ * calculates the possible npc
+ *
+ */
+void branch1 ( )
+{
+    // sign extend
+    signExtalu_r.OP1 ( ).pullFrom ( npc_ir );
+    signExtalu_r.OP2 ( ).pullFrom ( shift7_g );
+    dest_r.latchFrom ( signExtalu_r.OUT ( ) );
+    signExtalu_r.perform ( BusALU::op_rashift );
+
+    // get ra for comparison
+    long ra = ir_re ( REG_SIZE - 7, REG_SIZE - 11 );
+    long ra_value = 0;
+
+    // grab the ra_value
+    switch ( ra ) {
+        case 0;
+            ra_value = r0.value ( );
+            break;
+        case 1;
+            ra_value = r1.value ( );
+            break;
+        case 2;
+            ra_value = r2.value ( );
+            break;
+        case 3;
+            ra_value = r3.value ( );
+            break;
+        case 4;
+            ra_value = r4.value ( );
+            break;
+        case 5;
+            ra_value = r5.value ( );
+            break;
+        case 6;
+            ra_value = r6.value ( );
+            break;
+        case 7;
+            ra_value = r7.value ( );
+            break;
+        case 8;
+            ra_value = r8.value ( );
+            break;
+        case 9;
+            ra_value = r9.value ( );
+            break;
+        case 10;
+            ra_value = r10.value ( );
+            break;
+        case 11;
+            ra_value = r11.value ( );
+            break;
+        case 12;
+            ra_value = r12.value ( );
+            break;
+        case 13;
+            ra_value = r13.value ( );
+            break;
+        case 14;
+            ra_value = r14.value ( );
+            break;
+        case 15;
+            ra_value = r15.value ( );
+            break;
+        case 16;
+            ra_value = r16.value ( );
+            break;
+        case 17;
+            ra_value = r17.value ( );
+            break;
+        case 18;
+            ra_value = r18.value ( );
+            break;
+        case 19;
+            ra_value = r19.value ( );
+            break;
+        case 20;
+            ra_value = r20.value ( );
+            break;
+        case 21;
+            ra_value = r21.value ( );
+            break;
+        case 22;
+            ra_value = r22.value ( );
+            break;
+        case 23;
+            ra_value = r23.value ( );
+            break;
+        case 24;
+            ra_value = r24.value ( );
+            break;
+        case 25;
+            ra_value = r25.value ( );
+            break;
+        case 26;
+            ra_value = r26.value ( );
+            break;
+        case 27;
+            ra_value = r27.value ( );
+            break;
+        case 28;
+            ra_value = r28.value ( );
+            break;
+        case 29;
+            ra_value = r29.value ( );
+            break;
+        case 30;
+            ra_value = r30.value ( );
+            break;
+        case 31;
+            ra_value = r31.value ( );
+            break;
+    } // switch // we can use ra_value
+
+} // branch1
+
+/**
+ * branch2
+ * calculates if we take the branch
+ *
+ */
+void branch2 ( )
 {
     long branch = ir_re ( REG_SIZE - 1, REG_SIZE - 6 );
-
-    // move ra
-    move_ra ( );
-
 
     // calculate if we are taking branch
     switch ( branch ) {
         case OPC_BEQ:
             if ( ra_value == 0 ) { // take the branch
                 use_npc ( );
-                purge_ir ( );
             } else { // not taken... continue onward
                 use_pc ( );
-                pass_ir ( );
             }
             break;
         case OPC_BGE:
             if ( ra_value >= 0 ) { // take the branch
                 use_npc ( );
-                purge_ir ( );
             } else { // not taken... continue onward
                 use_pc ( );
-                pass_ir ( );
             }
             break;
         case OPC_BGT:
             if ( ra_value > 0 ) { // take the branch
                 use_npc ( );
-                purge_ir ( );
             } else { // not taken... continue onward
                 use_pc ( );
-                pass_ir ( );
             }
             break;
         case OPC_BLBC:
-            if ( (long) ( ra_value & 0x0 ) == 0 ) { // take the branch
+            if ( ( ra_value & 1 ) == 0 ) { // take the branch
                 use_npc ( );
-                purge_ir ( );
             } else { // not taken... continue onward
                 use_pc ( );
-                pass_ir ( );
             }
             break;
         case OPC_BLBS:
-            if ( (long) ( ra_value & 0x0 ) == 1 ) { // take the branch
+            if ( ( ra_value & 1 ) == 1 ) { // take the branch
                 use_npc ( );
-                purge_ir ( );
             } else { // not taken... continue onward
                 use_pc ( );
-                pass_ir ( );
             }
             break;
         case OPC_BLE:
             if ( ra_value <= 0 ) { // take the branch
                 use_npc ( );
-                purge_ir ( );
             } else { // not taken... continue onward
                 use_pc ( );
-                pass_ir ( );
             }
             break;
         case OPC_BLT:
             if ( ra_value < 0 ) { // take the branch
                 use_npc ( );
-                purge_ir ( );
             } else { // not taken... continue onward
                 use_pc ( );
-                pass_ir ( );
             }
             break;
         case OPC_BNE:
             if ( ra_value != 0 ) { // take the branch
                 use_npc ( );
-                purge_ir ( );
             } else { // not taken... continue onward
                 use_pc ( );
-                pass_ir ( );
             }
             break;
         case OPC_BR:
         case OPC_BSR:
             use_npc ( );
-            purge_ir ( );
-
-            rabus_r.IN ( ).pullFrom ( pc_ir );
-            ra_re.latchFrom ( rabus_r.OUT ( ) );
             break;
         default: // dont care
             break;
     } // switch
 
-
-} // b
-
-/**
- * mf
- * handles memory instruction format, moves ra and rb into pipeline registers
- *
- */
-void mf ( )
-{
-    use_pc ( );
-    pass_ir ( );
-
-    // move ra
-    move_ra ( );
-
-    // move rb
-    move_rb ( );
-} // mf
+} // branch2
 
 /**
- * pcc
- * special mf instruction format for pcc
+ * use_npc
+ * change the pc in fetch to fetch the good instr and purge useless ones.
  *
  */
-void pcc ( )
+void use_npc ( )
 {
-    long rb	  = ir_re ( REG_SIZE - 12, REG_SIZE - 16 );
-    long disp = ir_re ( REG_SIZE - 17, 0 );
+    // change pc_load
+    changePC_bus.IN ( ).pullFrom ( npc_r );
+    pc_load.latchFrom ( changePC_bus.OUT ( ) );
+    // discard pc_re // TODO do we?
 
+    // indicate stage that it should purge instruction
+    ir_purge = true;
+    // toss curr inst
+    ir_noop_bus_r.IN ( ).pullFrom ( noop );
+    ir_re.latchFrom ( ir_noop_bus_r.OUT ( ) );
+
+} // use_npc
+
+/**
+ * use_pc
+ * use the old pc and move forward
+ *
+ */
+void use_pc ( )
+{
     // move pc
-    pcbus_r.IN ( ).pullFrom ( pc_ir );
+    pcbus_r.IN ( ).pullFrom ( pc_r );
     pc_re.latchFrom ( pcbus_r.OUT ( ) );
-
-    // move ra
-    move_ra ( );
-
-    // check rb field
-    switch ( rb ) {
-        case 31:
-            break;
-        default:
-            done = true;
-    }
-
-    // check disp field
-    switch ( disp ) {
-        case 49152:
-            break;
-        default:
-            done = true;
-    }
-} // pcc
-
-/**
- * o
- * handles operate instruction format
- *
- */
-void o ( )
-{
-    long type = ir_re ( REG_SIZE - 20 );
-
-    use_pc ( );
-    pass_ir ( );
-
-    // move ra
-    move_ra ( );
-
-    // move rc
-    move_rc ( );
-
-    switch ( type ) {
-        case 0: // reg
-            o_reg ( );
-            break;
-        case 1: // literal
-            o_imm ( );
-            break;
-    }
-} // o
-
-/**
- * o_imm
- *
- *
- */
-void o_imm ( )
-{
-    // DO NOTHING
+    // move ir
+    irbus_r.IN ( ).pullFrom ( ir_r );
+    ir_re.latchFrom ( irbus_r.OUT ( ) );
 }
 
 /**
- * o_reg
- * pass register to rb;
+ * jumps
+ *
  *
  */
-void o_reg ( )
+void jump1 ( )
 {
-    // move_rb
+
+    // write to ra the pc
+    write_ra ( );
+    // TODO Data hazard?
+
+    // get rb
     move_rb ( );
-}
 
+} // jump1
+
+/**
+ * jump2
+ *
+ *
+ */
+void jump2 ( )
+{
+    destalu_r.OP1 ( ).pullFrom ( rb_r );
+    destalu_r.OP2 ( ).pullFrom ( not3_g );
+    pc_load.latchFrom ( destalu_r.OUT ( ) );
+    destalu_r.perform ( BusALU::op_and );
+
+    // purge curr instr
+    // indicate stage that it should purge instruction
+    ir_purge = true;
+    // toss curr inst
+    ir_noop_bus_r.IN ( ).pullFrom ( noop );
+    ir_re.latchFrom ( ir_noop_bus_r.OUT ( ) );
+} // jump2
+
+/**
+ * operate1
+ *
+ *
+ */
+void operate1 ( )
+{
+    long ind = ir_r ( REG_SIZE - 20 );
+
+    switch ( ind ) {
+        case 0; // register
+            move_ra ( );
+            move_rb ( );
+            move_rc ( );
+            break;
+        case 1; // literal
+            move_ra ( );
+            move_rc ( );
+            // get value
+            litalu_r.OP1 ( ).pullFrom ( ir_r );
+            litalu_r.OP2 ( ).pullFrom ( literalmask_g );
+            literal_r.latchFrom ( litalu_r.OUT ( ) );
+            litalu_r.peform ( BusALU::op_and );
+            break;
+    } // switch
+
+} // operate1
+
+/**
+ * operate2
+ *
+ *
+ */
+void operate2 ( )
+{
+    long ind = ir_r ( REG_SIZE - 20 );
+
+    switch ( ind ) {
+        case 0; // register
+            rabus_r.IN ( ).pullFrom ( ra_r );
+            ra_re.latchFrom ( rabus_r.OUT ( ) );
+            rbbus_r.IN ( ).pullFrom ( rb_r );
+            rb_re.latchFrom ( rbbus_r.OUT ( ) );
+            rcbus_r.IN ( ).pullFrom ( rc_r );
+            rc_re.latchFrom ( rcbus_r.OUT ( ) );
+            break;
+        case 1; // literal
+            rabus_r.IN ( ).pullFrom ( ra_r );
+            ra_re.latchFrom ( rabus_r.OUT ( ) );
+            rcbus_r.IN ( ).pullFrom ( rc_r );
+            rc_re.latchFrom ( rcbus_r.OUT ( ) );
+
+            litalu_r.OP1 ( ).pullFrom ( literal_r );
+            litalu_r.OP2 ( ).pullFrom ( literalShift_g );
+            literal_re.latchFrom ( litalu_r.OUT ( ) );
+            litalu_r.perform ( BusALU::op_rshift );
+
+            break;
+    } // switch
+
+} // operate2
 
 /**
  * move_ra
- * support function to move a PVR to RA
+ * support function to move a PVR's ddata to ra_r
  *
  */
 void move_ra ( )
@@ -376,153 +509,235 @@ void move_ra ( )
     long ra = ir_re ( REG_SIZE - 7, REG_SIZE - 11 );
 
     // move ra
-    ra_re.latchFrom ( rabus_r.OUT ( ) );
+    ra_r.latchFrom ( rabus_r.OUT ( ) );
 
     switch ( ra ) {
         case 0:
             rabus_r.IN ( ).pullFrom ( r0 );
-            ra_value = r0.value ( );
             break;
         case 1:
             rabus_r.IN ( ).pullFrom ( r1 );
-            ra_value = r1.value ( );
             break;
         case 2:
             rabus_r.IN ( ).pullFrom ( r2 );
-            ra_value = r2.value ( );
             break;
         case 3:
             rabus_r.IN ( ).pullFrom ( r3 );
-            ra_value = r3.value ( );
             break;
         case 4:
             rabus_r.IN ( ).pullFrom ( r4 );
-            ra_value = r4.value ( );
             break;
         case 5:
             rabus_r.IN ( ).pullFrom ( r5 );
-            ra_value = r5.value ( );
             break;
         case 6:
             rabus_r.IN ( ).pullFrom ( r6 );
-            ra_value = r6.value ( );
             break;
         case 7:
             rabus_r.IN ( ).pullFrom ( r7 );
-            ra_value = r7.value ( );
             break;
         case 8:
             rabus_r.IN ( ).pullFrom ( r8 );
-            ra_value = r8.value ( );
             break;
         case 9:
             rabus_r.IN ( ).pullFrom ( r9 );
-            ra_value = r9.value ( );
             break;
         case 10:
             rabus_r.IN ( ).pullFrom ( r10 );
-            ra_value = r10.value ( );
             break;
         case 11:
             rabus_r.IN ( ).pullFrom ( r11 );
-            ra_value = r11.value ( );
             break;
         case 12:
             rabus_r.IN ( ).pullFrom ( r12 );
-            ra_value = r12.value ( );
             break;
         case 13:
             rabus_r.IN ( ).pullFrom ( r13 );
-            ra_value = r13.value ( );
             break;
         case 14:
             rabus_r.IN ( ).pullFrom ( r14 );
-            ra_value = r14.value ( );
             break;
         case 15:
             rabus_r.IN ( ).pullFrom ( r15 );
-            ra_value = r15.value ( );
             break;
         case 16:
             rabus_r.IN ( ).pullFrom ( r16 );
-            ra_value = r16.value ( );
             break;
         case 17:
             rabus_r.IN ( ).pullFrom ( r17 );
-            ra_value = r17.value ( );
             break;
         case 18:
             rabus_r.IN ( ).pullFrom ( r18 );
-            ra_value = r18.value ( );
             break;
         case 19:
             rabus_r.IN ( ).pullFrom ( r19 );
-            ra_value = r19.value ( );
             break;
         case 20:
             rabus_r.IN ( ).pullFrom ( r20 );
-            ra_value = r20.value ( );
             break;
         case 21:
             rabus_r.IN ( ).pullFrom ( r21 );
-            ra_value = r21.value ( );
             break;
         case 22:
             rabus_r.IN ( ).pullFrom ( r22 );
-            ra_value = r22.value ( );
             break;
         case 23:
             rabus_r.IN ( ).pullFrom ( r23 );
-            ra_value = r23.value ( );
             break;
         case 24:
             rabus_r.IN ( ).pullFrom ( r24 );
-            ra_value = r24.value ( );
             break;
         case 25:
             rabus_r.IN ( ).pullFrom ( r25 );
-            ra_value = r25.value ( );
             break;
         case 26:
             rabus_r.IN ( ).pullFrom ( r26 );
-            ra_value = r26.value ( );
             break;
         case 27:
             rabus_r.IN ( ).pullFrom ( r27 );
-            ra_value = r27.value ( );
             break;
         case 28:
             rabus_r.IN ( ).pullFrom ( r28 );
-            ra_value = r28.value ( );
             break;
         case 29:
             rabus_r.IN ( ).pullFrom ( r29 );
-            ra_value = r20.value ( );
             break;
         case 30:
             rabus_r.IN ( ).pullFrom ( r30 );
-            ra_value = r30.value ( );
             break;
         case 31:
             rabus_r.IN ( ).pullFrom ( r31 );
-            ra_value = r31.value ( );
             break;
         default: // unknown
             done = true;
     } // switch
-}     // move_ra
+
+} // move_ra
 
 /**
+ * write_ra
+ *
+ *
+ */
+void write_ra ( )
+{
+    long ra = ir_re ( REG_SIZE - 7, REG_SIZE - 11 );
+
+    // move ra
+    rabus_r.IN ( ).pullFrom ( pc_r );
+
+    switch ( ra ) {
+        case 0:
+            r0.latchFrom ( rabus_r.OUT ( ) );
+            break;
+        case 1:
+            r1.latchFrom ( rabus_r.OUT ( ) );
+            break;
+        case 2:
+            r2.latchFrom ( rabus_r.OUT ( ) );
+            break;
+        case 3:
+            r3.latchFrom ( rabus_r.OUT ( ) );
+            break;
+        case 4:
+            r4.latchFrom ( rabus_r.OUT ( ) );
+            break;
+        case 5:
+            r5.latchFrom ( rabus_r.OUT ( ) );
+            break;
+        case 6:
+            r6.latchFrom ( rabus_r.OUT ( ) );
+            break;
+        case 7:
+            r7.latchFrom ( rabus_r.OUT ( ) );
+            break;
+        case 8:
+            r8.latchFrom ( rabus_r.OUT ( ) );
+            break;
+        case 9:
+            r9.latchFrom ( rabus_r.OUT ( ) );
+            break;
+        case 10:
+            r10.latchFrom ( rabus_r.OUT ( ) );
+            break;
+        case 11:
+            r11.latchFrom ( rabus_r.OUT ( ) );
+            break;
+        case 12:
+            r12.latchFrom ( rabus_r.OUT ( ) );
+            break;
+        case 13:
+            r13.latchFrom ( rabus_r.OUT ( ) );
+            break;
+        case 14:
+            r14.latchFrom ( rabus_r.OUT ( ) );
+            break;
+        case 15:
+            r15.latchFrom ( rabus_r.OUT ( ) );
+            break;
+        case 16:
+            r16.latchFrom ( rabus_r.OUT ( ) );
+            break;
+        case 17:
+            r17.latchFrom ( rabus_r.OUT ( ) );
+            break;
+        case 18:
+            r18.latchFrom ( rabus_r.OUT ( ) );
+            break;
+        case 19:
+            r19.latchFrom ( rabus_r.OUT ( ) );
+            break;
+        case 20:
+            r20.latchFrom ( rabus_r.OUT ( ) );
+            break;
+        case 21:
+            r21.latchFrom ( rabus_r.OUT ( ) );
+            break;
+        case 22:
+            r22.latchFrom ( rabus_r.OUT ( ) );
+            break;
+        case 23:
+            r23.latchFrom ( rabus_r.OUT ( ) );
+            break;
+        case 24:
+            r24.latchFrom ( rabus_r.OUT ( ) );
+            break;
+        case 25:
+            r25.latchFrom ( rabus_r.OUT ( ) );
+            break;
+        case 26:
+            r26.latchFrom ( rabus_r.OUT ( ) );
+            break;
+        case 27:
+            r27.latchFrom ( rabus_r.OUT ( ) );
+            break;
+        case 28:
+            r28.latchFrom ( rabus_r.OUT ( ) );
+            break;
+        case 29:
+            r29.latchFrom ( rabus_r.OUT ( ) );
+            break;
+        case 30:
+            r30.latchFrom ( rabus_r.OUT ( ) );
+            break;
+        case 31:
+            r31.latchFrom ( rabus_r.OUT ( ) );
+            break;
+        default: // unknown
+            done = true;
+    } // switch
+}     // write_ra
+/**
  * move_rb
- * support function to move PVR to RB
+ * support function to move a PVR's ddata to ra_r
  *
  */
 void move_rb ( )
 {
     long rb = ir_re ( REG_SIZE - 12, REG_SIZE - 16 );
 
-    // move rb
-    rb_re.latchFrom ( rbbus_r.OUT ( ) );
+    // move ra
+    rb_r.latchFrom ( rbbus_r.OUT ( ) );
 
     switch ( rb ) {
         case 0:
@@ -629,15 +844,15 @@ void move_rb ( )
 
 /**
  * move_rc
- * support function to move PVR to RC
+ *
  *
  */
 void move_rc ( )
 {
     long rc = ir_re ( REG_SIZE - 28, 0 );
 
-    // move rc
-    rc_re.latchFrom ( rcbus_r.OUT ( ) );
+    // move ra
+    rc_r.latchFrom ( rcbus_r.OUT ( ) );
 
     switch ( rc ) {
         case 0:
@@ -698,7 +913,7 @@ void move_rc ( )
             rcbus_r.IN ( ).pullFrom ( r18 );
             break;
         case 19:
-            rabus_r.IN ( ).pullFrom ( r19 );
+            rcbus_r.IN ( ).pullFrom ( r19 );
             break;
         case 20:
             rcbus_r.IN ( ).pullFrom ( r20 );
@@ -739,62 +954,7 @@ void move_rc ( )
         default: // unknown
             done = true;
     } // switch
-}     // move_rc
 
-/**
- * use_pc
- * transfer pc from pipeling forward
- *
- */
-void use_pc ( )
-{
-
-    // move pc
-    pcbus_r.IN ( ).pullFrom ( npc_ir );
-    pc_re.latchFrom ( pcbus_r.OUT ( ) );
-}
-
-/**
- * pass_ir
- *
- * pass the old ir to next stage
- */
-void pass_ir ( )
-{
-    // move ir
-    irbus_r.IN ( ).pullFrom ( ir_ir );
-    ir_re.latchFrom ( irbus_r.OUT ( ) );
-}
-
-/**
- * use_npc
- * calculates the new pc, ir_f <- npc
- */
-void use_npc ( )
-{
-    long npc = npc_ir.value ( ) + aux_r.value ( );
-
-    sprintf ( buff, "npc=%02lx ", npc );
-    cout << buff;
-
-    dest_alu.OP1 ( ).pullFrom ( pc_ir );
-    dest_alu.OP2 ( ).pullFrom ( aux_r );
-    pc_f.latchFrom ( dest_alu.OUT ( ) );
-    dest_alu.perform ( BusALU::)
-} // use_npc
-
-/**
- * purge_ir
- * noops recently added instructions and current
- *
- */
-void purge_ir ( )
-{
-    // NO OP THE INSTRUCTION and PURGE THE REST
-    irfi_noop_bus.IN ( ).pullFrom ( noop );
-    irir_noop_bus.IN ( ).pullFrom ( noop );
-    irre_noop_bus.IN ( ).pullFrom ( noop );
-    // TODO ELIMINATE ENTRIES FROM REGISTER DEPENDENCY TABLE
-}
+} // move_rc
 
 // read.cpp end

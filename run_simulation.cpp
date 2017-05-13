@@ -19,7 +19,7 @@ void run_simulation ( char* objfile )
     data_cache.load ( objfile );
 
     // step 2:  set the entry point
-    pc_f.latchFrom ( instr_cache.READ ( ) );
+    pc_load.latchFrom ( instr_cache.READ ( ) );
     Clock::tick ( );
 
     char buff [ 128 ];  // sprintf buffer
@@ -39,8 +39,8 @@ void run_simulation ( char* objfile )
               "------------------------" );
     cout << buff;
 
-    while ( !done ) {// until we stop the simulation
-        // fetch1 ( );  // fetch stage
+    while ( !done ) { // until we stop the simulation
+        fetch1 ( );   // fetch stage
     }
 
 } // run_simulation

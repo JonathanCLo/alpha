@@ -240,85 +240,85 @@ void make_connections_read ( )
  */
 void make_connections_execute ( )
 {
-    ex_internal_arith.connectsTo(arith_alu.OUT());
-    ex_internal_shift.connectsTo(shift_alu.OUT());
-    ex_internal_addr.connectsTo(addr_alu.OUT());
+    ex_internal_arith.connectsTo ( arith_alu.OUT ( ) );
+    ex_internal_shift.connectsTo ( shift_alu.OUT ( ) );
+    ex_internal_addr.connectsTo ( addr_alu.OUT ( ) );
 
-    ex_out_addr.connectsTo(addr_alu.OUT());
-    ex_out_arith.connectsTo(addr_alu.OUT());
+    ex_out_addr.connectsTo ( addr_alu.OUT ( ) );
+    ex_out_arith.connectsTo ( addr_alu.OUT ( ) );
 
-    ex_internal_ir.connectsTo(irbus_e.OUT());
-    ir_re.connectsTo(irbus_e.IN()); //protects from change to ir after phase 1
-    pc_re.connectsTo(arith_alu.OP1());
-    ra_re.connectsTo(arith_alu.OP1());
-    ex_internal_arith.connectsTo(arith_alu.OP1());
-    exec_const_2.connectsTo(arith_alu.OP2());
-    exec_const_3.connectsTo(arith_alu.OP2());
-    ex_internal_addr.connectsTo(arith_alu.OP2());
+    ex_internal_ir.connectsTo ( irbus_e.OUT ( ) );
+    ir_re.connectsTo ( irbus_e.IN ( ) ); //protects from change to ir after phase 1
+    pc_re.connectsTo ( arith_alu.OP1 ( ) );
+    ra_re.connectsTo ( arith_alu.OP1 ( ) );
+    ex_internal_arith.connectsTo ( arith_alu.OP1 ( ) );
+    exec_const_2.connectsTo ( arith_alu.OP2 ( ) );
+    exec_const_3.connectsTo ( arith_alu.OP2 ( ) );
+    ex_internal_addr.connectsTo ( arith_alu.OP2 ( ) );
 
-    pc_re.connectsTo(shift_alu.OP1());
-    disp_re.connectsTo(shift_alu.OP1());
-    exec_const_16.connectsTo(shift_alu.OP2());
+    pc_re.connectsTo ( shift_alu.OP1 ( ) );
+    disp_re.connectsTo ( shift_alu.OP1 ( ) );
+    exec_const_16.connectsTo ( shift_alu.OP2 ( ) );
 
-    rb_re.connectsTo(addr_alu.OP1());
-    disp_re.connectsTo(addr_alu.OP1());
-    li_re.connectsTo(addr_alu.OP1());
-    ex_internal_addr.connectsTo(addr_alu.OP1());
-    ex_internal_arith.connectsTo(addr_alu.OP1());
-    ex_internal_shift.connectsTo(addr_alu.OP2());
-    ex_internal_addr.connectsTo(addr_alu.OP2());
+    rb_re.connectsTo ( addr_alu.OP1 ( ) );
+    disp_re.connectsTo ( addr_alu.OP1 ( ) );
+    li_re.connectsTo ( addr_alu.OP1 ( ) );
+    ex_internal_addr.connectsTo ( addr_alu.OP1 ( ) );
+    ex_internal_arith.connectsTo ( addr_alu.OP1 ( ) );
+    ex_internal_shift.connectsTo ( addr_alu.OP2 ( ) );
+    ex_internal_addr.connectsTo ( addr_alu.OP2 ( ) );
     /*
-    fout_e.connectsTo ( outbus_em.OUT ( ) );
-    fout_e.connectsTo ( outbus_em.IN ( ) );
-    fout_e.connectsTo ( arithop1_ebus.IN ( ) );
-    fout_e.connectsTo ( shiftop1_ebus.IN ( ) );
-    fout_e.connectsTo ( addrop1_ebus.IN ( ) );
-
-    arith_op1.connectsTo ( arithop1_ebus.OUT ( ) );
-    arith_op2.connectsTo ( arithop2_ebus.OUT ( ) );
-    arith_op1.connectsTo ( arith_alu.OP1 ( ) );
-    arith_op2.connectsTo ( arith_alu.OP2 ( ) );
-    shift_op1.connectsTo ( shiftop1_ebus.OUT ( ) );
-    shift_op2.connectsTo ( shiftop2_ebus.OUT ( ) );
-    shift_op1.connectsTo ( shift_alu.OP1 ( ) );
-    shift_op2.connectsTo ( shift_alu.OP2 ( ) );
-    addr_op1.connectsTo ( addrop1_ebus.OUT ( ) );
-    addr_op2.connectsTo ( addrop2_ebus.OUT ( ) );
-    addr_op1.connectsTo ( addr_alu.OP1 ( ) );
-    addr_op2.connectsTo ( addr_alu.OP2 ( ) );
-
-    pc_re.connectsTo ( pcbus_e.IN ( ) );
-    pc_re.connectsTo ( arithop1_ebus.IN ( ) );
-    pc_re.connectsTo ( arithop2_ebus.IN ( ) );
-
-    ir_re.connectsTo ( irbus_e.IN ( ) );
-    ir_em.connectsTo ( irbus_e.OUT ( ) );
-
-    ra_re.connectsTo ( arithop1_ebus.IN ( ) );
-    ra_re.connectsTo ( arithop2_ebus.IN ( ) );
-    rb_re.connectsTo ( arithop1_ebus.IN ( ) );
-    rb_re.connectsTo ( arithop2_ebus.IN ( ) );
-    aux_re.connectsTo ( arithop1_ebus.IN ( ) );
-    aux_re.connectsTo ( arithop2_ebus.IN ( ) );
-
-    ra_re.connectsTo ( shiftop1_ebus.IN ( ) );
-    ra_re.connectsTo ( shiftop2_ebus.IN ( ) );
-    rb_re.connectsTo ( shiftop1_ebus.IN ( ) );
-    rb_re.connectsTo ( shiftop2_ebus.IN ( ) );
-    rc_re.connectsTo ( shiftop1_ebus.IN ( ) );
-    rc_re.connectsTo ( shiftop2_ebus.IN ( ) );
-    aux_re.connectsTo ( shiftop1_ebus.IN ( ) );
-    aux_re.connectsTo ( shiftop2_ebus.IN ( ) );
-
-    pc_re.connectsTo ( addrop1_ebus.IN ( ) );
-
-    pc_em.connectsTo ( pcbus_e.OUT ( ) );
-    out_em.connectsTo ( arith_alu.OUT ( ) );
-    out_em.connectsTo ( shift_alu.OUT ( ) );
-    out_em.connectsTo ( outbus_em.IN ( ) );
-
-    addr_em.connectsTo ( addr_alu.OUT ( ) );
-*/
+     *  fout_e.connectsTo ( outbus_em.OUT ( ) );
+     *  fout_e.connectsTo ( outbus_em.IN ( ) );
+     *  fout_e.connectsTo ( arithop1_ebus.IN ( ) );
+     *  fout_e.connectsTo ( shiftop1_ebus.IN ( ) );
+     *  fout_e.connectsTo ( addrop1_ebus.IN ( ) );
+     *
+     *  arith_op1.connectsTo ( arithop1_ebus.OUT ( ) );
+     *  arith_op2.connectsTo ( arithop2_ebus.OUT ( ) );
+     *  arith_op1.connectsTo ( arith_alu.OP1 ( ) );
+     *  arith_op2.connectsTo ( arith_alu.OP2 ( ) );
+     *  shift_op1.connectsTo ( shiftop1_ebus.OUT ( ) );
+     *  shift_op2.connectsTo ( shiftop2_ebus.OUT ( ) );
+     *  shift_op1.connectsTo ( shift_alu.OP1 ( ) );
+     *  shift_op2.connectsTo ( shift_alu.OP2 ( ) );
+     *  addr_op1.connectsTo ( addrop1_ebus.OUT ( ) );
+     *  addr_op2.connectsTo ( addrop2_ebus.OUT ( ) );
+     *  addr_op1.connectsTo ( addr_alu.OP1 ( ) );
+     *  addr_op2.connectsTo ( addr_alu.OP2 ( ) );
+     *
+     *  pc_re.connectsTo ( pcbus_e.IN ( ) );
+     *  pc_re.connectsTo ( arithop1_ebus.IN ( ) );
+     *  pc_re.connectsTo ( arithop2_ebus.IN ( ) );
+     *
+     *  ir_re.connectsTo ( irbus_e.IN ( ) );
+     *  ir_em.connectsTo ( irbus_e.OUT ( ) );
+     *
+     *  ra_re.connectsTo ( arithop1_ebus.IN ( ) );
+     *  ra_re.connectsTo ( arithop2_ebus.IN ( ) );
+     *  rb_re.connectsTo ( arithop1_ebus.IN ( ) );
+     *  rb_re.connectsTo ( arithop2_ebus.IN ( ) );
+     *  aux_re.connectsTo ( arithop1_ebus.IN ( ) );
+     *  aux_re.connectsTo ( arithop2_ebus.IN ( ) );
+     *
+     *  ra_re.connectsTo ( shiftop1_ebus.IN ( ) );
+     *  ra_re.connectsTo ( shiftop2_ebus.IN ( ) );
+     *  rb_re.connectsTo ( shiftop1_ebus.IN ( ) );
+     *  rb_re.connectsTo ( shiftop2_ebus.IN ( ) );
+     *  rc_re.connectsTo ( shiftop1_ebus.IN ( ) );
+     *  rc_re.connectsTo ( shiftop2_ebus.IN ( ) );
+     *  aux_re.connectsTo ( shiftop1_ebus.IN ( ) );
+     *  aux_re.connectsTo ( shiftop2_ebus.IN ( ) );
+     *
+     *  pc_re.connectsTo ( addrop1_ebus.IN ( ) );
+     *
+     *  pc_em.connectsTo ( pcbus_e.OUT ( ) );
+     *  out_em.connectsTo ( arith_alu.OUT ( ) );
+     *  out_em.connectsTo ( shift_alu.OUT ( ) );
+     *  out_em.connectsTo ( outbus_em.IN ( ) );
+     *
+     *  addr_em.connectsTo ( addr_alu.OUT ( ) );
+     */
 } // make_connections_execute
 
 /**
@@ -329,13 +329,13 @@ void make_connections_execute ( )
 void make_connections_memory ( )
 {
 
-    mem_flag.connectsTo(no_mem.OUT());
-    mem_flag.connectsTo(read_mem.OUT());
-    mem_flag.connectsTo(write_mem.OUT());
-    mem_flag.connectsTo(writeback.OUT());
-    mem_flag.connectsTo(mm_controlbus.IN());
-    mm_internal_type.connectsTo(mm_controlbus.OUT());
-    mm_internal_arith.connectsTo(dbus_m.OUT());
+    mem_flag.connectsTo ( no_mem.OUT ( ) );
+    mem_flag.connectsTo ( read_mem.OUT ( ) );
+    mem_flag.connectsTo ( write_mem.OUT ( ) );
+    mem_flag.connectsTo ( writeback.OUT ( ) );
+    mem_flag.connectsTo ( mm_controlbus.IN ( ) );
+    mm_internal_type.connectsTo ( mm_controlbus.OUT ( ) );
+    mm_internal_arith.connectsTo ( dbus_m.OUT ( ) );
 
     addr_em.connectsTo ( addrbus_m.IN ( ) );
     data_cache.MAR ( ).connectsTo ( addrbus_m.OUT ( ) );
@@ -429,8 +429,12 @@ void make_connections_auxillary ( )
     ir_fi.connectsTo ( irfi_noop_bus.OUT ( ) );
     ir_ir.connectsTo ( irir_noop_bus.OUT ( ) );
     ir_re.connectsTo ( irre_noop_bus.OUT ( ) );
-    //ir_e.connectsTo ( ire_noop_bus.OUT ( ) );
-    //ir_em.connectsTo ( irem_noop_bus.OUT ( ) );
+    ir_e.connectsTo ( ire_noop_bus.OUT ( ) );
+    ir_em.connectsTo ( irem_noop_bus.OUT ( ) );
+
+    // NOT3
+
+
 } // make_connections_auxillary
 
 // $(filename) end
