@@ -5,24 +5,8 @@
  */
 #include "includes.h"
 
-void fetch ( );
-
-/**
- * fetch
- *  fetches an instruction from the instruction buffer
- *  TICK TERMINATING
- */
-void fetch ( )
-{
-    fetch1 ( );
-
-    fetch2 ( );
-
-    char  buff [ 32 ];
-    sprintf ( buff, "|pc=%02lx                   ", pc_f.value ( ) );
-    cout << buff;
-    issue ( );
-} // fetch
+void fetch1 ( );
+void fetch2 ( );
 
 /**
  * fetch1
@@ -34,7 +18,7 @@ void fetch1 ( )
     // set up MAR
     pcbus_f.IN ( ).pullFrom ( pc_f );
     instr_cache.MAR ( ).latchFrom ( pcbus_f.OUT ( ) );
-    Clock::tick ( );
+    decode1 ( );
 }
 
 /**
@@ -50,7 +34,7 @@ void fetch2 ( )
     // move pc to pipeline
     pcbus_f.IN ( ).pullFrom ( pc_f );
     pc_fi.latchFrom ( pcbus_f.OUT ( ) );
-    Clock::tick ( );
+    decode2 ( );
 } // fetch2
 
 // $(filename) end

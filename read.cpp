@@ -9,7 +9,8 @@
 long ra_value = 0;
 char buff [32];
 
-void read ( );
+void read1 ( );
+void read2 ( );
 void noop ( );
 void md ( );
 void b ( );
@@ -20,11 +21,14 @@ void o_imm ( );
 void o_reg ( );
 
 /**
- * read
- * read stage of pipeline. Moves required values into pipeline registers
- * unused pipeline registers are not cleared, and hold unknown values
+ * $(fclass)
+ * read1
+ *
+ *
+ * $(gavaparam)
+ * @throws
  */
-void read ( )
+void read1 ( )
 {
     // move ir
     irbus_r.IN ( ).pullFrom ( ir_ir );
@@ -39,8 +43,16 @@ void read ( )
     leftShift_alu.OP1 ( ).pullFrom ( npc_ir );
     leftShift_alu.OP2 ( ).pullFrom ( shift7 );
     aux_r.latchFrom ( leftShift_alu );
+    read2 ( );
+} // read1
 
-    Clock::tick ( );
+/**
+ * read
+ * read stage of pipeline. Moves required values into pipeline registers
+ * unused pipeline registers are not cleared, and hold unknown values
+ */
+void read2 ( )
+{
     long opc = ir_re ( REG_SIZE - 1, REG_SIZE - 6 );
 
     sprintf ( buff, "|pc=%02lx opc=%03lx ", pc_ir.value ( ), opc );
@@ -111,9 +123,7 @@ void read ( )
 
     } // switch
 
-    Clock::tick ( );
-
-    execute ( );
+    execute2 ( );
 } // read
 
 /**

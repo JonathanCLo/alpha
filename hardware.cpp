@@ -77,6 +77,7 @@ unsigned long OPC_SRL	  = 17;
  */
 Counter pcc ( "PCC", REG_SIZE );
 Clearable noop ( "NOOP", REG_SIZE, 0 );
+Clearable not3 ( "NOOP", REG_SIZE, 0 );
 Clearable mult4 ( "MULT4", REG_SIZE, 2 );
 Clearable shift11 ( "SHIFT11", REG_SIZE, 11 );
 Clearable shift7 ( "SHIFT7", REG_SIZE, 7 );
@@ -112,8 +113,8 @@ Clearable dispmask_i ( "DISP_MASK_ISSUE", REG_SIZE, 0x1fffff );
 Bus pcbus_i ( "PCBUS_ISSUE", ADDR_SIZE );
 Bus irbus_i ( "IRBUS_ISSUE", REG_SIZE );
 // AUX COMPONENTS
-BusALU mask_alu ( "MASK_ALU", REG_SIZE );
-BusALU rightShift_alu ( "rightShift_ALU", REG_SIZE );
+BusALU destalu_i ( "DESTALU_ISSUE", REG_SIZE );
+BusALU rightShift_alu ( "RIGHTSHIFTALU_ISSUE", REG_SIZE );
 // PIPELINE COMPONENTS
 Counter pc_ir ( "PC_ISSUE_READ", ADDR_SIZE );
 Counter npc_ir ( "NPC_ISSUE_READ", ADDR_SIZE );
