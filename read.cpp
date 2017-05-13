@@ -745,8 +745,7 @@ void use_pc ( )
 {
 
     // move pc
-    // TODO made npc_r to pc_ir because npc_r wasn't defined
-    pcbus_r.IN ( ).pullFrom ( pc_ir );
+    pcbus_r.IN ( ).pullFrom ( npc_ir );
     pc_re.latchFrom ( pcbus_r.OUT ( ) );
 }
 
@@ -768,8 +767,7 @@ void pass_ir ( )
  */
 void use_npc ( )
 {
-    //TODO - verify this is right; pc wasn't defined so made it pc_ir
-    long npc = pc_ir.value ( ) + aux_r.value ( );
+    long npc = npc_ir.value ( ) + aux_r.value ( );
 
     sprintf ( buff, "npc=%02lx ", npc );
     cout << buff;

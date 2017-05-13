@@ -190,6 +190,11 @@ Bus sbus3 ( "STAGE_BUS3", REG_SIZE );
 Bus sbus4 ( "STAGE_BUS4", REG_SIZE );
 Bus sbus5 ( "STAGE_BUS5", REG_SIZE );
 
+//forwarding
+Bus forward_bus_nodelay("F_BUS_ND", REG_SIZE);
+Bus forward_bus_delay("F_BUS_D", REG_SIZE);
+Clearable forward_delay_slot("f_delay_slot", REG_SIZE);
+
 /**
  * Cache
  */

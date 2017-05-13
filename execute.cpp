@@ -38,7 +38,9 @@ void __disp_4 () {
 
 void ex_br_s1(int opcode, int func) {
     //TODO - where to put decision? guess below:
+    //Note: its beginning to look like execute can just ignore branch instrs...
     ex_internal_arith.latchFrom(arith_alu.OUT());
+
     //also put forwarding destination here...
     
     //move value over just in case...
@@ -105,13 +107,15 @@ void ex_br_s1(int opcode, int func) {
 }
 
 void ex_br_s2(int opcode) {
-    //TODO - update this for proper branching
     arith_alu.OP1().pullFrom(ex_internal_arith);
     arith_alu.perform(BusALU::op_rop1);
     ex_out_arith.latchFrom(arith_alu.OUT());
 
     addr_alu.OP1().pullFrom(ex_internal_addr);
     addr_alu.OP2().pullFrom(ex_internal_shift);
+
+    //TODO/NOTE: because the target for branches is calculated earlier, 
+    //this actual calc may not be necessary
     //ex_out_addr.latchFrom(addr_alu.OUT()); - cheating for mem stage
     //data_cache.MAR().latchFrom(addr_alu.OUT()); - actually treating this as a mem addr is wrong - it is a pc addr
     if (opcode != OPC_BR && opcode != OPC_BSR && opcode != OPC_JSR) {

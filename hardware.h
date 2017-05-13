@@ -165,6 +165,13 @@ extern Bus sbus3;
 extern Bus sbus4;
 extern Bus sbus5;
 
+
+//forwarding
+extern Bus forward_bus_nodelay; //RAW - two sequential
+extern Bus forward_bus_delay; //RAW - independent instruction in between
+extern Clearable forward_delay_slot;
+
+
 /**
  * ALU
  */
