@@ -100,26 +100,19 @@ Clearable lock_re ( "LOCK_READ_EXECUTE", DATA_SIZE );
  * EXECUTE
  */
 // REGISTERS
-Counter fout_e ( "OUT_EXECUTE", REG_SIZE );
-Counter arith_op1 ( "ARITH_OP1", REG_SIZE );
-Counter arith_op2 ( "ARITH_OP2", REG_SIZE );
-Counter shift_op1 ( "SHIFT_OP1", REG_SIZE );
-Counter shift_op2 ( "SHIFT_OP2", REG_SIZE );
-Counter addr_op1 ( "ADDR_OP1", ADDR_SIZE );
-Counter addr_op2 ( "ADDR_OP2", ADDR_SIZE );
+Counter ex_out_addr ( "OUT_EXECUTE_ADDR", REG_SIZE);
+Counter ex_out_arith( "OUT_EXECUTE_ARTH", REG_SIZE);
+Counter ex_internal_arith ("EX_INT_ARTH", REG_SIZE);
+Counter ex_internal_shift ("EX_INT_SHFT", REG_SIZE);
+Counter ex_internal_addr  ("EX_INT_ADDR", REG_SIZE);
+Counter ex_internal_ir ("EX_INT_IR", REG_SIZE);
+
 // BUSES
-Bus pcbus_e ( "PCBUS_EXECUTE", ADDR_SIZE );
-Bus irbus_e ( "IRBUS_EXECUTE", REG_SIZE );
-Bus arithop1_ebus ( "ARITH_OP1_EBUS", REG_SIZE );
-Bus arithop2_ebus ( "ARITH_OP2_EBUS", REG_SIZE );
-Bus shiftop1_ebus ( "SHIFT_OP1_EBUS", REG_SIZE );
-Bus shiftop2_ebus ( "SHIFT_OP2_EBUS", REG_SIZE );
-Bus addrop1_ebus ( "ADDR_OP1_EBUS", REG_SIZE );
-Bus addrop2_ebus ( "ADDR_OP2_EBUS", REG_SIZE );
 // AUX COMPONENTS
 BusALU arith_alu ( "ARITHOP", REG_SIZE );
 BusALU shift_alu ( "SHIFT_ALU", REG_SIZE );
 BusALU addr_alu ( "ADDR_ALU", ADDR_SIZE );
+Bus irbus_e ("IRBUS_EXEC", REG_SIZE);
 // PIPELINE COMPONENTS
 Counter pc_em ( "PC_EXECUTE_MEMORY", REG_SIZE );
 Counter out_em ( "OUT_EXECUTE_MEMORY", REG_SIZE );
@@ -132,7 +125,8 @@ Bus addrbus_em ( "ADDRBUS_EXECUTE_MEMORY", ADDR_SIZE );
 
 StorageObject exec_const_2 ( "2", REG_SIZE, 2 );
 StorageObject exec_const_3 ( "3", REG_SIZE, 3 );
-StorageObject exec_const_4 ( "4", REG_SIZE, 4 );
+StorageObject exec_const_16 ("16", REG_SIZE, 16);
+StorageObject exec_const_not_3 ("not 3", REG_SIZE, ~3); 
 /**
  * MEMORY
  */

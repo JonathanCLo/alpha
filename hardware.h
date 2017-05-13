@@ -33,7 +33,7 @@ enum INSTRS{
     OPC_RET = 2600, OPC_JSRC=26000,
     OPC_BGT = 63, OPC_BEQ = 57,
     OPC_BLBS=60, OPC_BLE=58,
-    OPC_BLBC=56, OPC_BLT=580,
+    OPC_BLBC=56, OPC_BLT=59,
 
     OPC_BNE=61, OPC_BR=48, 
     OPC_BSR=52
@@ -106,13 +106,12 @@ extern Counter ra_re;      // ra read execute
 extern Counter rb_re;      // rb read execute
 extern Counter rc_re;      // rc read execute
 extern Counter aux_re;     // aux read execute
-extern Counter fout_e;     // fout execute
-extern Counter arith_op1;  // execute
-extern Counter arith_op2;  // execute
-extern Counter shift_op1;  // execute
-extern Counter shift_op2;  // execute
-extern Counter addr_op1;   // execute
-extern Counter addr_op2;   // execute
+extern Counter ex_internal_arith;
+extern Counter ex_internal_shift;
+extern Counter ex_internal_addr;
+extern Counter ex_internal_ir;
+extern Counter ex_out_addr;
+extern Counter ex_out_arith;
 extern Counter out_em;     // out execute memory
 extern Counter pc_em;      // pc execute memory
 extern Clearable ir_em;    // reg_addr execute memory
@@ -123,7 +122,8 @@ extern Clearable data_m;  // data memory
 
 extern StorageObject exec_const_2;
 extern StorageObject exec_const_3;
-extern StorageObject exec_const_4;
+extern StorageObject exec_const_not_3;
+extern StorageObject exec_const_16;
 
 /**
  * BUSES
