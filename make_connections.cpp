@@ -59,9 +59,10 @@ void make_connections_issue ( )
     ir_fi.connectsTo ( irbus_i.IN ( ) );
     ir_ir.connectsTo ( irbus_i.OUT ( ) );
 
-    ir_ir.connectsTo ( mask_alu.OP1 ( ) );
-    dispmask_i.connectsTo ( mask_alu.OP2 ( ) );
-    aux_i.connectsTo ( mask_alu.OUT ( ) );
+    ir_ir.connectsTo ( destalu_i.OP1 ( ) );
+    pc_ir.connectsTo ( destalu_i.OP1 ( ) );
+    dispmask_i.connectsTo ( destalu_i.OP2 ( ) );
+    aux_i.connectsTo ( destalu_i.OUT ( ) );
 
     aux_i.connectsTo ( rightShift_alu.OP1 ( ) );
     shift11.connectsTo ( rightShift_alu.OP2 ( ) );

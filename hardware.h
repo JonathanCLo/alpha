@@ -175,7 +175,7 @@ extern Clearable forward_delay_slot;
 /**
  * ALU
  */
-extern BusALU mask_alu;       // mask alue
+extern BusALU destalu_i;      // mask alue
 extern BusALU leftShift_alu;  // left shift alu
 extern BusALU rightShift_alu; // right shift alu
 extern BusALU dest_alu;       // pc alu

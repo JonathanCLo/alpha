@@ -22,7 +22,7 @@ void run_simulation ( char* objfile )
     pc_f.latchFrom ( instr_cache.READ ( ) );
     Clock::tick ( );
 
-    char  buff [ 128 ]; // sprintf buffer
+    char buff [ 128 ];  // sprintf buffer
 
     sprintf ( buff, "|%-24s|%-24s|%-24s|%-24s|%-24s|\n",
               "FETCH",
@@ -39,8 +39,10 @@ void run_simulation ( char* objfile )
               "------------------------" );
     cout << buff;
 
-    while ( ! done ) // until we stop the simulation
-        fetch ( );   // fetch stage
+    while ( !done ) {// until we stop the simulation
+        // fetch1 ( );  // fetch stage
+    }
+
 } // run_simulation
 
 // $(filename) end

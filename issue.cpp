@@ -6,32 +6,17 @@
 
 #include "includes.h"
 
-void issue ( );
+void issue1 ( );
+void issue2 ( );
 void detect ( );
 void set_npc_branch ( );
-
-/**
- * issue
- *
- *
- */
-void issue ( )
-{
-    detect ( );
-
-    char buff [ 32 ];
-    //TODO changed pc_i to pc_ir due to undefined value. IS this right?
-    sprintf ( buff, "|pc=%02lx ", pc_ir.value ( ) );
-    cout << buff;
-    read ( );
-} // fetch
 
 /**
  * detect
  *
  *
  */
-void detect ( )
+void issue1 ( )
 {
     //TODO added an ir_i in hardware cpp to make this happen. please verify correctness
     long opc = ir_i ( REG_SIZE - 1, REG_SIZE - 6 );
@@ -54,7 +39,11 @@ void detect ( )
         case OPC_BSR: // branches
             sprintf ( buff, "IR=BRANCH " );
             cout << buff;
-            set_npc_branch ( );
+            // grab the required bits
+            destalu_i.OP1 ( ).pullFrom ( ir_ir );
+            destalu_i.OP2 ( ).pullFrom ( dispmask_i );
+            aux_i.latchFrom ( destalu_i.OUT ( ) );
+            destalu_i.perform ( BusALU::op_and );
             break;
         case OPC_JMP:
         case OPC_JSR:
@@ -63,11 +52,16 @@ void detect ( )
         case OPC_RPCC: // mf
             sprintf ( buff, "IR=MF" );
             cout << buff;
+            destalu_i.OP1 ( ).pullFrom ( pc_ir );
+            destalu_i.OP2 ( ).pullFrom ( dispmask_i );
+            aux_i.latchFrom ( destalu_i.OUT ( ) );
+            destalu_i.perform ( BusALU::op_rop1 );
             break;
         default: // other formats
             // we don't care
             break;
     } // switch
+    read1 ( );
 }     // detect
 
 /**
@@ -75,20 +69,10 @@ void detect ( )
  * calculate possible new pc
  *
  */
-void set_npc_branch ( )
+void issue2 ( )
 {
-    /**
-     *  C equivalent
-     *  long disp = ir_fi ( ADDR_SIZE - 12, 0 ); // get disp field
-     *  npx_ir = ( disp << 11 );
-     *
-     */
-
-    mask_alu.OP1 ( ).pullFrom ( ir_ir );
-    mask_alu.OP2 ( ).pullFrom ( dispmask_i );
-    aux_i.latchFrom ( mask_alu.OUT ( ) );
-    mask_alu.perform ( BusALU::op_and );
-    Clock::tick ( ); // found the required bits
+    long opc = ir_i ( REG_SIZE - 1, REG_SIZE - 6 );
+    char buff [ 32 ];
 
     // move pc
     pcbus_i.IN ( ).pullFrom ( pc_fi );
@@ -98,13 +82,42 @@ void set_npc_branch ( )
     irbus_i.IN ( ).pullFrom ( ir_fi );
     ir_ir.latchFrom ( irbus_i.OUT ( ) );
 
-    // prep npc for calculation in read
-    rightShift_alu.OP1 ( ).pullFrom ( aux_i );
-    rightShift_alu.OP2 ( ).pullFrom ( shift11 );
-    npc_ir.latchFrom ( rightShift_alu.OUT ( ) );
+    switch ( opc ) {
+        case OPC_NOOP: // noop
+            sprintf ( buff, "IR=NOOP " );
+            cout << buff;
+            break;
+        case OPC_BEQ:
+        case OPC_BGE:
+        case OPC_BGT:
+        case OPC_BLBC:
+        case OPC_BLBS:
+        case OPC_BLE:
+        case OPC_BLT:
+        case OPC_BNE:
+        case OPC_BR:
+        case OPC_BSR: // branches
 
-    Clock::tick ( );
+            // prep npc for calculation in read
+            rightShift_alu.OP1 ( ).pullFrom ( aux_i );
+            rightShift_alu.OP2 ( ).pullFrom ( shift11 );
+            npc_ir.latchFrom ( rightShift_alu.OUT ( ) );
+            break;
+        case OPC_JMP:
+        case OPC_JSR:
+        case OPC_RET:
+        case OPC_JSRC:
+        case OPC_RPCC: // mf
+            // do we need to do anything?
 
-} // set_npc_branch
+            break;
+        default: // other formats
+            // we don't care
+            break;
+    } // switch
 
-// $(filename) end
+    read2 ( );
+
+} // issue2
+
+// issue.cpp end

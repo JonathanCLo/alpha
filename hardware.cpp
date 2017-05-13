@@ -24,6 +24,7 @@ unsigned int DATA_SIZE ( 16 );    // DATA SIZE
  */
 Counter pcc ( "PCC", REG_SIZE );
 Clearable noop ( "NOOP", REG_SIZE, 0 );
+Clearable not3 ( "NOOP", REG_SIZE, 0 );
 Clearable mult4 ( "MULT4", REG_SIZE, 2 );
 Clearable shift11 ( "SHIFT11", REG_SIZE, 11 );
 Clearable shift7 ( "SHIFT7", REG_SIZE, 7 );
@@ -62,6 +63,7 @@ Bus irbus_i ( "IRBUS_ISSUE", REG_SIZE );
 BusALU mask_alu ( "MASK_ALU", REG_SIZE );
 BusALU leftShift_alu ("leftShift_ALU", REG_SIZE);
 BusALU rightShift_alu ( "rightShift_ALU", REG_SIZE );
+BusALU destalu_i ( "DESTALU_ISSUE", REG_SIZE );
 // PIPELINE COMPONENTS
 Counter pc_ir ( "PC_ISSUE_READ", ADDR_SIZE );
 Counter npc_ir ( "NPC_ISSUE_READ", ADDR_SIZE );
