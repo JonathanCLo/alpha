@@ -63,7 +63,6 @@ enum INSTRS {
 /**
  * SPECIAL RESERVED REGISTERS
  */
-extern Clearable noop_g;
 extern Clearable not3_g;
 extern Clearable mult4_g;
 extern Clearable shift11_g;
@@ -71,11 +70,6 @@ extern Clearable shift11_g;
 /**
  * SPECIAL RESERVED BUSES FOR SRR
  */
-extern Bus irfi_noop_bus;
-extern Bus irir_noop_bus;
-extern Bus irre_noop_bus;
-extern Bus ire_noop_bus;
-extern Bus irem_noop_bus;
 extern Bus mm_controlbus;
 
 extern Counter mm_internal_arith;
@@ -83,14 +77,11 @@ extern Counter mm_internal_type;
 /**
  * PIPELINE REGISTERS
  */
-extern Counter pc_f;       // pc fetch
-extern Counter pc_fi;      // pc fetch issue
 extern Counter pc_i;       // pc issue
 extern Counter pc_ir;      // pc issue read
 extern Counter npc_ir;     // npc issue read
 extern Counter pc_re;      // pc read execute
 extern Counter pc_em;      // pc execute memory
-extern Clearable ir_fi;    // ir fetch issue
 extern Clearable ir_i;     // ir issue
 extern Clearable ir_ir;    // ir issue read
 extern Clearable ir_re;    // ir read execute
@@ -135,7 +126,6 @@ extern Constant writeback;
 /**
  * BUSES
  */
-extern Bus pcbus_f;       // pcbus fetch
 extern Bus pcbus_i;       // pcbus issue
 extern Bus pcbus_r;       // pcbus read
 extern Bus pcbus_e;       // pcbus execute

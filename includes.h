@@ -30,6 +30,7 @@ using namespace std;
 // program-specific includes
 
 #include "hardware.h"
+#include "hw_fetch.h"
 #include "prototypes.h"
 
 #endif
