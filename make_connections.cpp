@@ -64,9 +64,9 @@ void make_connections_issue ( )
     dispmask_i.connectsTo ( destalu_i.OP2 ( ) );
     aux_i.connectsTo ( destalu_i.OUT ( ) );
 
-    aux_i.connectsTo ( rightShift_alu.OP1 ( ) );
-    shift11.connectsTo ( rightShift_alu.OP2 ( ) );
-    npc_ir.connectsTo ( rightShift_alu.OUT ( ) );
+    aux_i.connectsTo ( leftShift_alu.OP1 ( ) );
+    shift11.connectsTo ( leftShift_alu.OP2 ( ) );
+    npc_ir.connectsTo ( leftShift_alu.OUT ( ) );
 
 } // make_connections_issue
 
@@ -83,9 +83,9 @@ void make_connections_read ( )
     ir_ir.connectsTo ( irbus_r.IN ( ) );
     ir_re.connectsTo ( irbus_r.OUT ( ) );
 
-    npc_ir.connectsTo ( leftShift_alu.OP1 ( ) );
-    shift7.connectsTo ( leftShift_alu.OP2 ( ) );
-    aux_r.connectsTo ( leftShift_alu.OUT ( ) );
+    npc_ir.connectsTo ( destalu_r.OP1 ( ) );
+    shift2.connectsTo ( destalu_r.OP2 ( ) );
+    aux_r.connectsTo ( destalu_r.OUT ( ) );
 
     pc_ir.connectsTo ( dest_alu.OP1 ( ) );
     aux_r.connectsTo ( dest_alu.OP2 ( ) );

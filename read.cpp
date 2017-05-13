@@ -19,14 +19,14 @@ void pcc ( );
 void o ( );
 void o_imm ( );
 void o_reg ( );
-void move_ra ();
-void move_rb ();
-void move_rc ();
-void use_pc ();
-void pass_rc ();
-void use_npc();
-void pass_ir();
-void purge_ir();
+void move_ra ( );
+void move_rb ( );
+void move_rc ( );
+void use_pc ( );
+void pass_rc ( );
+void use_npc ( );
+void pass_ir ( );
+void purge_ir ( );
 /**
  * $(fclass)
  * read1
@@ -47,10 +47,13 @@ void read1 ( )
 
     // aux = 4 * (npc >> 11 (sign extend) );
     // aux = npc >> 7
-    leftShift_alu.OP1 ( ).pullFrom ( npc_ir );
-    leftShift_alu.OP2 ( ).pullFrom ( shift7 );
-    aux_r.latchFrom ( leftShift_alu.OUT() );
-}
+    destalu_r.OP1 ( ).pullFrom ( npc_ir );
+    destalu_r.OP2 ( ).pullFrom ( const2_r );
+    aux_r.latchFrom ( destalu_r.OUT ( ) );
+
+    read2 ( );
+} // read1
+
 /**
  * read
  * read stage of pipeline. Moves required values into pipeline registers
@@ -91,36 +94,36 @@ void read2 ( )
             b ( );
             break;
         case OPC_JMP:
-        //case OPC_JSR:
-        //case OPC_RET:
-        //case OPC_JSRC:
+            //case OPC_JSR:
+            //case OPC_RET:
+            //case OPC_JSRC:
             mf ( );
             break;
         case OPC_RPCC: // pcc
             pcc ( );
             break;
         case OPC_ADDL:
-        //case OPC_S4ADDL:
-        //case OPC_S8ADDL:
-        //case OPC_SUBL:
-        //case OPC_S4SUBL:
-        //case OPC_S8SUBL:
-        //case OPC_AND:
-        //case OPC_BIC:
-        //case OPC_BIS:
-        //case OPC_EQV:
-        //case OPC_ORNOT:
-        //case OPC_XOR:
-        //case OPC_CMOVEQ:
-        //case OPC_CMOVGE:
-        //case OPC_CMOVGT:
-        //case OPC_CMOVBLC:
-        //case OPC_CMOVBLS:
-        //case OPC_CMOVLE:
-        //case OPC_CMOVLT:
-        //case OPC_CMOVNE:
-        //case OPC_SLL:
-        //case OPC_SRL:
+            //case OPC_S4ADDL:
+            //case OPC_S8ADDL:
+            //case OPC_SUBL:
+            //case OPC_S4SUBL:
+            //case OPC_S8SUBL:
+            //case OPC_AND:
+            //case OPC_BIC:
+            //case OPC_BIS:
+            //case OPC_EQV:
+            //case OPC_ORNOT:
+            //case OPC_XOR:
+            //case OPC_CMOVEQ:
+            //case OPC_CMOVGE:
+            //case OPC_CMOVGT:
+            //case OPC_CMOVBLC:
+            //case OPC_CMOVBLS:
+            //case OPC_CMOVLE:
+            //case OPC_CMOVLT:
+            //case OPC_CMOVNE:
+            //case OPC_SLL:
+            //case OPC_SRL:
             o ( );
             break;
         default: // unknown
@@ -776,7 +779,8 @@ void use_npc ( )
 
     dest_alu.OP1 ( ).pullFrom ( pc_ir );
     dest_alu.OP2 ( ).pullFrom ( aux_r );
-    pc_f.connectsTo ( dest_alu.OUT ( ) );
+    pc_f.latchFrom ( dest_alu.OUT ( ) );
+    dest_alu.perform ( BusALU::)
 } // use_npc
 
 /**
