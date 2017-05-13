@@ -47,13 +47,12 @@ Bus pcbus_f ( "PCBUS_FETCH", ADDR_SIZE );
 // AUX COMPONENTS
 // PIPELINE COMPONENTS
 Counter pc_fi ( "PC_FETCH_ISSUE", ADDR_SIZE );
-Clearable ir_fi ( "IR_FETCH_ISSUE", REG_SIZE );
+Counter ir_fi ( "IR_FETCH_ISSUE", REG_SIZE );
 
 /**
  * ISSUE
  */
 // REGISTERS
-Counter aux_i ( "AUX_ISSUE", ADDR_SIZE );
 Clearable dispmask_i ( "DISP_MASK_ISSUE", REG_SIZE, 0x1FFFFF );
 // BUSES
 Bus pcbus_i ( "PCBUS_ISSUE", ADDR_SIZE );

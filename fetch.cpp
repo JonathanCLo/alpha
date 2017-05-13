@@ -43,8 +43,8 @@ void fetch2 ( )
     }
     // move pc to pipeline
 
-    pcbus_f.IN ( ).pullFrom ( pc_f );
-    pc_fi.latchFrom ( pcbus_f.OUT ( ) );
+    pcbus_f2.IN ( ).pullFrom ( pc_f );
+    pc_fi.latchFrom ( pcbus_f2.OUT ( ) );
     issue2 ( );
 } // fetch2
 

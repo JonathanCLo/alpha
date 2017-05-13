@@ -26,7 +26,6 @@ void issue1 ( )
     pcbus_i1.IN ( ).pullFrom ( pc_fi );
     pc_i.latchFrom ( pcbus_i1.OUT ( ) );
 
-    // TODO added an ir_i in hardware cpp to make this happen. please verify correctness
     long opc = ir_i ( REG_SIZE - 1, REG_SIZE - 6 );
     char buff [ 32 ];
 
@@ -44,7 +43,7 @@ void issue1 ( )
         case OPC_BR:
         case OPC_BSR: // branches
             // grab the required bits
-            destalu_i.OP1 ( ).pullFrom ( ir_ir );
+            destalu_i.OP1 ( ).pullFrom ( ir_fi );
             destalu_i.OP2 ( ).pullFrom ( dispmask_g );
             aux_i.latchFrom ( destalu_i.OUT ( ) );
             destalu_i.perform ( BusALU::op_and );
@@ -54,7 +53,7 @@ void issue1 ( )
         case OPC_RET:
         case OPC_JSRC:
         case OPC_RPCC: // mf
-            destalu_i.OP1 ( ).pullFrom ( pc_ir );
+            destalu_i.OP1 ( ).pullFrom ( pc_fi );
             destalu_i.OP2 ( ).pullFrom ( dispmask_g );
             aux_i.latchFrom ( destalu_i.OUT ( ) );
             destalu_i.perform ( BusALU::op_rop1 );
@@ -77,8 +76,8 @@ void issue2 ( )
     char buff [ 32 ];
 
     if ( ir_purge ) {
-        irir_noop_bus.IN ( ).pullFrom ( noop_g );
-        ir_ir.latchFrom ( irir_noop_bus.OUT ( ) );
+        irbus_i2.IN ( ).pullFrom ( noop_g );
+        ir_ir.latchFrom ( irbus_i2.OUT ( ) );
     } else { // read from mem
         // move ir
         irbus_i2.IN ( ).pullFrom ( ir_i );
@@ -87,7 +86,7 @@ void issue2 ( )
 
     // move pc
     pcbus_i2.IN ( ).pullFrom ( pc_fi );
-    pc_i.latchFrom ( pcbus_i2.OUT ( ) );
+    pc_ir.latchFrom ( pcbus_i2.OUT ( ) );
 
     switch ( opc ) {
         case OPC_NOOP: // noop

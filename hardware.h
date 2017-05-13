@@ -77,17 +77,15 @@ extern Counter mm_internal_type;
 /**
  * PIPELINE REGISTERS
  */
-extern Counter pc_i;       // pc issue
 extern Counter pc_ir;      // pc issue read
 extern Counter npc_ir;     // npc issue read
 extern Counter pc_re;      // pc read execute
 extern Counter pc_em;      // pc execute memory
-extern Clearable ir_i;     // ir issue
 extern Clearable ir_ir;    // ir issue read
 extern Clearable ir_re;    // ir read execute
-extern Counter aux_i;      // aux issue
 extern Counter aux_r;      // aux read
-extern Clearable dispmask_i;
+extern Clearable dispmask_g; //2097151
+extern Clearable shift11_g;
 extern Clearable lock_ir;  // lock issue read
 extern Clearable lock_re;  // lock read execute
 extern Clearable disp_r;   // disp read

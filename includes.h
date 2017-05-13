@@ -31,6 +31,7 @@ using namespace std;
 
 #include "hardware.h"
 #include "hw_fetch.h"
+#include "hw_issue.h"
 #include "prototypes.h"
 
 #endif
