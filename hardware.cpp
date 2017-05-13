@@ -122,15 +122,23 @@ Clearable mem_flag ( "MEMORY_WRITE_STORE_FLAG", 2 );
 Bus outbus_em ( "OUTBUS_EXECUTE_MEMORY", REG_SIZE );
 Bus addrbus_em ( "ADDRBUS_EXECUTE_MEMORY", ADDR_SIZE );
 
-
 StorageObject exec_const_2 ( "2", REG_SIZE, 2 );
 StorageObject exec_const_3 ( "3", REG_SIZE, 3 );
 StorageObject exec_const_16 ("16", REG_SIZE, 16);
 StorageObject exec_const_not_3 ("not 3", REG_SIZE, ~3); 
+
+Constant no_mem("CONST_NO_MEM", REG_SIZE, 0);
+Constant read_mem("CONST_RD_MEM", REG_SIZE, 1);
+Constant write_mem("CONST_WR_MEM", REG_SIZE, 2);
+Constant writeback("CONST_WB_MEM", REG_SIZE, 3);
 /**
  * MEMORY
  */
 // REGISTERS
+Counter mm_internal_type ("MMINTTYPE", REG_SIZE);
+Counter mm_internal_arith("MMINTARITH", REG_SIZE);
+Bus mm_controlbus ("MM_CTRL_BUS", REG_SIZE);
+
 Clearable data_m ( "DATA_MEMORY", DATA_SIZE );
 // Clearable  out_m ( "OUT_MEMORY", REG_SIZE );
 // BUSES

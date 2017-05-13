@@ -120,7 +120,12 @@ void read ( )
 
     Clock::tick ( );
 
-    execute ( );
+    execute1 ( );
+    memory1();
+    Clock::tick();
+    execute2();
+    memory2();
+    Clock::tick();
 } // read
 
 /**

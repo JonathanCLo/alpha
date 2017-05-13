@@ -12,15 +12,8 @@ void ex_mem_s1(int opcode) {
     ex_internal_shift.latchFrom(shift_alu.OUT());
     shift_alu.OP1().pullFrom(disp_re);
     shift_alu.OP2().pullFrom(exec_const_16);
-    if ( opcode == OPC_LDAH) { //LDAH
-        shift_alu.perform(BusALU::op_lshift);
-        return; //shift
-    }
-    else {
-        shift_alu.perform(BusALU::op_rop1);
-        //disp already in position
-        return;
-    }
+    if ( opcode == OPC_LDAH) { shift_alu.perform(BusALU::op_lshift); return; }
+    else { shift_alu.perform(BusALU::op_rop1); return; } //disp already in position
     ex_internal_addr.latchFrom(addr_alu.OUT());
     addr_alu.OP1().pullFrom(rb_re);
     addr_alu.perform(BusALU::op_rop1);
@@ -30,7 +23,8 @@ void ex_mem_s2(int opcode) {
     addr_alu.OP1().pullFrom(ex_internal_addr);
     addr_alu.OP2().pullFrom(ex_internal_shift);
     addr_alu.perform(BusALU::op_add);
-    ex_out_addr.latchFrom(addr_alu.OUT());
+    //ex_out_addr.latchFrom(addr_alu.OUT()); - cheating in mem
+    data_cache.MAR().latchFrom(addr_alu.OUT());
     return;
 }
 
@@ -118,7 +112,8 @@ void ex_br_s2(int opcode) {
 
     addr_alu.OP1().pullFrom(ex_internal_addr);
     addr_alu.OP2().pullFrom(ex_internal_shift);
-    ex_out_addr.latchFrom(addr_alu.OUT());
+    //ex_out_addr.latchFrom(addr_alu.OUT()); - cheating for mem stage
+    //data_cache.MAR().latchFrom(addr_alu.OUT()); - actually treating this as a mem addr is wrong - it is a pc addr
     if (opcode != OPC_BR && opcode != OPC_BSR && opcode != OPC_JSR) {
         addr_alu.perform(BusALU::op_add); return; }
     if (opcode == OPC_BR || opcode == OPC_BSR) {
@@ -220,17 +215,24 @@ void execute2 ( )
     int func = ex_internal_ir(11, 5);
  
     switch (opcode) {
-        case OPC_LDA: case OPC_LDAH: case OPC_LDBU:
+        case OPC_LDA: case OPC_LDAH: 
         case OPC_LDL: case OPC_LDWU:
-        case OPC_STL: case OPC_STW:
+        case OPC_STW: case OPC_LDBU:
+            mem_flag.latchFrom(read_mem.OUT());
+            ex_mem_s2(opcode);
+            break;
+        case OPC_STL: 
+            mem_flag.latchFrom(write_mem.OUT());
             ex_mem_s2(opcode);
             break;
         case OPC_ADDL: case OPC_AND:
+            mem_flag.latchFrom(writeback.OUT());
             ex_arith_s2(opcode, func);
             break;
         case OPC_BGE: case OPC_BGT: case OPC_BEQ: case OPC_BLBS:
         case OPC_BLE: case OPC_BLT: case OPC_BNE: case OPC_BR:
         case OPC_BSR:
+            mem_flag.latchFrom(no_mem.OUT());
             ex_br_s2(opcode);
             break;
         default:

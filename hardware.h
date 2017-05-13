@@ -76,7 +76,10 @@ extern Bus irir_noop_bus;
 extern Bus irre_noop_bus;
 extern Bus ire_noop_bus;
 extern Bus irem_noop_bus;
+extern Bus mm_controlbus;
 
+extern Counter mm_internal_arith;
+extern Counter mm_internal_type;
 /**
  * PIPELINE REGISTERS
  */
@@ -125,6 +128,10 @@ extern StorageObject exec_const_3;
 extern StorageObject exec_const_not_3;
 extern StorageObject exec_const_16;
 
+extern Constant no_mem;
+extern Constant read_mem;
+extern Constant write_mem;
+extern Constant writeback;
 /**
  * BUSES
  */

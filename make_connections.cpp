@@ -328,6 +328,14 @@ void make_connections_execute ( )
 void make_connections_memory ( )
 {
 
+    mem_flag.connectsTo(no_mem.OUT());
+    mem_flag.connectsTo(read_mem.OUT());
+    mem_flag.connectsTo(write_mem.OUT());
+    mem_flag.connectsTo(writeback.OUT());
+    mem_flag.connectsTo(mm_controlbus.IN());
+    mm_internal_type.connectsTo(mm_controlbus.OUT());
+    mm_internal_arith.connectsTo(dbus_m.OUT());
+
     addr_em.connectsTo ( addrbus_m.IN ( ) );
     data_cache.MAR ( ).connectsTo ( addrbus_m.OUT ( ) );
 
