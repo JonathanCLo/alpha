@@ -36,96 +36,6 @@ void __disp_4 () {
     return;
 }
 
-void ex_br_s1(int opcode, int func) {
-    //TODO - where to put decision? guess below:
-    //Note: its beginning to look like execute can just ignore branch instrs...
-    ex_internal_arith.latchFrom(arith_alu.OUT());
-
-    //also put forwarding destination here...
-    
-    //move value over just in case...
-    ex_internal_shift.latchFrom(shift_alu.OUT());
-    shift_alu.perform(BusALU::op_rop1);
-    if (opcode == OPC_BR || opcode == OPC_BSR) { //move right value
-        shift_alu.OP1().pullFrom(pc_re);
-    } else { shift_alu.OP1().pullFrom(disp_re); 
-    }
-    //addr calc:
-    if (opcode != 26 ) { __disp_4(); } //JMP exception 
-    //branch calc
-    switch(opcode) {
-        case OPC_BEQ: 
-            if (ra_re.zero()) { arith_alu.perform(BusALU::op_one); return;}
-            arith_alu.perform(BusALU::op_zero);
-            return;
-        case OPC_BGE:
-            if (ra_re.zero()) {arith_alu.perform(BusALU::op_one); return; }
-            if (ra_re(31) == 0) {
-                arith_alu.perform(BusALU::op_one); return; }
-            arith_alu.perform(BusALU::op_zero);
-            return;
-        case OPC_BGT:
-            if (ra_re.zero()) { arith_alu.perform(BusALU::op_zero); return ; }
-            if (ra_re(31) == 0) { arith_alu.perform(BusALU::op_one); return; }
-            arith_alu.perform(BusALU::op_zero);
-            return;
-        case OPC_BLBC: 
-            if (ra_re(0) == 0) {arith_alu.perform(BusALU::op_one); return; }
-            else { arith_alu.perform(BusALU::op_zero); return; }
-            break;
-        case OPC_BLBS: 
-            if (ra_re(0) == 0) {arith_alu.perform(BusALU::op_zero); return; }
-            else { arith_alu.perform(BusALU::op_zero); return; }
-            break;
-        case OPC_BLT:
-            if (ra_re(31) == 1) {arith_alu.perform(BusALU::op_one); return; }
-            else { arith_alu.perform(BusALU::op_zero); }
-            break;
-        case OPC_BLE:
-            if (ra_re.zero()) { arith_alu.perform(BusALU::op_one); return; }
-            if (ra_re(31) == 1) { arith_alu.perform(BusALU::op_one); return; }
-            arith_alu.perform(BusALU::op_zero); 
-            return;
-        case OPC_BNE: 
-            if (ra_re.zero()) {arith_alu.perform(BusALU::op_zero); return;}
-            arith_alu.perform(BusALU::op_one);
-            return;
-        case OPC_BR: case OPC_BSR: 
-            arith_alu.OP1().pullFrom(pc_re);
-            arith_alu.perform(BusALU::op_rop1);
-            break;
-        case OPC_JMP:
-        default: //__disp_4 has NOT been called...
-            arith_alu.OP1().pullFrom(pc_re);
-            arith_alu.perform(BusALU::op_rop1);
-            addr_alu.OP1().pullFrom(rb_re);
-            addr_alu.OP2().pullFrom(exec_const_not_3);
-            addr_alu.perform(BusALU::op_not);
-            ex_internal_addr.latchFrom(addr_alu.OUT());
-            break;
-    }
-}
-
-void ex_br_s2(int opcode) {
-    arith_alu.OP1().pullFrom(ex_internal_arith);
-    arith_alu.perform(BusALU::op_rop1);
-    ex_out_arith.latchFrom(arith_alu.OUT());
-
-    addr_alu.OP1().pullFrom(ex_internal_addr);
-    addr_alu.OP2().pullFrom(ex_internal_shift);
-
-    //TODO/NOTE: because the target for branches is calculated earlier, 
-    //this actual calc may not be necessary
-    //ex_out_addr.latchFrom(addr_alu.OUT()); - cheating for mem stage
-    //data_cache.MAR().latchFrom(addr_alu.OUT()); - actually treating this as a mem addr is wrong - it is a pc addr
-    if (opcode != OPC_BR && opcode != OPC_BSR && opcode != OPC_JSR) {
-        addr_alu.perform(BusALU::op_add); return; }
-    if (opcode == OPC_BR || opcode == OPC_BSR) {
-        addr_alu.perform(BusALU::op_add); return; }
-    if (opcode == OPC_JMP) { addr_alu.perform(BusALU::op_rop1); }
-    return;
-};
-
 void ex_arith_s1(int opcode, int func, bool imm) {
     //accounts for all arithmetic instructions
     if (imm) { //immediate
@@ -202,7 +112,7 @@ void execute1 ( )
         case OPC_BGE: case OPC_BGT: case OPC_BEQ: case OPC_BLBS:
         case OPC_BLE: case OPC_BLT: case OPC_BNE: case OPC_BR:
         case OPC_BSR:
-            ex_br_s1(opcode, func);
+            //ex_br_s1(opcode, func);
             break;
         default:
             break;
@@ -237,7 +147,7 @@ void execute2 ( )
         case OPC_BLE: case OPC_BLT: case OPC_BNE: case OPC_BR:
         case OPC_BSR:
             mem_flag.latchFrom(no_mem.OUT());
-            ex_br_s2(opcode);
+            //ex_br_s2(opcode);
             break;
         default:
             break;
