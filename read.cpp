@@ -40,9 +40,10 @@ void read1 ( )
 
     // aux = 4 * (npc >> 11 (sign extend) );
     // aux = npc >> 7
-    leftShift_alu.OP1 ( ).pullFrom ( npc_ir );
-    leftShift_alu.OP2 ( ).pullFrom ( shift7 );
-    aux_r.latchFrom ( leftShift_alu );
+    destalu_r.OP1 ( ).pullFrom ( npc_ir );
+    destalu_r.OP2 ( ).pullFrom ( const2_r );
+    aux_r.latchFrom ( destalu_r.OUT ( ) );
+
     read2 ( );
 } // read1
 
@@ -770,7 +771,8 @@ void use_npc ( )
 
     dest_alu.OP1 ( ).pullFrom ( pc_ir );
     dest_alu.OP2 ( ).pullFrom ( aux_r );
-    pc_f.connectsTo ( dest_alu.OUT ( ) );
+    pc_f.latchFrom ( dest_alu.OUT ( ) );
+    dest_alu.perform ( BusALU::)
 } // use_npc
 
 /**

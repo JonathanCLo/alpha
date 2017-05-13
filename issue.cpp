@@ -98,9 +98,10 @@ void issue2 ( )
         case OPC_BSR: // branches
 
             // prep npc for calculation in read
-            rightShift_alu.OP1 ( ).pullFrom ( aux_i );
-            rightShift_alu.OP2 ( ).pullFrom ( shift11 );
-            npc_ir.latchFrom ( rightShift_alu.OUT ( ) );
+            leftShift_alu.OP1 ( ).pullFrom ( aux_i );
+            leftShift_alu.OP2 ( ).pullFrom ( shift11 );
+            npc_ir.latchFrom ( leftShift_alu.OUT ( ) );
+            leftShift_alu.perform ( OP )
             break;
         case OPC_JMP:
         case OPC_JSR:
