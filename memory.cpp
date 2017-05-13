@@ -10,223 +10,76 @@ void memory1 ( );
 void memory2 ( );
 void memory_writeback ( );
 
+
+void read_data_cache(){ data_cache.READ(); }
 /**
  * write_ra
- *
- *
+ * was data_cache.READ()
+ * ra: REG_SIZE-7, REG_SIZE - 11
+ * rc: REG_SIZE-28, 0
+ * func
  */
-void write_ra ( )
+void write_reg (int upper, int lower, void (*f)(StorageObject& rx))
 {
-    long ra = ir_em ( REG_SIZE - 7, REG_SIZE - 11 );
-
-    switch ( ra ) {
-        case 0:
-            r0.latchFrom ( data_cache.READ ( ) );
-            break;
-        case 1:
-            r1.latchFrom ( data_cache.READ ( ) );
-            break;
-        case 2:
-            r2.latchFrom ( data_cache.READ ( ) );
-            break;
-        case 3:
-            r3.latchFrom ( data_cache.READ ( ) );
-            break;
-        case 4:
-            r4.latchFrom ( data_cache.READ ( ) );
-            break;
-        case 5:
-            r5.latchFrom ( data_cache.READ ( ) );
-            break;
-        case 6:
-            r6.latchFrom ( data_cache.READ ( ) );
-            break;
-        case 7:
-            r7.latchFrom ( data_cache.READ ( ) );
-            break;
-        case 8:
-            r8.latchFrom ( data_cache.READ ( ) );
-            break;
-        case 9:
-            r9.latchFrom ( data_cache.READ ( ) );
-            break;
-        case 10:
-            r10.latchFrom ( data_cache.READ ( ) );
-            break;
-        case 11:
-            r11.latchFrom ( data_cache.READ ( ) );
-            break;
-        case 12:
-            r12.latchFrom ( data_cache.READ ( ) );
-            break;
-        case 13:
-            r13.latchFrom ( data_cache.READ ( ) );
-            break;
-        case 14:
-            r14.latchFrom ( data_cache.READ ( ) );
-            break;
-        case 15:
-            r15.latchFrom ( data_cache.READ ( ) );
-            break;
-        case 16:
-            r16.latchFrom ( data_cache.READ ( ) );
-            break;
-        case 17:
-            r17.latchFrom ( data_cache.READ ( ) );
-            break;
-        case 18:
-            r18.latchFrom ( data_cache.READ ( ) );
-            break;
-        case 19:
-            r19.latchFrom ( data_cache.READ ( ) );
-            break;
-        case 20:
-            r20.latchFrom ( data_cache.READ ( ) );
-            break;
-        case 21:
-            r21.latchFrom ( data_cache.READ ( ) );
-            break;
-        case 22:
-            r22.latchFrom ( data_cache.READ ( ) );
-            break;
-        case 23:
-            r23.latchFrom ( data_cache.READ ( ) );
-            break;
-        case 24:
-            r24.latchFrom ( data_cache.READ ( ) );
-            break;
-        case 25:
-            r25.latchFrom ( data_cache.READ ( ) );
-            break;
-        case 26:
-            r26.latchFrom ( data_cache.READ ( ) );
-            break;
-        case 27:
-            r27.latchFrom ( data_cache.READ ( ) );
-            break;
-        case 28:
-            r28.latchFrom ( data_cache.READ ( ) );
-            break;
-        case 29:
-            r29.latchFrom ( data_cache.READ ( ) );
-            break;
-        case 30:
-            r30.latchFrom ( data_cache.READ ( ) );
-            break;
-        case 31:
-            r31.latchFrom ( data_cache.READ ( ) );
-            break;
+    long reg = ir_em ( upper, lower);
+    switch ( reg ) {
+        case 0: f(r0); break; case 1: f(r1); break;
+        case 2: f(r2); break; case 3: f(r3); break;
+        case 4: f(r4); break; case 5: f(r5); break;
+        case 6: f(r6); break; case 7: f(r7); break;
+        case 8: f(r8); break; case 9: f(r9); break;
+        case 10:f(r10);break;case 11: f(r11);break;
+        case 12:f(r12);break;case 13: f(r13);break;
+        case 14:f(r14);break;case 15: f(r15);break;
+        case 16:f(r16);break;case 17: f(r17);break;
+        case 18:f(r18);break;case 19: f(r19);break;
+        case 20:f(r20);break;case 21: f(r21);break;
+        case 22:f(r22);break;case 23: f(r23);break;
+        case 24:f(r24);break;case 25: f(r25);break;
+        case 26:f(r26);break;case 27: f(r27);break;
+        case 28:f(r28);break;case 29: f(r29);break;
+        case 30:f(r30);break;case 31: f(r31);break;
     }
 }
 
+void simple_rc(StorageObject& rx) { rx.latchFrom(dbus_m.OUT()); dbus_m.IN().pullFrom(ex_out_arith);}
+void memory1() { //TODO - handle no-ops
+    memory();
+    int mem_type = mem_flag.value(); //keep this around
+    mm_controlbus.IN().pullFrom(mem_flag);
+    mm_internal_type.latchFrom(mm_controlbus.OUT());
+    if (mem_type == 1 || mem_type == 2) {
+        //data_cache.MAR().latchFrom(addr_bus.OUT()); - cheating in execute
+        //addr_bus.IN().pullFrom(ex_out_addr);
+        //store for next cycle - STL only
+        dbus_m.IN().pullFrom(ex_out_arith);
+        mm_internal_arith.latchFrom(dbus_m.OUT());
+    } else if (mem_type == 3) {
+        write_reg(REG_SIZE - 28, 0, simple_rc);
+    }
+}
+
+void simple_mem(StorageObject& rx) { rx.latchFrom(data_cache.READ()); }
+void memory2() {
+    int mem_type = mem_flag.value();
+    if (mem_type == 0) { return;  }
+    
+    if (mem_type == 2) {
+        data_cache.WRITE().pullFrom(mm_internal_arith); 
+        data_cache.write();
+    }
+    if (mem_type == 1) {
+        write_reg(REG_SIZE - 7, REG_SIZE - 11, simple_mem);
+        data_cache.read();
+    }
+
+}
 /**
  * write_rc
  *
- *
+ * rc: reg_size - 28, 0
+ * FUNC: dbus_m.OUT();
  */
-void write_rc ( )
-{
-    long rc = ir_em ( REG_SIZE - 28, 0 );
-
-    switch ( rc ) {
-        case 0:
-            r0.latchFrom ( dbus_m.OUT ( ) );
-            break;
-        case 1:
-            r1.latchFrom ( dbus_m.OUT ( ) );
-            break;
-        case 2:
-            r2.latchFrom ( dbus_m.OUT ( ) );
-            break;
-        case 3:
-            r3.latchFrom ( dbus_m.OUT ( ) );
-            break;
-        case 4:
-            r4.latchFrom ( dbus_m.OUT ( ) );
-            break;
-        case 5:
-            r5.latchFrom ( dbus_m.OUT ( ) );
-            break;
-        case 6:
-            r6.latchFrom ( dbus_m.OUT ( ) );
-            break;
-        case 7:
-            r7.latchFrom ( dbus_m.OUT ( ) );
-            break;
-        case 8:
-            r8.latchFrom ( dbus_m.OUT ( ) );
-            break;
-        case 9:
-            r9.latchFrom ( dbus_m.OUT ( ) );
-            break;
-        case 10:
-            r10.latchFrom ( dbus_m.OUT ( ) );
-            break;
-        case 11:
-            r11.latchFrom ( dbus_m.OUT ( ) );
-            break;
-        case 12:
-            r12.latchFrom ( dbus_m.OUT ( ) );
-            break;
-        case 13:
-            r13.latchFrom ( dbus_m.OUT ( ) );
-            break;
-        case 14:
-            r14.latchFrom ( dbus_m.OUT ( ) );
-            break;
-        case 15:
-            r15.latchFrom ( dbus_m.OUT ( ) );
-            break;
-        case 16:
-            r16.latchFrom ( dbus_m.OUT ( ) );
-            break;
-        case 17:
-            r17.latchFrom ( dbus_m.OUT ( ) );
-            break;
-        case 18:
-            r18.latchFrom ( dbus_m.OUT ( ) );
-            break;
-        case 19:
-            r19.latchFrom ( dbus_m.OUT ( ) );
-            break;
-        case 20:
-            r20.latchFrom ( dbus_m.OUT ( ) );
-            break;
-        case 21:
-            r21.latchFrom ( dbus_m.OUT ( ) );
-            break;
-        case 22:
-            r22.latchFrom ( dbus_m.OUT ( ) );
-            break;
-        case 23:
-            r23.latchFrom ( dbus_m.OUT ( ) );
-            break;
-        case 24:
-            r24.latchFrom ( dbus_m.OUT ( ) );
-            break;
-        case 25:
-            r25.latchFrom ( dbus_m.OUT ( ) );
-            break;
-        case 26:
-            r26.latchFrom ( dbus_m.OUT ( ) );
-            break;
-        case 27:
-            r27.latchFrom ( dbus_m.OUT ( ) );
-            break;
-        case 28:
-            r28.latchFrom ( dbus_m.OUT ( ) );
-            break;
-        case 29:
-            r29.latchFrom ( dbus_m.OUT ( ) );
-            break;
-        case 30:
-            r30.latchFrom ( dbus_m.OUT ( ) );
-            break;
-        case 31:
-            r31.latchFrom ( dbus_m.OUT ( ) );
-            break;
-    }
-}
 
 /**
  * memory
@@ -235,44 +88,10 @@ void write_rc ( )
  */
 void memory ( )
 {
-    long mem_type = mem_flag.value ( );
-
-    switch ( mem_type ) {
-        case 0: // doesn't use memory
-            dbus_m.IN ( ).pullFrom ( out_em ); // write to register
-            write_rc ( );
-            Clock::tick ( );
-            Clock::tick ( );
-            break;
-        case 1: // read from memory
-            // set up MAR for read
-            addrbus_m.IN ( ).pullFrom ( addr_em );
-            data_cache.MAR ( ).latchFrom ( addrbus_m.OUT ( ) );
-            Clock::tick ( );
-
-            // read
-            data_cache.read ( );
-            break;
-        case 2: // write to memory
-            // set up MAR for write
-            addrbus_m.IN ( ).pullFrom ( addr_em );
-            data_cache.MAR ( ).latchFrom ( addrbus_m.OUT ( ) );
-            Clock::tick ( );
-
-            // perform write
-            data_cache.WRITE ( ).pullFrom ( out_em );
-            data_cache.WRITE ( );
-            Clock::tick ( );
-            break;
-        default: // shouldn't happen
-            break;
-    }
-
     // PIPELINE IS DONE
     char buff [ 32 ];
 
-
-    sprintf ( buff, "|pc=%02lx mf=%02lx out=%02lx addr=%04lx        |\n",
+    sprintf ( buff, "|pc=%02lx mf=undef out=%02lx addr=%04lx        |\n",
               pc_em.value ( ),
               out_em.value ( ),
               addr_em.value ( ) );

@@ -20,59 +20,6 @@ unsigned int REG_SIZE ( 32 );     // REGISTER SIZE
 unsigned int DATA_SIZE ( 16 );    // DATA SIZE
 
 /**
- * INSTRUCTION OPCODE CONSTANTS;
- */
-unsigned long OPC_NOOP	  = 0;
-// MD instructions
-unsigned long OPC_LDA	  = 8;
-unsigned long OPC_LDAH	  = 9;
-unsigned long OPC_LDBU	  = 10;
-unsigned long OPC_LDL	  = 40;
-unsigned long OPC_LDWU	  = 12;
-unsigned long OPC_STL	  = 44;
-unsigned long OPC_STW	  = 13;
-// branch
-unsigned long OPC_BEQ	  = 57;
-unsigned long OPC_BGE	  = 62;
-unsigned long OPC_BGT	  = 63;
-unsigned long OPC_BLBC	  = 56;
-unsigned long OPC_BLBS	  = 60;
-unsigned long OPC_BLE	  = 59;
-unsigned long OPC_BLT	  = 58;
-unsigned long OPC_BNE	  = 61;
-unsigned long OPC_BR	  = 48;
-unsigned long OPC_BSR	  = 52;
-// mf
-unsigned long OPC_JMP	  = 26;
-unsigned long OPC_JSR	  = 26;
-unsigned long OPC_RET	  = 26;
-unsigned long OPC_JSRC	  = 26;
-unsigned long OPC_RPCC	  = 24;
-// operate
-unsigned long OPC_ADDL	  = 16;
-unsigned long OPC_S4ADDL  = 16;
-unsigned long OPC_S8ADDL  = 16;
-unsigned long OPC_SUBL	  = 16;
-unsigned long OPC_S4SUBL  = 16;
-unsigned long OPC_S8SUBL  = 16;
-unsigned long OPC_AND	  = 17;
-unsigned long OPC_BIC	  = 17;
-unsigned long OPC_BIS	  = 17;
-unsigned long OPC_EQV	  = 17;
-unsigned long OPC_ORNOT	  = 17;
-unsigned long OPC_XOR	  = 17;
-unsigned long OPC_CMOVEQ  = 17;
-unsigned long OPC_CMOVGE  = 17;
-unsigned long OPC_CMOVGT  = 17;
-unsigned long OPC_CMOVLBC = 17;
-unsigned long OPC_CMOVLBS = 17;
-unsigned long OPC_CMOVLE  = 17;
-unsigned long OPC_CMOVLT  = 17;
-unsigned long OPC_CMOVNE  = 17;
-unsigned long OPC_SLL	  = 17;
-unsigned long OPC_SRL	  = 17;
-
-/**
  * SPECIAL RESERVED REGISTERS
  */
 Counter pcc ( "PCC", REG_SIZE );
@@ -113,12 +60,15 @@ Clearable dispmask_i ( "DISP_MASK_ISSUE", REG_SIZE, 0x1fffff );
 Bus pcbus_i ( "PCBUS_ISSUE", ADDR_SIZE );
 Bus irbus_i ( "IRBUS_ISSUE", REG_SIZE );
 // AUX COMPONENTS
+BusALU mask_alu ( "MASK_ALU", REG_SIZE );
+BusALU leftShift_alu ("leftShift_ALU", REG_SIZE);
+BusALU rightShift_alu ( "rightShift_ALU", REG_SIZE );
 BusALU destalu_i ( "DESTALU_ISSUE", REG_SIZE );
-BusALU rightShift_alu ( "RIGHTSHIFTALU_ISSUE", REG_SIZE );
 // PIPELINE COMPONENTS
 Counter pc_ir ( "PC_ISSUE_READ", ADDR_SIZE );
 Counter npc_ir ( "NPC_ISSUE_READ", ADDR_SIZE );
 Clearable ir_ir ( "IR_ISSUE_READ", REG_SIZE );
+Clearable ir_i ("IR Issue", REG_SIZE);
 Clearable lock_ir ( "LOCK_ISSUE_READ", REG_SIZE );
 
 /**
@@ -152,26 +102,19 @@ Clearable lock_re ( "LOCK_READ_EXECUTE", DATA_SIZE );
  * EXECUTE
  */
 // REGISTERS
-Counter fout_e ( "OUT_EXECUTE", REG_SIZE );
-Counter arith_op1 ( "ARITH_OP1", REG_SIZE );
-Counter arith_op2 ( "ARITH_OP2", REG_SIZE );
-Counter shift_op1 ( "SHIFT_OP1", REG_SIZE );
-Counter shift_op2 ( "SHIFT_OP2", REG_SIZE );
-Counter addr_op1 ( "ADDR_OP1", ADDR_SIZE );
-Counter addr_op2 ( "ADDR_OP2", ADDR_SIZE );
+Counter ex_out_addr ( "OUT_EXECUTE_ADDR", REG_SIZE);
+Counter ex_out_arith( "OUT_EXECUTE_ARTH", REG_SIZE);
+Counter ex_internal_arith ("EX_INT_ARTH", REG_SIZE);
+Counter ex_internal_shift ("EX_INT_SHFT", REG_SIZE);
+Counter ex_internal_addr  ("EX_INT_ADDR", REG_SIZE);
+Counter ex_internal_ir ("EX_INT_IR", REG_SIZE);
+
 // BUSES
-Bus pcbus_e ( "PCBUS_EXECUTE", ADDR_SIZE );
-Bus irbus_e ( "IRBUS_EXECUTE", REG_SIZE );
-Bus arithop1_ebus ( "ARITH_OP1_EBUS", REG_SIZE );
-Bus arithop2_ebus ( "ARITH_OP2_EBUS", REG_SIZE );
-Bus shiftop1_ebus ( "SHIFT_OP1_EBUS", REG_SIZE );
-Bus shiftop2_ebus ( "SHIFT_OP2_EBUS", REG_SIZE );
-Bus addrop1_ebus ( "ADDR_OP1_EBUS", REG_SIZE );
-Bus addrop2_ebus ( "ADDR_OP2_EBUS", REG_SIZE );
 // AUX COMPONENTS
 BusALU arith_alu ( "ARITHOP", REG_SIZE );
 BusALU shift_alu ( "SHIFT_ALU", REG_SIZE );
 BusALU addr_alu ( "ADDR_ALU", ADDR_SIZE );
+Bus irbus_e ("IRBUS_EXEC", REG_SIZE);
 // PIPELINE COMPONENTS
 Counter pc_em ( "PC_EXECUTE_MEMORY", REG_SIZE );
 Counter out_em ( "OUT_EXECUTE_MEMORY", REG_SIZE );
@@ -181,14 +124,23 @@ Clearable mem_flag ( "MEMORY_WRITE_STORE_FLAG", 2 );
 Bus outbus_em ( "OUTBUS_EXECUTE_MEMORY", REG_SIZE );
 Bus addrbus_em ( "ADDRBUS_EXECUTE_MEMORY", ADDR_SIZE );
 
-
 StorageObject exec_const_2 ( "2", REG_SIZE, 2 );
 StorageObject exec_const_3 ( "3", REG_SIZE, 3 );
-StorageObject exec_const_4 ( "4", REG_SIZE, 4 );
+StorageObject exec_const_16 ("16", REG_SIZE, 16);
+StorageObject exec_const_not_3 ("not 3", REG_SIZE, ~3); 
+
+Constant no_mem("CONST_NO_MEM", REG_SIZE, 0);
+Constant read_mem("CONST_RD_MEM", REG_SIZE, 1);
+Constant write_mem("CONST_WR_MEM", REG_SIZE, 2);
+Constant writeback("CONST_WB_MEM", REG_SIZE, 3);
 /**
  * MEMORY
  */
 // REGISTERS
+Counter mm_internal_type ("MMINTTYPE", REG_SIZE);
+Counter mm_internal_arith("MMINTARITH", REG_SIZE);
+Bus mm_controlbus ("MM_CTRL_BUS", REG_SIZE);
+
 Clearable data_m ( "DATA_MEMORY", DATA_SIZE );
 // Clearable  out_m ( "OUT_MEMORY", REG_SIZE );
 // BUSES
@@ -239,6 +191,11 @@ Bus sbus2 ( "STAGE_BUS2", REG_SIZE );
 Bus sbus3 ( "STAGE_BUS3", REG_SIZE );
 Bus sbus4 ( "STAGE_BUS4", REG_SIZE );
 Bus sbus5 ( "STAGE_BUS5", REG_SIZE );
+
+//forwarding
+Bus forward_bus_nodelay("F_BUS_ND", REG_SIZE);
+Bus forward_bus_delay("F_BUS_D", REG_SIZE);
+Clearable forward_delay_slot("f_delay_slot", REG_SIZE);
 
 /**
  * Cache

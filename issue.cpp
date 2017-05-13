@@ -18,6 +18,7 @@ void set_npc_branch ( );
  */
 void issue1 ( )
 {
+    //TODO added an ir_i in hardware cpp to make this happen. please verify correctness
     long opc = ir_i ( REG_SIZE - 1, REG_SIZE - 6 );
     char buff [ 32 ];
 

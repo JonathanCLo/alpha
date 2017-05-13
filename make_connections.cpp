@@ -240,6 +240,34 @@ void make_connections_read ( )
  */
 void make_connections_execute ( )
 {
+    ex_internal_arith.connectsTo(arith_alu.OUT());
+    ex_internal_shift.connectsTo(shift_alu.OUT());
+    ex_internal_addr.connectsTo(addr_alu.OUT());
+
+    ex_out_addr.connectsTo(addr_alu.OUT());
+    ex_out_arith.connectsTo(addr_alu.OUT());
+
+    ex_internal_ir.connectsTo(irbus_e.OUT());
+    ir_re.connectsTo(irbus_e.IN()); //protects from change to ir after phase 1
+    pc_re.connectsTo(arith_alu.OP1());
+    ra_re.connectsTo(arith_alu.OP1());
+    ex_internal_arith.connectsTo(arith_alu.OP1());
+    exec_const_2.connectsTo(arith_alu.OP2());
+    exec_const_3.connectsTo(arith_alu.OP2());
+    ex_internal_addr.connectsTo(arith_alu.OP2());
+
+    pc_re.connectsTo(shift_alu.OP1());
+    disp_re.connectsTo(shift_alu.OP1());
+    exec_const_16.connectsTo(shift_alu.OP2());
+
+    rb_re.connectsTo(addr_alu.OP1());
+    disp_re.connectsTo(addr_alu.OP1());
+    li_re.connectsTo(addr_alu.OP1());
+    ex_internal_addr.connectsTo(addr_alu.OP1());
+    ex_internal_arith.connectsTo(addr_alu.OP1());
+    ex_internal_shift.connectsTo(addr_alu.OP2());
+    ex_internal_addr.connectsTo(addr_alu.OP2());
+    /*
     fout_e.connectsTo ( outbus_em.OUT ( ) );
     fout_e.connectsTo ( outbus_em.IN ( ) );
     fout_e.connectsTo ( arithop1_ebus.IN ( ) );
@@ -290,7 +318,7 @@ void make_connections_execute ( )
     out_em.connectsTo ( outbus_em.IN ( ) );
 
     addr_em.connectsTo ( addr_alu.OUT ( ) );
-
+*/
 } // make_connections_execute
 
 /**
@@ -300,6 +328,14 @@ void make_connections_execute ( )
  */
 void make_connections_memory ( )
 {
+
+    mem_flag.connectsTo(no_mem.OUT());
+    mem_flag.connectsTo(read_mem.OUT());
+    mem_flag.connectsTo(write_mem.OUT());
+    mem_flag.connectsTo(writeback.OUT());
+    mem_flag.connectsTo(mm_controlbus.IN());
+    mm_internal_type.connectsTo(mm_controlbus.OUT());
+    mm_internal_arith.connectsTo(dbus_m.OUT());
 
     addr_em.connectsTo ( addrbus_m.IN ( ) );
     data_cache.MAR ( ).connectsTo ( addrbus_m.OUT ( ) );
@@ -393,8 +429,8 @@ void make_connections_auxillary ( )
     ir_fi.connectsTo ( irfi_noop_bus.OUT ( ) );
     ir_ir.connectsTo ( irir_noop_bus.OUT ( ) );
     ir_re.connectsTo ( irre_noop_bus.OUT ( ) );
-    ir_e.connectsTo ( ire_noop_bus.OUT ( ) );
-    ir_em.connectsTo ( irem_noop_bus.OUT ( ) );
+    //ir_e.connectsTo ( ire_noop_bus.OUT ( ) );
+    //ir_em.connectsTo ( irem_noop_bus.OUT ( ) );
 } // make_connections_auxillary
 
 // $(filename) end

@@ -18,7 +18,7 @@ void fetch1 ( )
     // set up MAR
     pcbus_f.IN ( ).pullFrom ( pc_f );
     instr_cache.MAR ( ).latchFrom ( pcbus_f.OUT ( ) );
-    decode1 ( );
+    issue1 ( );
 }
 
 /**
@@ -34,7 +34,7 @@ void fetch2 ( )
     // move pc to pipeline
     pcbus_f.IN ( ).pullFrom ( pc_f );
     pc_fi.latchFrom ( pcbus_f.OUT ( ) );
-    decode2 ( );
+    issue2 ( );
 } // fetch2
 
 // $(filename) end
