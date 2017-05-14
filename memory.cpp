@@ -71,7 +71,7 @@ void memory2() {
     if (mem_type == 1) {
         write_reg(REG_SIZE - 7, REG_SIZE - 11, simple_mem);
         data_cache.read();
-    }
+   }
 
 }
 /**

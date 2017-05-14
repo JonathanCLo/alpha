@@ -65,7 +65,6 @@ Counter pc_ir ( "PC_ISSUE_READ", ADDR_SIZE );
 Counter npc_ir ( "NPC_ISSUE_READ", ADDR_SIZE );
 Clearable ir_ir ( "IR_ISSUE_READ", REG_SIZE );
 Clearable ir_i ( "IR Issue", REG_SIZE );
-Clearable lock_ir ( "LOCK_ISSUE_READ", REG_SIZE );
 
 /**
  * READ
@@ -82,7 +81,6 @@ Counter aux_re ( "AUX_READ_EXECUTE", REG_SIZE );
 Clearable disp_re ( "DISPLACE_READ_EXECUTE", DATA_SIZE );
 Counter li_re ( "LITERAL_READ_EXECUTE", DATA_SIZE );
 Clearable func_re ( "FUNC_READ_EXECUTE", DATA_SIZE );
-Clearable lock_re ( "LOCK_READ_EXECUTE", DATA_SIZE );
 Counter literal_re("LITERALRE", REG_SIZE);
 /**
  * EXECUTE
@@ -106,7 +104,6 @@ Counter pc_em ( "PC_EXECUTE_MEMORY", REG_SIZE );
 Counter out_em ( "OUT_EXECUTE_MEMORY", REG_SIZE );
 Counter addr_em ( "ADDR_EXECUTE_MEMORY", ADDR_SIZE );
 Clearable ir_em ( "IR_EXECUTE_MEMORY", ADDR_SIZE );
-Clearable mem_flag ( "MEMORY_WRITE_STORE_FLAG", 2 );
 Bus outbus_em ( "OUTBUS_EXECUTE_MEMORY", REG_SIZE );
 Bus addrbus_em ( "ADDRBUS_EXECUTE_MEMORY", ADDR_SIZE );
 

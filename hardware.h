@@ -107,7 +107,6 @@ extern Counter ex_out_arith;
 extern Counter out_em;     // out execute memory
 extern Counter pc_em;      // pc execute memory
 extern Clearable ir_em;    // reg_addr execute memory
-extern Clearable mem_flag; // memory write store flag
 // extern Clearable  out_m; // out memory
 extern Counter addr_em;   // addr execute memory
 extern Clearable data_m;  // data memory

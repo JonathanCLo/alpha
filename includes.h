@@ -33,6 +33,8 @@ using namespace std;
 #include "hw_fetch.h"
 #include "hw_issue.h"
 #include "hw_read.h"
+#include "hw_exec.h"
+#include "hw_mem.h"
 #include "prototypes.h"
 
 #endif
