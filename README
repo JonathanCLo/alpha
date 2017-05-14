@@ -1,0 +1,102 @@
+DEC Alpha ISA
+
+Authors:
+    Nathan Castle
+    Jonathan Lo
+
+Program execution
+    ./CPU <obj-file>
+
+Program Files
+    CPU.cpp
+        main driver of program. creates the register file and starts building
+        the hardware connections.
+    execute.cpp
+        execute stage of the ALPHA pipeline.
+    fetch.cpp
+        fetch stage of the ALPHA pipeline.
+    hardware.cpp
+        global hardware component definitions.
+    hardware.h
+        global hardware component declarations.
+    hazards.h
+        data hazard logic/table declaration.
+    hw_exec.cpp
+        execute stage hardware components definitions.
+    hw_exec.h
+        execute stage hardware components declarations.
+    hw_fetch.cpp
+        fetch stage hardware components definitions.
+    hw_fetch_h
+        fetch stage hardware components declarations.
+    hw_issue.cpp
+        issue stage hardware components definitions.
+    hw_issue.h
+        issue stage hardware components declarations.
+    hw_mem.cpp
+        memory stage hardware components definitions.
+    hw_mem.h
+        memory stage hardware components declarations.
+    hw_read.cpp
+        read stage hardware components definitions.
+    hw_read.h
+        read stage hardware components declarations.
+    includes.h
+        global includes for arch package and all header files.
+    issue.cpp
+        issue stage of ALPHA pipeline.
+    make_connections.cpp
+        makes all the hardware connections from all stages and global.
+    memory.cpp
+        memory stage of the ALPHA pipeline.
+    pipeline.cpp
+        pipeline driver.
+    prototypes.h
+        prototypes of all stages.
+    read.cpp
+        read stage of the ALPHA stage.
+    run_simulation.cpp
+        runs the simulation. sets up the entry points and starts the pipeline.
+
+Additional comments:
+    Printout
+        The printout for a single instruction reaches ~220 width.
+
+        printouts for the stages ARE NOT aligned, due to the large number and
+        size of pipeline registers being printed.
+
+        Print outs are formated as such:
+
+                                    |N| xxxx | yyyy |!|
+                        A segment of the printout is displayed above.
+            N
+                indicates the following prints are for the N-stage
+                valid N is F, I, R, X, and M.
+
+            !
+                indicates the end of the pipeline. This is gauranteed to be
+                printed after the last tick of the Memory stage. This will not
+                appear anywhere else
+
+            xxxx
+                indicates the print of the before first tick of a stage.
+                this is structured to provide information of what is going into
+                the first part of the stage.
+                all xxxx are executed simultaneously.
+
+            yyyy
+                indicates the print of the before second tick of a stage.
+                this is structured to provide information of what is going into
+                the second part of the stage.
+                all yyyy are executed simultaneously
+
+            |
+                indicates the tick change for the stage.
+
+        The first line of the printout will always be headers, to indicate what
+    the stages should be, of course nothing is aligned.
+        In repeat:
+        The next line is a line separator. this is used to separate pipeline
+        executions. Used only cosmetically.
+        The following line is a information about the pipeline at the current
+        state.
