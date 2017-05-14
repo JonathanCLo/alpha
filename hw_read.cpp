@@ -3,7 +3,7 @@
  *
  * Author   Jonathan Lo < >
  */
-#include "hw_read.h"
+#include "includes.h"
 
 extern Bus irbus_r1 ( "IRBUSR1", REG_SIZE );
 extern Bus irbus_r2 ( "IRBUSR2", REG_SIZE );
