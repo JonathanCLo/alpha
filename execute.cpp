@@ -148,7 +148,10 @@ void execute1 ( )
               literal_re.value ( ) );
     sprintf ( disp1value_ex, "disp=%08lx",
               disp_re.value ( ) );
-
+    if (detect_read_after_load_dist()) {
+        memory_stall();
+    }
+    return;
     //preserve re for cycle 2
     switch ( opcode ) {
         case OPC_LDA: case OPC_LDAH: case OPC_LDBU:

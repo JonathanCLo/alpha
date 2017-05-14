@@ -161,7 +161,7 @@ def main():
                 if b != "":
                     print(b)
                     print(instr.raw_string)
-                    outfile.write(str(hex(accumulator))[2:] + " 4 ")
+                    outfile.write(str(hex(accumulator))[2:] + " 1 ")
                     accumulator = accumulator + 4
                     outfile.write(str(hex(int(instr.toBinary(), 2)))[2:])
                     outfile.write("\n")

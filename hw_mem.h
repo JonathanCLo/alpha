@@ -11,5 +11,6 @@ extern Counter mm_internal_arith;
 extern Counter mm_internal_type;
 
 extern Counter mm_external_arith; //used for 3-tick read-after-write hazard
+extern Counter mm_external_load;
 extern Bus mm_hazard_bus; 
 // $(filename)

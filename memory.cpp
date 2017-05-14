@@ -64,6 +64,7 @@ void memory2() {
     }
     if (mem_type == 1) {
         write_reg(REG_SIZE - 7, REG_SIZE - 11, simple_mem);
+        mm_external_load.latchFrom(data_cache.READ()); //pipeline reg; forward 
         data_cache.read();
    }
     //forward to execute just in case it needs it

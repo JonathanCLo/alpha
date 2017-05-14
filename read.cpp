@@ -437,7 +437,7 @@ void operate2 ( )
         case 1: // literal
             litalu_r2.OP1 ( ).pullFrom ( literal_r );
             litalu_r2.OP2 ( ).pullFrom ( literalShift_g );
-            literal_re.latchFrom ( litalu_r1.OUT ( ) );
+            literal_re.latchFrom ( litalu_r2.OUT ( ) );
             litalu_r2.perform ( BusALU::op_rshift );
             break;
     } // switch

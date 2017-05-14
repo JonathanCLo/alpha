@@ -107,6 +107,7 @@ void make_connections_read ( )
     ir_ir.connectsTo ( litalu_r1.OP1 ( ) );
     literalmask_g.connectsTo ( litalu_r1.OP2 ( ) );
     literal_r.connectsTo ( litalu_r1.OUT ( ) );
+    literal_re.connectsTo(litalu_r1.OUT());
 
     npc_ir.connectsTo ( signExtalu_r.OP1 ( ) );
     dispmask_g.connectsTo ( signExtalu_r.OP2 ( ) );
@@ -234,6 +235,9 @@ void make_connections_memory ( )
     }
     mm_internal_arith.connectsTo(mm_hazard_bus.OUT());
     mm_external_arith.connectsTo(mm_hazard_bus.IN());
+    mm_external_load.connectsTo(arith_alu.OP1());
+    mm_external_load.connectsTo(addr_alu.OP1());
+    mm_external_load.connectsTo(data_cache.READ());
 
 } // make_connections_memory
 
