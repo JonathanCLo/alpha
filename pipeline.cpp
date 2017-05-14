@@ -20,6 +20,7 @@ void tick1 ( )
 {
     fetch1 ( );
     issue1 ( );
+    if ( done ) return;
     read1 ( );
     execute1 ( );
     memory1 ( );

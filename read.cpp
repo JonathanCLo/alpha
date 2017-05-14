@@ -8,6 +8,14 @@
 
 long ra_value;
 
+char pc1value_read [16];
+char pc2value_read [16];
+char opc1value_read[16];
+char opc2value_read[16];
+char dest2value_read[16];
+char lit2value_read[16];
+char print_read [128];
+
 void read1 ( );
 void read2 ( );
 void noop1 ( );
@@ -71,6 +79,11 @@ void read1 ( )
 
     } // switch
 
+    sprintf ( pc1value_read, "pc=%04lx",
+             pc_ir.value ( ) );
+    sprintf ( opc1value_read, "opc=%03lx",
+            opc );
+
 } // read1
 
 /**
@@ -108,7 +121,26 @@ void read2 ( )
         default: // unknown
             done = true;
     } // switch
-} // read
+
+    sprintf ( pc2value_read, "pc=%04lx",
+              pc_r.value ( ) );
+    sprintf ( opc2value_read, "opc=%03lx",
+              opc );
+    sprintf ( lit2value_read, "lit=%08lx",
+              literal_r.value ( ) );
+    sprintf ( dest2value_read, "dest=%08lx",
+              dest_r.value ( ) );
+
+    sprintf ( print_read, "|| %-10s %-10s | %-10s %-10s %-10s %-10s ",
+              pc1value_read,
+              opc1value_read,
+              pc2value_read,
+              opc2value_read,
+              lit2value_read,
+              dest2value_read );
+    cout << print_read;
+
+} // read2
 
 /**
  * noop1

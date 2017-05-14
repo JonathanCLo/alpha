@@ -11,6 +11,12 @@ void issue2 ( );
 void detect ( );
 void set_npc_branch ( );
 
+char pc1value_issue [16];
+char pc2value_issue [16];
+char opc1value_issue [16];
+char opc2value_issue [16];
+char print_issue [64];
+
 /**
  * detect
  *
@@ -27,8 +33,11 @@ void issue1 ( )
     pc_i.latchFrom ( pcbus_i1.OUT ( ) );
 
     long opc = ir_i ( REG_SIZE - 1, REG_SIZE - 6 );
-    char buff [ 32 ];
-
+    sprintf ( pc1value_issue, "pc=%04lx",
+              pc_fi.value ( ) );
+    sprintf ( opc1value_issue, "opc=%03lx",
+              opc);
+    
     switch ( opc ) {
         case OPC_NOOP: // noop
             break;
@@ -76,15 +85,19 @@ void issue1 ( )
 void issue2 ( )
 {
     long opc = ir_i ( REG_SIZE - 1, REG_SIZE - 6 );
-    char buff [ 32 ];
-
+    sprintf ( pc2value_issue, "pc=%04lx",
+              pc_i.value ( ) );
+    
     if ( ir_purge ) {
         irbus_i2.IN ( ).pullFrom ( noop_g );
         ir_ir.latchFrom ( irbus_i2.OUT ( ) );
+        sprintf ( opc2value_issue, "opc=NOOP" );
     } else { // read from mem
         // move ir
         irbus_i2.IN ( ).pullFrom ( ir_i );
         ir_ir.latchFrom ( irbus_i2.OUT ( ) );
+        sprintf ( opc2value_issue, "opc=%03lx",
+                  opc );
     }
 
     // move pc
@@ -122,7 +135,12 @@ void issue2 ( )
             // we don't care
             break;
     } // switch
-
+    sprintf ( print_issue, "|| %-10s %-10s | %-10s %-10s ",
+              pc1value_issue,
+              opc1value_issue,
+              pc2value_issue,
+              opc2value_issue );
+    cout << print_issue;
 } // issue2
 
 // issue.cpp end

@@ -38,6 +38,7 @@ void run_simulation ( char* objfile )
    
     while ( !done ) { // until we stop the simulation
         pipeline ( );   // fetch stage
+
     }
 
 } // run_simulation
