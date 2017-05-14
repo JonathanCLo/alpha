@@ -6,6 +6,8 @@
  * Fetch hardware definition
  */
 
+#include "includes.h"
+
 extern Counter pc_load;
 extern Counter pc_f;
 extern Counter pc_fi;

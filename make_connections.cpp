@@ -204,11 +204,11 @@ void make_connections_memory ( )
     data_cache.MAR ( ).connectsTo ( addrbus_m.OUT ( ) );
 
     for ( int i = 0; i < 32; i++ ) {
-        regfile[i].connectsTo ( dbus_m.OUT ( ) );
+        (*regfile[i]).connectsTo ( dbus_m.OUT ( ) );
     }
 
     for ( int i = 0; i < 32; i++ ) {
-        regfile[i].connectsTo ( data_cache.READ ( ) );
+        (*regfile[i]).connectsTo ( data_cache.READ ( ) );
     }
 
 } // make_connections_memory

@@ -5,7 +5,7 @@
  * Author Jon Lo
  * Issue hardware definition
  */
-
+#include "includes.h"
 extern Bus pcbus_i1;
 extern Bus irbus_i1;
 extern Bus irbus_i2;
