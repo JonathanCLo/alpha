@@ -23,7 +23,6 @@ unsigned int DATA_SIZE ( 16 );    // DATA SIZE
  * SPECIAL RESERVED REGISTERS
  */
 Clearable noop_g ( "NOOP_G", REG_SIZE, 0 );
-Clearable not3_g ( "NOT3_G", REG_SIZE, 0xFFFFFFFC );
 Clearable mult4_g ( "MULT4_G", REG_SIZE, 2 );
 Clearable shift11_g ( "SHIFT11_G", REG_SIZE, 11 );
 Clearable literalmask_g ( "LITERALMASK_G", REG_SIZE, 0x1FE000 );
@@ -164,13 +163,6 @@ Counter r28 ( "R28", REG_SIZE );
 Counter r29 ( "R29", REG_SIZE );
 Counter r30 ( "R30", REG_SIZE );
 Clearable r31 ( "R31", REG_SIZE );
-
-// CROSS STAGE BUSES
-Bus sbus1 ( "STAGE_BUS1", REG_SIZE );
-Bus sbus2 ( "STAGE_BUS2", REG_SIZE );
-Bus sbus3 ( "STAGE_BUS3", REG_SIZE );
-Bus sbus4 ( "STAGE_BUS4", REG_SIZE );
-Bus sbus5 ( "STAGE_BUS5", REG_SIZE );
 
 //forwarding
 Bus forward_bus_nodelay ( "F_BUS_ND", REG_SIZE );

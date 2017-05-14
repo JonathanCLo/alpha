@@ -63,13 +63,13 @@ enum INSTRS {
 /**
  * SPECIAL RESERVED REGISTERS
  */
+extern Clearable noop_g;
 extern Clearable not3_g;
 extern Clearable mult4_g;
 extern Clearable shift11_g;
 extern Clearable dispmask_g; //2097151
 extern Clearable const2_g;
 extern Clearable const3_g;
-extern Clearable not3_g;
 extern Clearable const16_g;
 
 /**
