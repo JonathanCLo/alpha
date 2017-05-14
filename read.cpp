@@ -5,29 +5,7 @@
  */
 
 #include "includes.h"
-int write_reg (int upper, int lower, void (*f)(StorageObject& rx))
-{
-    long reg = ir_re ( upper, lower);
-    switch ( reg ) {
-        case 0: return f(r0); break; case 1: return f(r1); break;
-        case 2: return f(r2); break; case 3: return f(r3); break;
-        case 4: return f(r4); break; case 5: return f(r5); break;
-        case 6: return f(r6); break; case 7: return f(r7); break;
-        case 8: return f(r8); break; case 9: return f(r9); break;
-        case 10:return f(r10);break;case 11: return f(r11);break;
-        case 12:return f(r12);break;case 13: return f(r13);break;
-        case 14:return f(r14);break;case 15: return f(r15);break;
-        case 16:return f(r16);break;case 17: return f(r17);break;
-        case 18:return f(r18);break;case 19: return f(r19);break;
-        case 20:return f(r20);break;case 21: return f(r21);break;
-        case 22:return f(r22);break;case 23: return f(r23);break;
-        case 24:return f(r24);break;case 25: return f(r25);break;
-        case 26:return f(r26);break;case 27: return f(r27);break;
-        case 28:return f(r28);break;case 29: return f(r29);break;
-        case 30:return f(r30);break;case 31: return f(r31);break;
-    }
-    return 0;
-}
+
 
 /**
  * read1
@@ -54,7 +32,7 @@ void read1 ( )
             break;
         case OPC_BEQ: case OPC_BGE:
         case OPC_BGT: case OPC_BLBC:
-        case OPC_BLBS:case OPC_BLE:
+        case OPC_BLBS: case OPC_BLE:
         case OPC_BLT: case OPC_BNE:
         case OPC_BR:  case OPC_BSR: // B
             branch1 ( );
@@ -82,6 +60,7 @@ void read1 ( )
 void read2 ( )
 {
     long opc = ir_r ( REG_SIZE - 1, REG_SIZE - 6 );
+
     switch ( opc ) {
         case OPC_NOOP:
             noop2 ( );
@@ -141,7 +120,6 @@ void memdisp2 ( )
     disp_re.latchFrom ( destbus_r2.OUT ( ) );
 } // memdisp2
 
-int sf_copy_ra(StorageObject& rx) { return rx.value(); } 
 /**
  * branch1
  * calculates the possible npc
@@ -155,9 +133,9 @@ void branch1 ( )
     signExtalu_r.perform ( BusALU::op_rashift );
 
     // get ra for comparison
-    long ra_value = write_reg(REG_SIZE - 7, REG_SIZE -11, sf_copy_ra);
+    long ra_value = write_reg ( REG_SIZE - 7, REG_SIZE - 11, sf_copy_ra );
     // grab the ra_value
-    //TODO???
+    //TODO ???
 } // branch1
 
 /**
@@ -307,8 +285,9 @@ void jump2 ( )
 void operate1 ( )
 {
     long ind = ir_r ( REG_SIZE - 20 );
-    move_ra();
-    move_rc();
+
+    move_ra ( );
+    move_rc ( );
     switch ( ind ) {
         case 0; // register
             move_rb ( );
@@ -330,10 +309,13 @@ void operate1 ( )
 void operate2 ( )
 {
     long ind = ir_r ( REG_SIZE - 20 );
-    rabus_r2.IN().pullFrom(ra_r);
-    ra_re.latchFrom(rabus_r2.OUT());
-    rcbus_r2.IN().pullFrom(rc_r);
-    rc_re.latchFrom(rcbus_r2.OUT());
+
+    rabus_r2.IN ( ).pullFrom ( ra_r );
+    ra_re.latchFrom ( rabus_r2.OUT ( ) );
+
+    rcbus_r2.IN ( ).pullFrom ( rc_r );
+    rc_re.latchFrom ( rcbus_r2.OUT ( ) );
+
     switch ( ind ) {
         case 0; // register
             rbbus_r2.IN ( ).pullFrom ( rb_r );
@@ -351,57 +333,58 @@ void operate2 ( )
 
 /**
  * move_ra
- * support function to move a PVR's ddata to ra_r
+ * used in tick1
+ *
  */
-
-int fs_simp_ra(StorgeObject& rx) { return rabus_r.IN().pullFrom(rx); }
 void move_ra ( )
 {
-    long ra = ir_re ( REG_SIZE - 7, REG_SIZE - 11 ); // move ra
-    ra_r.latchFrom ( rabus_r.OUT ( ) );
-    reg_write(REG_SIZE - 7, REG_SIZE -11, fs_simp_ra);
+    long ra = ir_ir ( REG_SIZE - 7, REG_SIZE - 11 ); // move ra
+
+    rabus_r1.IN ( ).pullFrom ( pc_ir );
+    ra_r.latchFrom ( rabus_r1.OUT ( ) );
 
 } // move_ra
 
 /**
  * write_ra
+ * used in tick1
+ *
  */
-int fs_simp_ra2(StorgeObject& rx) { rx.latchFrom(rabus_r.OUT()); return; }
 void write_ra ( )
 {
-    long ra = ir_re ( REG_SIZE - 7, REG_SIZE - 11 );
+    long ra = ir_ir ( REG_SIZE - 7, REG_SIZE - 11 );
 
     // move ra
-    rabus_r.IN ( ).pullFrom ( pc_r );
-
-    reg_write(REG_SIZE - 7, REG_SIZE - 11, fs_simp_ra2); 
+    rabus_r1.IN ( ).pullFrom ( pc_ir );
+    regfile[ra].latchFrom ( rabus_r1.OUT ( ) );
 }
+
 /**
  * move_rb
- * support function to move a PVR's ddata to ra_r
+ * used in tick1
+ *
  */
- int fs_simp_rb(StorgeObject& rx) { rbbus_r.IN().pullFrom(rx); return; }
-
 void move_rb ( )
 {
-    long rb = ir_re ( REG_SIZE - 12, REG_SIZE - 16 );
+    long rb = ir_ir ( REG_SIZE - 12, REG_SIZE - 16 );
 
     // move ra
-    rb_r.latchFrom ( rbbus_r.OUT ( ) );
-    reg_write(REG_SIZE - 12, REG_SIZE - 16, fs_simp_rb);
+    rbbus_r1.IN ( ).pullFrom ( regfile[rb] );
+    rb_r.latchFrom ( rbbus_r1.OUT ( ) );
 } // move_rb
- int fs_simp_rc(StorgeObject& rx) { rcbus_r.IN().pullFrom(rx); return; }
 
 /**
  * move_rc
+ * used in tick1
+ *
  */
 void move_rc ( )
 {
-    long rc = ir_re ( REG_SIZE - 28, 0 );
+    long rc = ir_ir ( REG_SIZE - 28, 0 );
 
     // move ra
-    rc_r.latchFrom ( rcbus_r.OUT ( ) );
-    reg_write(REG_SIZE-28, 0, fs_simp_rc);
+    rcbus_r1.IN ( ).pullFrom ( regfile[rc] );
+    rc_r.latchFrom ( rcbus_r1.OUT ( ) );
 
 } // move_rc
 
