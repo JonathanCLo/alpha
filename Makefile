@@ -1,5 +1,5 @@
 #
-# Created by gmakemake (Ubuntu Jul 25 2014) on Sat May 13 22:49:19 2017
+# Created by gmakemake (Ubuntu Jul 25 2014) on Sun May 14 09:12:54 2017
 #
 
 #
@@ -54,14 +54,14 @@ CCLIBFLAGS = $(LIBFLAGS)
 ########## End of flags from header.mak
 
 
-CPP_FILES =	alpha.cpp execute.cpp fetch.cpp hw_exec.cpp hw_fetch.cpp hw_issue.cpp hw_mem.cpp hw_read.cpp issue.cpp make_connections.cpp memory.cpp memory_ops.cpp read.cpp run_simulation.cpp
+CPP_FILES =	alpha.cpp execute.cpp fetch.cpp hardware.cpp hw_exec.cpp hw_fetch.cpp hw_issue.cpp hw_mem.cpp hw_read.cpp issue.cpp make_connections.cpp memory.cpp memory_ops.cpp read.cpp run_simulation.cpp
 C_FILES =	
 PS_FILES =	
 S_FILES =	
 H_FILES =	hardware.h hw_exec.h hw_fetch.h hw_issue.h hw_mem.h hw_read.h includes.h prototypes.h
 SOURCEFILES =	$(H_FILES) $(CPP_FILES) $(C_FILES) $(S_FILES)
 .PRECIOUS:	$(SOURCEFILES)
-OBJFILES =	execute.o fetch.o hw_exec.o hw_fetch.o hw_issue.o hw_mem.o hw_read.o issue.o make_connections.o memory.o memory_ops.o read.o run_simulation.o 
+OBJFILES =	execute.o fetch.o hardware.o hw_exec.o hw_fetch.o hw_issue.o hw_mem.o hw_read.o issue.o make_connections.o memory.o memory_ops.o read.o run_simulation.o 
 
 #
 # Main targets
@@ -79,11 +79,12 @@ alpha:	alpha.o $(OBJFILES)
 alpha.o:	hardware.h hw_exec.h hw_fetch.h hw_issue.h hw_mem.h hw_read.h includes.h prototypes.h
 execute.o:	hardware.h hw_exec.h hw_fetch.h hw_issue.h hw_mem.h hw_read.h includes.h prototypes.h
 fetch.o:	hardware.h hw_exec.h hw_fetch.h hw_issue.h hw_mem.h hw_read.h includes.h prototypes.h
+hardware.o:	hardware.h hw_exec.h hw_fetch.h hw_issue.h hw_mem.h hw_read.h includes.h prototypes.h
 hw_exec.o:	hardware.h hw_exec.h hw_fetch.h hw_issue.h hw_mem.h hw_read.h includes.h prototypes.h
-hw_fetch.o:	hw_fetch.h
-hw_issue.o:	hw_issue.h
-hw_mem.o:	hw_mem.h
-hw_read.o:	hw_read.h
+hw_fetch.o:	hardware.h hw_exec.h hw_fetch.h hw_issue.h hw_mem.h hw_read.h includes.h prototypes.h
+hw_issue.o:	hardware.h hw_exec.h hw_fetch.h hw_issue.h hw_mem.h hw_read.h includes.h prototypes.h
+hw_mem.o:	hardware.h hw_exec.h hw_fetch.h hw_issue.h hw_mem.h hw_read.h includes.h prototypes.h
+hw_read.o:	hardware.h hw_exec.h hw_fetch.h hw_issue.h hw_mem.h hw_read.h includes.h prototypes.h
 issue.o:	hardware.h hw_exec.h hw_fetch.h hw_issue.h hw_mem.h hw_read.h includes.h prototypes.h
 make_connections.o:	hardware.h hw_exec.h hw_fetch.h hw_issue.h hw_mem.h hw_read.h includes.h prototypes.h
 memory.o:	hardware.h hw_exec.h hw_fetch.h hw_issue.h hw_mem.h hw_read.h includes.h prototypes.h

@@ -5,10 +5,8 @@
  */
 #include "includes.h"
 
-void memory ( );
 void memory1 ( );
 void memory2 ( );
-void memory_writeback ( );
 
 
 void read_data_cache(){ data_cache.READ(); }
@@ -27,7 +25,6 @@ void write_reg (int upper, int lower, void (*f)(StorageObject& rx))
 }
 
 void memory1() { //TODO - handle no-ops
-    memory();
     int mem_type = mem_flag.value(); //keep this around
     mm_controlbus.IN().pullFrom(mem_flag);
     mm_internal_type.latchFrom(mm_controlbus.OUT());

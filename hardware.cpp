@@ -17,14 +17,12 @@ Clearable dispmask_g ( "DISPMASK_G", REG_SIZE, 2097151 );
 Clearable const2_g ( "CONST2_G", REG_SIZE, 2 );
 Clearable const3_g ( "CONST3_G", REG_SIZE, 3 );
 Clearable const16_g ( "CONST16_G", REG_SIZE, 16 );
-
-Constant no_mem ( "NO_MEM", REG_SIZE, 0 );
-Constant read_mem ( "READ_MEM", REG_SIZE, 1 );
-Constant write_mem ( "WRITE_MEM", REG_SIZE, 2 );
-Constant writeback ( "WRITEBACK", REG_SIZE, 3 );
-
+Clearable shift7_g("SHIFT7G", REG_SIZE, 7); //TODO - is this right?
+Clearable literalmask_g("LITERALMASKG", REG_SIZE, 0); //TODO - select right val
+Clearable literalShift_g("LITERALSHIFTG", REG_SIZE, 0); //TODO - is this right?
 Memory instr_cache ( "INSTR_CACHE", ADDR_SIZE, REG_SIZE, 0xFFFF );
-Memory data_cache ( "DATA_CACHE", ADDR_SIZE, DATA_CACHE, 0xFFFF );
+Memory data_cache ( "DATA_CACHE", ADDR_SIZE, DATA_SIZE, 0xFFFF );
+Counter* regfile[32];
 
 bool done ( false );
 // $(filename)

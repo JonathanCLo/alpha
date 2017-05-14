@@ -155,8 +155,8 @@ void execute1 ( )
         default:
             break;
     } // switch
-    irbus_e.IN ( ).pullFrom ( ir_re );
-    ex_internal_ir.latchFrom ( irbus_e.OUT ( ) );
+    irbus_e1.IN ( ).pullFrom ( ir_re );
+    ex_internal_ir.latchFrom ( irbus_e1.OUT ( ) );
 
 } // execute1
 
