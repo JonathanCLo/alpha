@@ -133,9 +133,9 @@ class Instruction():
             return result
         elif self.Format == "PALCode":
             if self.PALCode == "HALT":
-                result += "0".zfill(26)
-            elif self.PALCode == "NOOP":
                 result += "1".zfill(26)
+            elif self.PALCode == "NOOP":
+                result += "0".zfill(26)
             else:
                 result += "10".zfill(26)
             return result
@@ -163,11 +163,15 @@ def main():
                     print(instr.raw_string)
                     outfile.write(str(hex(accumulator))[2:] + " 4 ")
                     accumulator = accumulator + 4
+                    outfile.write(str(hex(int(instr.toBinary(), 2)))[2:])
+                    outfile.write("\n")
+                    '''
                     one, two, three, four = b[24:32], b[16:23], b[8:15], b[0:7]
                     outfile.write(str(hex(int(four, 2)))[2:] + " ")
                     outfile.write(str(hex(int(three, 2)))[2:] + " ")
                     outfile.write(str(hex(int(two,2)))[2:] + " ")
                     outfile.write(str(hex(int(one, 2)))[2:] + "\n")
+                    '''
             outfile.write("0\n")
 
 if __name__ =="__main__":

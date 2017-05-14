@@ -68,5 +68,5 @@ MNEM["MSKLH"]   =   ( 18 , 98    )      # Mark Lonword High
 MNEM["SEXTW"]   =   ( 28 , 1     )      # Sign Extend Word
 MNEM["RPCC"]    =   ( 24 , 49152 )      # Read Processor Cycle Counter
 MNEM["PAL"]     =   ( 0  , None  )      # PALCode 
-MNEM["HALT"]    =   ( 0  , 0 )
-MNEM["NOOP"]    =   ( 0  , 1 )
+MNEM["HALT"]    =   ( 0  , 1 )
+MNEM["NOOP"]    =   ( 0  , 0 )
