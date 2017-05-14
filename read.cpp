@@ -71,7 +71,6 @@ void read1 ( )
 
     } // switch
 
-    execute1 ( );
 } // read1
 
 /**
@@ -109,7 +108,6 @@ void read2 ( )
         default: // unknown
             done = true;
     } // switch
-    execute2 ( );
 } // read
 
 /**

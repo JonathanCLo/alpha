@@ -66,7 +66,6 @@ void issue1 ( )
             // we don't care
             break;
     } // switch
-    read1 ( );
 }     // detect
 
 /**
@@ -89,7 +88,7 @@ void issue2 ( )
     }
 
     // move pc
-    pcbus_i2.IN ( ).pullFrom ( pc_fi );
+    pcbus_i2.IN ( ).pullFrom ( pc_i );
     pc_ir.latchFrom ( pcbus_i2.OUT ( ) );
 
     switch ( opc ) {
@@ -123,8 +122,6 @@ void issue2 ( )
             // we don't care
             break;
     } // switch
-
-    read2 ( );
 
 } // issue2
 

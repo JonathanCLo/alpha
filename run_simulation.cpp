@@ -21,7 +21,7 @@ void run_simulation ( char* objfile )
     pc_load.latchFrom ( instr_cache.READ ( ) );
     Clock::tick ( );
 
-    char buff [ 128 ];  // sprintf buffer
+    char buff [ 256 ];  // sprintf buffer
 
     sprintf ( buff, "|| %-10s | %-10s || %-10s | %-10s || %-10s | %-10s || %-10s | %-10s || %-10s | %-10s ||",
               "FETCH1",

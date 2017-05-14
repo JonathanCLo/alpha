@@ -9,12 +9,9 @@
 void execute ( );
 
 /**
- * $(fclass)
  * ex_mem_s1
  *
  *
- * $(gavaparam)
- * @throws
  */
 void ex_mem_s1 ( int opcode )
 {
@@ -28,12 +25,9 @@ void ex_mem_s1 ( int opcode )
 } // ex_mem_s1
 
 /**
- * $(fclass)
  * ex_mem_s2
  *
  *
- * $(gavaparam)
- * @throws
  */
 void ex_mem_s2 ( int opcode )
 {
@@ -47,12 +41,9 @@ void ex_mem_s2 ( int opcode )
 
 
 /**
- * $(fclass)
  * ex_arith_s1
  *
  *
- * $(gavaparam)
- * @throws
  */
 void ex_arith_s1 ( int	opcode,
                    int	func,
@@ -93,12 +84,9 @@ void ex_arith_s1 ( int	opcode,
 } // ex_arith_s1
 
 /**
- * $(fclass)
  * ex_arith_s2
  *
  *
- * $(gavaparam)
- * @throws
  */
 void ex_arith_s2 ( int opcode,
                    int func )
@@ -164,12 +152,9 @@ void execute1 ( )
 } // execute1
 
 /**
- * $(fclass)
  * execute2
  *
  *
- * $(gavaparam)
- * @throws
  */
 void execute2 ( )
 {

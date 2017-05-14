@@ -71,6 +71,9 @@ void make_connections_issue ( )
 
     ir_fi.connectsTo ( irbus_i1.IN ( ) );
     ir_i.connectsTo ( irbus_i1.OUT ( ) );
+    
+    ir_i.connectsTo ( irbus_i2.IN ( ) );
+    ir_ir.connectsTo ( irbus_i2.OUT ( ) );
 
     // stage 2
     pc_i.connectsTo ( pcbus_i2.IN ( ) );
@@ -206,6 +209,7 @@ void make_connections_execute ( )
  */
 void make_connections_memory ( )
 {
+    mem_flag.connectsTo ( mm_controlbus.IN ( ) );
     mm_internal_type.connectsTo ( mm_controlbus.OUT ( ) );
 
     out_em.connectsTo ( dbus_m.IN ( ) );

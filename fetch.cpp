@@ -23,8 +23,6 @@ void fetch1 ( )
     pcbus_f1.IN ( ).pullFrom ( pc_load );
     pc_f.latchFrom ( pcbus_f1.OUT ( ) );
 
-    issue1 ( );
-
 } // fetch1
 
 /**
@@ -46,7 +44,6 @@ void fetch2 ( )
     pcbus_f2.IN ( ).pullFrom ( pc_f );
     pc_fi.latchFrom ( pcbus_f2.OUT ( ) );
     pc_load.incr ( );
-    issue2 ( );
 } // fetch2
 
 // $(filename) end
