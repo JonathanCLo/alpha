@@ -11,8 +11,8 @@
 
 void create_regFile(){
     for (int i = 0; i < 32; i++){
-        Counter qq ("R" + i, REG_SIZE);
-        regfile[i] = &qq;
+        Counter* qq  = new Counter("R" + i, REG_SIZE);
+        regfile[i] = qq;
     }
 }
 /**
