@@ -17,7 +17,7 @@ void make_connections_auxillary ( );
 
 /**
  * make_connections
- *  establishes all the wiring and connections of the hardware
+ * establishes all the wiring and connections of the hardware
  *
  */
 void make_connections ( )
@@ -31,207 +31,323 @@ void make_connections ( )
 }
 
 /**
- * make_connections
- *
+ * make_connections_fetch
+ * creates the connections for fetch stage
  *
  */
 void make_connections_fetch ( )
 {
-    pc_f.connectsTo ( pcbus_f.IN ( ) );
-    pc_f.connectsTo ( instr_cache.READ ( ) );
-    pc_fi.connectsTo ( pcbus_f.OUT ( ) );
+    pc_load.connectsTo ( pcbus_load.IN ( ) );
+    pc_load.connectsTo ( pcbus_f1.IN ( ) );
+    pc_f.connectsTo ( pcbus_f1.OUT ( ) );
+    instr_cache.MAR ( ).connectsTo ( pcbus_load.OUT ( ) );
 
-    instr_cache.MAR ( ).connectsTo ( pcbus_f.OUT ( ) );
+    pc_f.connectsTo ( pcbus_f2.IN ( ) );
+    pc_fi.connectsTo ( pcbus_f2.OUT ( ) );
+
+    noop_g.connectsTo ( irfi_noop_bus.IN ( ) );
+    ir_fi.connectsTo ( irfi_noop_bus.OUT ( ) );
 
     ir_fi.connectsTo ( instr_cache.READ ( ) );
 } // make_connections_fetch
 
 /**
  * make_connections_issue
- *
+ * creates the connections for issue stage
  *
  */
 void make_connections_issue ( )
 {
-    pc_fi.connectsTo ( pcbus_i.IN ( ) );
-    pc_ir.connectsTo ( pcbus_i.OUT ( ) );
+    pc_fi.connectsTo ( pcbus_i1.IN ( ) );
+    pc_i.connectsTo ( pcbus_i1.OUT ( ) );
+    pc_i.connectsTo ( pcbus_i2.IN ( ) );
+    pc_ir.connectsTo ( pcbus_i2.OUT ( ) );
 
-    ir_fi.connectsTo ( irbus_i.IN ( ) );
-    ir_ir.connectsTo ( irbus_i.OUT ( ) );
+    ir_fi.connectsTo ( irbus_i1.IN ( ) );
+    ir_i.connectsTo ( irbus_i1.OUT ( ) );
+    pc_i.connectsTo ( pcbus_i2.IN ( ) );
+    pc_ir.connectsTo ( pcbus_i2.OUT ( ) );
 
-    ir_ir.connectsTo ( destalu_i.OP1 ( ) );
-    pc_ir.connectsTo ( destalu_i.OP1 ( ) );
-    dispmask_i.connectsTo ( destalu_i.OP2 ( ) );
+    ir_fi.connectsTo ( destalu_i.OP1 ( ) );
+    pc_fi.connectsTo ( destalu_i.OP1 ( ) );
+    dispmask_g.connectsTo ( destalu_i.OP2 ( ) );
     aux_i.connectsTo ( destalu_i.OUT ( ) );
 
     aux_i.connectsTo ( leftShift_alu.OP1 ( ) );
-    shift11.connectsTo ( leftShift_alu.OP2 ( ) );
+    shift11_g.connectsTo ( leftShift_alu.OP2 ( ) );
     npc_ir.connectsTo ( leftShift_alu.OUT ( ) );
 
 } // make_connections_issue
 
 /**
  * make_connections_read
- *
+ * creates the connections for read stage
  *
  */
 void make_connections_read ( )
 {
-    pc_ir.connectsTo ( pcbus_r.IN ( ) );
-    pc_re.connectsTo ( pcbus_r.OUT ( ) );
+    pc_ir.connectsTo ( pcbus_r1.IN ( ) );
+    pc_r.connectsTo ( pcbus_r1.OUT ( ) );
 
-    ir_ir.connectsTo ( irbus_r.IN ( ) );
-    ir_re.connectsTo ( irbus_r.OUT ( ) );
+    ir_ir.connectsTo ( irbus_r1.IN ( ) );
+    ir_r.connectsTo ( irbus_r1.OUT ( ) );
 
-    npc_ir.connectsTo ( destalu_r.OP1 ( ) );
-    shift2.connectsTo ( destalu_r.OP2 ( ) );
-    aux_r.connectsTo ( destalu_r.OUT ( ) );
+    ir_ir.connectsTo ( litalu_r1.OP1 ( ) );
+    literalmask_g.connectsTo ( litalu_r1.OP2 ( ) );
+    literal_r.connectsTo ( litalu_r1.OUT ( ) );
 
-    pc_ir.connectsTo ( dest_alu.OP1 ( ) );
-    aux_r.connectsTo ( dest_alu.OP2 ( ) );
-    pc_f.connectsTo ( dest_alu.OUT ( ) );
+    npc_ir.connecsTo ( signExtalu_r.OP1 ( ) );
+    dispmask_g.connectsTo ( signExtalu_r.OP2 ( ) );
+    shift7_g.connectsTo ( signExtalu_r.OP2 ( ) );
+    dest_r.connectsTo ( signExtalu_r.OUT ( ) );
 
-    pc_ir.connectsTo ( rabus_r.IN ( ) );
-    r0.connectsTo ( rabus_r.IN ( ) );
-    r1.connectsTo ( rabus_r.IN ( ) );
-    r2.connectsTo ( rabus_r.IN ( ) );
-    r3.connectsTo ( rabus_r.IN ( ) );
-    r4.connectsTo ( rabus_r.IN ( ) );
-    r5.connectsTo ( rabus_r.IN ( ) );
-    r6.connectsTo ( rabus_r.IN ( ) );
-    r7.connectsTo ( rabus_r.IN ( ) );
-    r8.connectsTo ( rabus_r.IN ( ) );
-    r9.connectsTo ( rabus_r.IN ( ) );
-    r10.connectsTo ( rabus_r.IN ( ) );
-    r11.connectsTo ( rabus_r.IN ( ) );
-    r12.connectsTo ( rabus_r.IN ( ) );
-    r13.connectsTo ( rabus_r.IN ( ) );
-    r14.connectsTo ( rabus_r.IN ( ) );
-    r15.connectsTo ( rabus_r.IN ( ) );
-    r16.connectsTo ( rabus_r.IN ( ) );
-    r17.connectsTo ( rabus_r.IN ( ) );
-    r18.connectsTo ( rabus_r.IN ( ) );
-    r19.connectsTo ( rabus_r.IN ( ) );
-    r20.connectsTo ( rabus_r.IN ( ) );
-    r21.connectsTo ( rabus_r.IN ( ) );
-    r22.connectsTo ( rabus_r.IN ( ) );
-    r23.connectsTo ( rabus_r.IN ( ) );
-    r24.connectsTo ( rabus_r.IN ( ) );
-    r25.connectsTo ( rabus_r.IN ( ) );
-    r26.connectsTo ( rabus_r.IN ( ) );
-    r27.connectsTo ( rabus_r.IN ( ) );
-    r28.connectsTo ( rabus_r.IN ( ) );
-    r29.connectsTo ( rabus_r.IN ( ) );
-    r30.connectsTo ( rabus_r.IN ( ) );
-    r31.connectsTo ( rabus_r.IN ( ) );
+    dest_r.connectsTo ( changePC_bus.IN ( ) );
+    pc_load.connecsTo ( changePC_bus.OUT ( ) );
 
-    r0.connectsTo ( rbbus_r.IN ( ) );
-    r1.connectsTo ( rbbus_r.IN ( ) );
-    r2.connectsTo ( rbbus_r.IN ( ) );
-    r3.connectsTo ( rbbus_r.IN ( ) );
-    r4.connectsTo ( rbbus_r.IN ( ) );
-    r5.connectsTo ( rbbus_r.IN ( ) );
-    r6.connectsTo ( rbbus_r.IN ( ) );
-    r7.connectsTo ( rbbus_r.IN ( ) );
-    r8.connectsTo ( rbbus_r.IN ( ) );
-    r9.connectsTo ( rbbus_r.IN ( ) );
-    r10.connectsTo ( rbbus_r.IN ( ) );
-    r11.connectsTo ( rbbus_r.IN ( ) );
-    r12.connectsTo ( rbbus_r.IN ( ) );
-    r13.connectsTo ( rbbus_r.IN ( ) );
-    r14.connectsTo ( rbbus_r.IN ( ) );
-    r15.connectsTo ( rbbus_r.IN ( ) );
-    r16.connectsTo ( rbbus_r.IN ( ) );
-    r17.connectsTo ( rbbus_r.IN ( ) );
-    r18.connectsTo ( rbbus_r.IN ( ) );
-    r19.connectsTo ( rbbus_r.IN ( ) );
-    r20.connectsTo ( rbbus_r.IN ( ) );
-    r21.connectsTo ( rbbus_r.IN ( ) );
-    r22.connectsTo ( rbbus_r.IN ( ) );
-    r23.connectsTo ( rbbus_r.IN ( ) );
-    r24.connectsTo ( rbbus_r.IN ( ) );
-    r25.connectsTo ( rbbus_r.IN ( ) );
-    r26.connectsTo ( rbbus_r.IN ( ) );
-    r27.connectsTo ( rbbus_r.IN ( ) );
-    r28.connectsTo ( rbbus_r.IN ( ) );
-    r29.connectsTo ( rbbus_r.IN ( ) );
-    r30.connectsTo ( rbbus_r.IN ( ) );
-    r31.connectsTo ( rbbus_r.IN ( ) );
 
-    r0.connectsTo ( rcbus_r.IN ( ) );
-    r1.connectsTo ( rcbus_r.IN ( ) );
-    r2.connectsTo ( rcbus_r.IN ( ) );
-    r3.connectsTo ( rcbus_r.IN ( ) );
-    r4.connectsTo ( rcbus_r.IN ( ) );
-    r5.connectsTo ( rcbus_r.IN ( ) );
-    r6.connectsTo ( rcbus_r.IN ( ) );
-    r7.connectsTo ( rcbus_r.IN ( ) );
-    r8.connectsTo ( rcbus_r.IN ( ) );
-    r9.connectsTo ( rcbus_r.IN ( ) );
-    r10.connectsTo ( rcbus_r.IN ( ) );
-    r11.connectsTo ( rcbus_r.IN ( ) );
-    r12.connectsTo ( rcbus_r.IN ( ) );
-    r13.connectsTo ( rcbus_r.IN ( ) );
-    r14.connectsTo ( rcbus_r.IN ( ) );
-    r15.connectsTo ( rcbus_r.IN ( ) );
-    r16.connectsTo ( rcbus_r.IN ( ) );
-    r17.connectsTo ( rcbus_r.IN ( ) );
-    r18.connectsTo ( rcbus_r.IN ( ) );
-    r19.connectsTo ( rcbus_r.IN ( ) );
-    r20.connectsTo ( rcbus_r.IN ( ) );
-    r21.connectsTo ( rcbus_r.IN ( ) );
-    r22.connectsTo ( rcbus_r.IN ( ) );
-    r23.connectsTo ( rcbus_r.IN ( ) );
-    r24.connectsTo ( rcbus_r.IN ( ) );
-    r25.connectsTo ( rcbus_r.IN ( ) );
-    r26.connectsTo ( rcbus_r.IN ( ) );
-    r27.connectsTo ( rcbus_r.IN ( ) );
-    r28.connectsTo ( rcbus_r.IN ( ) );
-    r29.connectsTo ( rcbus_r.IN ( ) );
-    r30.connectsTo ( rcbus_r.IN ( ) );
-    r31.connectsTo ( rcbus_r.IN ( ) );
+    r0.connectsTo ( rabus_r1.IN ( ) );
+    r1.connectsTo ( rabus_r1.IN ( ) );
+    r2.connectsTo ( rabus_r1.IN ( ) );
+    r3.connectsTo ( rabus_r1.IN ( ) );
+    r4.connectsTo ( rabus_r1.IN ( ) );
+    r5.connectsTo ( rabus_r1.IN ( ) );
+    r6.connectsTo ( rabus_r1.IN ( ) );
+    r7.connectsTo ( rabus_r1.IN ( ) );
+    r8.connectsTo ( rabus_r1.IN ( ) );
+    r9.connectsTo ( rabus_r1.IN ( ) );
+    r10.connectsTo ( rabus_r1.IN ( ) );
+    r11.connectsTo ( rabus_r1.IN ( ) );
+    r12.connectsTo ( rabus_r1.IN ( ) );
+    r13.connectsTo ( rabus_r1.IN ( ) );
+    r14.connectsTo ( rabus_r1.IN ( ) );
+    r15.connectsTo ( rabus_r1.IN ( ) );
+    r16.connectsTo ( rabus_r1.IN ( ) );
+    r17.connectsTo ( rabus_r1.IN ( ) );
+    r18.connectsTo ( rabus_r1.IN ( ) );
+    r19.connectsTo ( rabus_r1.IN ( ) );
+    r20.connectsTo ( rabus_r1.IN ( ) );
+    r21.connectsTo ( rabus_r1.IN ( ) );
+    r22.connectsTo ( rabus_r1.IN ( ) );
+    r23.connectsTo ( rabus_r1.IN ( ) );
+    r24.connectsTo ( rabus_r1.IN ( ) );
+    r25.connectsTo ( rabus_r1.IN ( ) );
+    r26.connectsTo ( rabus_r1.IN ( ) );
+    r27.connectsTo ( rabus_r1.IN ( ) );
+    r28.connectsTo ( rabus_r1.IN ( ) );
+    r29.connectsTo ( rabus_r1.IN ( ) );
+    r30.connectsTo ( rabus_r1.IN ( ) );
+    r31.connectsTo ( rabus_r1.IN ( ) );
 
-    r0.connectsTo ( auxbus_r.IN ( ) );
-    r1.connectsTo ( auxbus_r.IN ( ) );
-    r2.connectsTo ( auxbus_r.IN ( ) );
-    r3.connectsTo ( auxbus_r.IN ( ) );
-    r4.connectsTo ( auxbus_r.IN ( ) );
-    r5.connectsTo ( auxbus_r.IN ( ) );
-    r6.connectsTo ( auxbus_r.IN ( ) );
-    r7.connectsTo ( auxbus_r.IN ( ) );
-    r8.connectsTo ( auxbus_r.IN ( ) );
-    r9.connectsTo ( auxbus_r.IN ( ) );
-    r10.connectsTo ( auxbus_r.IN ( ) );
-    r11.connectsTo ( auxbus_r.IN ( ) );
-    r12.connectsTo ( auxbus_r.IN ( ) );
-    r13.connectsTo ( auxbus_r.IN ( ) );
-    r14.connectsTo ( auxbus_r.IN ( ) );
-    r15.connectsTo ( auxbus_r.IN ( ) );
-    r16.connectsTo ( auxbus_r.IN ( ) );
-    r17.connectsTo ( auxbus_r.IN ( ) );
-    r18.connectsTo ( auxbus_r.IN ( ) );
-    r19.connectsTo ( auxbus_r.IN ( ) );
-    r20.connectsTo ( auxbus_r.IN ( ) );
-    r21.connectsTo ( auxbus_r.IN ( ) );
-    r22.connectsTo ( auxbus_r.IN ( ) );
-    r23.connectsTo ( auxbus_r.IN ( ) );
-    r24.connectsTo ( auxbus_r.IN ( ) );
-    r25.connectsTo ( auxbus_r.IN ( ) );
-    r26.connectsTo ( auxbus_r.IN ( ) );
-    r27.connectsTo ( auxbus_r.IN ( ) );
-    r28.connectsTo ( auxbus_r.IN ( ) );
-    r29.connectsTo ( auxbus_r.IN ( ) );
-    r30.connectsTo ( auxbus_r.IN ( ) );
-    r31.connectsTo ( auxbus_r.IN ( ) );
+    r0.connectsTo ( rbbus_r1.IN ( ) );
+    r1.connectsTo ( rbbus_r1.IN ( ) );
+    r2.connectsTo ( rbbus_r1.IN ( ) );
+    r3.connectsTo ( rbbus_r1.IN ( ) );
+    r4.connectsTo ( rbbus_r1.IN ( ) );
+    r5.connectsTo ( rbbus_r1.IN ( ) );
+    r6.connectsTo ( rbbus_r1.IN ( ) );
+    r7.connectsTo ( rbbus_r1.IN ( ) );
+    r8.connectsTo ( rbbus_r1.IN ( ) );
+    r9.connectsTo ( rbbus_r1.IN ( ) );
+    r10.connectsTo ( rbbus_r1.IN ( ) );
+    r11.connectsTo ( rbbus_r1.IN ( ) );
+    r12.connectsTo ( rbbus_r1.IN ( ) );
+    r13.connectsTo ( rbbus_r1.IN ( ) );
+    r14.connectsTo ( rbbus_r1.IN ( ) );
+    r15.connectsTo ( rbbus_r1.IN ( ) );
+    r16.connectsTo ( rbbus_r1.IN ( ) );
+    r17.connectsTo ( rbbus_r1.IN ( ) );
+    r18.connectsTo ( rbbus_r1.IN ( ) );
+    r19.connectsTo ( rbbus_r1.IN ( ) );
+    r20.connectsTo ( rbbus_r1.IN ( ) );
+    r21.connectsTo ( rbbus_r1.IN ( ) );
+    r22.connectsTo ( rbbus_r1.IN ( ) );
+    r23.connectsTo ( rbbus_r1.IN ( ) );
+    r24.connectsTo ( rbbus_r1.IN ( ) );
+    r25.connectsTo ( rbbus_r1.IN ( ) );
+    r26.connectsTo ( rbbus_r1.IN ( ) );
+    r27.connectsTo ( rbbus_r1.IN ( ) );
+    r28.connectsTo ( rbbus_r1.IN ( ) );
+    r29.connectsTo ( rbbus_r1.IN ( ) );
+    r30.connectsTo ( rbbus_r1.IN ( ) );
+    r31.connectsTo ( rbbus_r1.IN ( ) );
 
-    ra_re.connectsTo ( rabus_r.OUT ( ) );
-    rb_re.connectsTo ( rbbus_r.OUT ( ) );
-    rc_re.connectsTo ( rcbus_r.OUT ( ) );
-    aux_re.connectsTo ( auxbus_r.OUT ( ) );
+    r0.connectsTo ( destalu_r.OP1 ( ) );
+    r1.connectsTo ( destalu_r.OP1 ( ) );
+    r2.connectsTo ( destalu_r.OP1 ( ) );
+    r3.connectsTo ( destalu_r.OP1 ( ) );
+    r4.connectsTo ( destalu_r.OP1 ( ) );
+    r5.connectsTo ( destalu_r.OP1 ( ) );
+    r6.connectsTo ( destalu_r.OP1 ( ) );
+    r7.connectsTo ( destalu_r.OP1 ( ) );
+    r8.connectsTo ( destalu_r.OP1 ( ) );
+    r9.connectsTo ( destalu_r.OP1 ( ) );
+    r10.connectsTo ( destalu_r.OP1 ( ) );
+    r11.connectsTo ( destalu_r.OP1 ( ) );
+    r12.connectsTo ( destalu_r.OP1 ( ) );
+    r13.connectsTo ( destalu_r.OP1 ( ) );
+    r14.connectsTo ( destalu_r.OP1 ( ) );
+    r15.connectsTo ( destalu_r.OP1 ( ) );
+    r16.connectsTo ( destalu_r.OP1 ( ) );
+    r17.connectsTo ( destalu_r.OP1 ( ) );
+    r18.connectsTo ( destalu_r.OP1 ( ) );
+    r19.connectsTo ( destalu_r.OP1 ( ) );
+    r20.connectsTo ( destalu_r.OP1 ( ) );
+    r21.connectsTo ( rbbus_r1.IN ( ) );
+    r22.connectsTo ( rbbus_r1.IN ( ) );
+    r23.connectsTo ( rbbus_r1.IN ( ) );
+    r24.connectsTo ( rbbus_r1.IN ( ) );
+    r25.connectsTo ( rbbus_r1.IN ( ) );
+    r26.connectsTo ( rbbus_r1.IN ( ) );
+    r27.connectsTo ( rbbus_r1.IN ( ) );
+    r28.connectsTo ( rbbus_r1.IN ( ) );
+    r29.connectsTo ( rbbus_r1.IN ( ) );
+    r30.connectsTo ( rbbus_r1.IN ( ) );
+    r31.connectsTo ( rbbus_r1.IN ( ) );
 
-    lock_ir.connectsTo ( lockbus_r.IN ( ) );
-    lock_re.connectsTo ( lockbus_r.OUT ( ) );
+    r0.connectsTo ( rcbus_r1.IN ( ) );
+    r1.connectsTo ( rcbus_r1.IN ( ) );
+    r2.connectsTo ( rcbus_r1.IN ( ) );
+    r3.connectsTo ( rcbus_r1.IN ( ) );
+    r4.connectsTo ( rcbus_r1.IN ( ) );
+    r5.connectsTo ( rcbus_r1.IN ( ) );
+    r6.connectsTo ( rcbus_r1.IN ( ) );
+    r7.connectsTo ( rcbus_r1.IN ( ) );
+    r8.connectsTo ( rcbus_r1.IN ( ) );
+    r9.connectsTo ( rcbus_r1.IN ( ) );
+    r10.connectsTo ( rcbus_r1.IN ( ) );
+    r11.connectsTo ( rcbus_r1.IN ( ) );
+    r12.connectsTo ( rcbus_r1.IN ( ) );
+    r13.connectsTo ( rcbus_r1.IN ( ) );
+    r14.connectsTo ( rcbus_r1.IN ( ) );
+    r15.connectsTo ( rcbus_r1.IN ( ) );
+    r16.connectsTo ( rcbus_r1.IN ( ) );
+    r17.connectsTo ( rcbus_r1.IN ( ) );
+    r18.connectsTo ( rcbus_r1.IN ( ) );
+    r19.connectsTo ( rcbus_r1.IN ( ) );
+    r20.connectsTo ( rcbus_r1.IN ( ) );
+    r21.connectsTo ( rcbus_r1.IN ( ) );
+    r22.connectsTo ( rcbus_r1.IN ( ) );
+    r23.connectsTo ( rcbus_r1.IN ( ) );
+    r24.connectsTo ( rcbus_r1.IN ( ) );
+    r25.connectsTo ( rcbus_r1.IN ( ) );
+    r26.connectsTo ( rcbus_r1.IN ( ) );
+    r27.connectsTo ( rcbus_r1.IN ( ) );
+    r28.connectsTo ( rcbus_r1.IN ( ) );
+    r29.connectsTo ( rcbus_r1.IN ( ) );
+    r30.connectsTo ( rcbus_r1.IN ( ) );
+    r31.connectsTo ( rcbus_r1.IN ( ) );
+
+    ra_re.connectsTo ( rabus_r2.OUT ( ) );
+    rb_re.connectsTo ( rbbus_r2.OUT ( ) );
+    rc_re.connectsTo ( rcbus_r2.OUT ( ) );
+
+    pc_r.connectsTo ( pcbus_r2.IN ( ) );
+    pc_re.connectsTo ( pcbus_r2.OUT ( ) );
+
+    literal_r.connectsTo ( litalu_r2.OP1 ( ) );
+    literalShift_g.connectsTo ( litalu_r2.OP2 ( ) );
+    literal_re.connectsTo ( litalu_r2.OUT ( ) );
+
+    ir_r.connectsTo ( irbus_r2.IN ( ) );
+    noop_g.connectsTo ( irbus_r2.IN ( ) );
+    ir_re.connectsTo ( irbus_r2.OUT ( ) );
+
+    dest_r.connectsTo ( destbus_r2.IN ( ) );
+    disp_re.connectsTo ( destbus_r2.OUT ( ) );
 } // make_connections_read
+
+/**
+ * $(fclass)
+ * connect_rx
+ *
+ *
+ * $(gavaparam)
+ * @throws
+ */
+void connect_rx ( StorageObject & src,
+                  Bus			& bus,
+                  StorageObject & dest )
+{
+    switch ( reg ) {
+        case 0: f ( r0 );
+            break;
+        case 1: f ( r1 );
+            break;
+        case 2: f ( r2 );
+            break;
+        case 3: f ( r3 );
+            break;
+        case 4: f ( r4 );
+            break;
+        case 5: f ( r5 );
+            break;
+        case 6: f ( r6 );
+            break;
+        case 7: f ( r7 );
+            break;
+        case 8: f ( r8 );
+            break;
+        case 9: f ( r9 );
+            break;
+        case 10: f ( r10 );
+            break;
+        case 11: f ( r11 );
+            break;
+        case 12: f ( r12 );
+            break;
+        case 13: f ( r13 );
+            break;
+        case 14: f ( r14 );
+            break;
+        case 15: f ( r15 );
+            break;
+        case 16: f ( r16 );
+            break;
+        case 17: f ( r17 );
+            break;
+        case 18: f ( r18 );
+            break;
+        case 19: f ( r19 );
+            break;
+        case 20: f ( r20 );
+            break;
+        case 21: f ( r21 );
+            break;
+        case 22: f ( r22 );
+            break;
+        case 23: f ( r23 );
+            break;
+        case 24: f ( r24 );
+            break;
+        case 25: f ( r25 );
+            break;
+        case 26: f ( r26 );
+            break;
+        case 27: f ( r27 );
+            break;
+        case 28: f ( r28 );
+            break;
+        case 29: f ( r29 );
+            break;
+        case 30: f ( r30 );
+            break;
+        case 31: f ( r31 );
+            break;
+    } // switch
+}     // connect_rx
+
+/**
+ * $(fclass)
+ * store_ra
+ *
+ *
+ * $(gavaparam)
+ * @throws
+ */
+void store_ra ( StorageObject & rx )
+{
+    rx.connectsTo ( r )
+}
 
 /**
  * make_connections_execute
@@ -437,4 +553,4 @@ void make_connections_auxillary ( )
 
 } // make_connections_auxillary
 
-// $(filename) end
+// make_onnections end
