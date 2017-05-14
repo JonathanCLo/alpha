@@ -6,6 +6,7 @@
 #include "hw_mem.h"
 
 Bus dbus_m ( "DBUSM", REG_SIZE );
+Counter pc_em ( "PC_EM", ADDR_SIZE );
 Counter ir_em ( "IREM", REG_SIZE );
 Counter out_em ( "OUTEM", REG_SIZE );
 Bus mm_controlbus ( "MMCONTROLBUS", REG_SIZE );

@@ -1,5 +1,6 @@
 #include "includes.h"
 extern Bus dbus_m;
+extern Counter pc_em;
 extern Counter ir_em;
 extern Counter out_em;
 extern Bus mm_controlbus;
