@@ -75,7 +75,7 @@ class Instruction():
         elif isPalcode(self.mnemonic):
             # PAL HALT
             self.Format = "PALCode"
-            if (len(parts) > 1):
+            if (len(parts) > 1 and isPalcode(parts[1])):
                 self.PALCode = parts[1]
             else:
                 self.PALCode = parts[0]
@@ -163,7 +163,7 @@ def main():
                     print(instr.raw_string)
                     outfile.write(str(hex(accumulator))[2:] + " 4 ")
                     accumulator = accumulator + 4
-                    one, two, three, four = b[24:31], b[16:23], b[8:15], b[0:7]
+                    one, two, three, four = b[24:32], b[16:23], b[8:15], b[0:7]
                     outfile.write(str(hex(int(four, 2)))[2:] + " ")
                     outfile.write(str(hex(int(three, 2)))[2:] + " ")
                     outfile.write(str(hex(int(two,2)))[2:] + " ")
