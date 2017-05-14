@@ -22,8 +22,7 @@ extern unsigned int DATA_SIZE;   // DATA SIZE
  * INSTRUCTION OPCODE CONSTANTS
  */
 enum INSTRS {
-    OPC_NOOP = 0, 
-    OPC_HALT = 1,
+    OPC_PAL = 0, 
     OPC_LDA = 8,
     OPC_LDAH = 9, 
     OPC_LDBU = 10,

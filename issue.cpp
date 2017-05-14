@@ -40,12 +40,12 @@ void issue1 ( )
               ir_fi.value ( ) );
     
     switch ( opc ) {
-        case OPC_NOOP: // noop
-            break;
-        case OPC_HALT: // halt
-            done = true;
-            return;
-            break;
+        case OPC_PAL: // PAL
+            if ( ir_fi.value ( ) == 0 ) { // HALT
+                done = true;
+                return;
+            }
+            break;      
         case OPC_BEQ:
         case OPC_BGE:
         case OPC_BGT:
@@ -107,7 +107,7 @@ void issue2 ( )
     pc_ir.latchFrom ( pcbus_i2.OUT ( ) );
 
     switch ( opc ) {
-        case OPC_NOOP: // noop
+        case OPC_PAL: // noop
             break;
         case OPC_BEQ:
         case OPC_BGE:

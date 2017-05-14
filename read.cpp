@@ -51,8 +51,9 @@ void read1 ( )
     pc_r.latchFrom ( pcbus_r1.OUT ( ) );
     long opc = ir_re ( REG_SIZE - 1, REG_SIZE - 6 );
     switch ( opc ) {
-        case OPC_NOOP:
-            noop1 ( );
+        case OPC_PAL:
+
+            if ( ir_ir.value ( ) == 1 ) noop1 ( );
             break;
         case OPC_LDA:  
         case OPC_LDAH:
@@ -102,8 +103,8 @@ void read2 ( )
     long opc = ir_r ( REG_SIZE - 1, REG_SIZE - 6 );
 
     switch ( opc ) {
-        case OPC_NOOP:
-            noop2 ( );
+        case OPC_PAL:
+            if ( ir_ir.value ( ) == 1 ) noop2 ( );
             break;
         case OPC_LDA:  
         case OPC_LDAH:

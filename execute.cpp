@@ -153,10 +153,6 @@ void execute1 ( )
     sprintf ( disp1value_ex, "disp=%08lx",
               disp_re.value ( ) );
 
-    if (opcode == OPC_HALT) {
-        done = true;
-        return; 
-    }
     //preserve re for cycle 2
     switch ( opcode ) {
         case OPC_LDA: case OPC_LDAH: case OPC_LDBU:
