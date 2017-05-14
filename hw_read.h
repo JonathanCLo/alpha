@@ -8,7 +8,6 @@ extern Clearable ir_r;
 extern Clearable ir_ir;
 
 extern BusALU signExtalu_r;
-extern Clearable npc_ir;
 extern Clearable dest_r;
 
 extern BusALU litalu_r1;

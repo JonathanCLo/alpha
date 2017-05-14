@@ -143,6 +143,7 @@ extern BusALU addr_alu;       // addr alu
 /**
  * Programmer-viewable registers
  */
+extern Counter* regfile[];
 extern Counter r0;
 extern Counter r1;
 extern Counter r2;
@@ -176,6 +177,7 @@ extern Counter r29;
 extern Counter r30;
 extern Clearable r31;         // used as a 'zero' register
 
+extern Bus irbus_e;
 /* cache */
 extern Memory instr_cache;
 extern Memory data_cache;
