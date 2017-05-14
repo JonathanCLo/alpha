@@ -29,7 +29,7 @@ using namespace std;
 
 // program-specific includes
 
-#include "hardware.h"
+// #include "hardware.h"
 #include "hw_fetch.h"
 #include "hw_issue.h"
 #include "hw_read.h"
