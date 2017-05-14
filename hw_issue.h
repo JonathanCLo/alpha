@@ -14,3 +14,4 @@ extern Clearable pc_i;
 extern Clearable ir_i;
 extern Clearable aux_i;
 extern BusALU leftShift_alu;
+extern BusALU destalu_i;

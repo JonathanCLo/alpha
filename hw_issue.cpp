@@ -12,4 +12,5 @@ Clearable pc_i ( "PC_I", REG_SIZE );
 Clearable ir_i ( "IR_I", REG_SIZE );
 Clearable aux_i ( "AUX_I", REG_SIZE );
 BusALU leftShift_alu ( "LEFTSHIFT_ALU", REG_SIZE );
+BusALU destalu_i ( "DESTALU_ISSUE", REG_SIZE );
 // $(filename)

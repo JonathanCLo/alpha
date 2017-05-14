@@ -8,6 +8,10 @@ extern Bus pcbus_r2;
 extern Bus destbus_r2;
 extern Clearable ir_r;
 extern Clearable ir_ir;
+extern Clearable pc_r;
+extern Clearable pc_ir;
+
+extern Clearable npc_ir;
 
 extern BusALU signExtalu_r;
 extern Clearable dest_r;

@@ -96,27 +96,27 @@ void make_connections_read ( )
     literalmask_g.connectsTo ( litalu_r1.OP2 ( ) );
     literal_r.connectsTo ( litalu_r1.OUT ( ) );
 
-    npc_ir.connecsTo ( signExtalu_r.OP1 ( ) );
+    npc_ir.connectsTo ( signExtalu_r.OP1 ( ) );
     dispmask_g.connectsTo ( signExtalu_r.OP2 ( ) );
     shift7_g.connectsTo ( signExtalu_r.OP2 ( ) );
     dest_r.connectsTo ( signExtalu_r.OUT ( ) );
 
     dest_r.connectsTo ( changePC_bus.IN ( ) );
-    pc_load.connecsTo ( changePC_bus.OUT ( ) );
+    pc_load.connectsTo ( changePC_bus.OUT ( ) );
 
     // connect rx to rabus_r1
     for ( int i = 0; i < 32; i++ ) {
-        regfile[i].connectsTo ( rabus_r1.IN ( ) );
+        (*regfile[i]).connectsTo ( rabus_r1.IN ( ) );
     }
 
     // connect rx to rbbus_r1
     for ( int i = 0; i < 32; i++ ) {
-        regfile[i].connectsTo ( rbbus_r1.IN ( ) );
+        (*regfile[i]).connectsTo ( rbbus_r1.IN ( ) );
     }
 
     // connect rx to rcbus_r1
     for ( int i = 0; i < 32; i++ ) {
-        regfile[i].connectsTo ( rcbus_r1.IN ( ) );
+        (*regfile[i]).connectsTo ( rcbus_r1.IN ( ) );
     }
 
     ra_r.connectsTo ( rabus_r1.OUT ( ) );
@@ -126,9 +126,9 @@ void make_connections_read ( )
     ra_r.connectsTo ( rabus_r2.IN ( ) );
     rb_r.connectsTo ( rbbus_r2.IN ( ) );
     rc_r.connectsTo ( rcbus_r2.IN ( ) );
-    ra_re.connectsTO ( rabus_r2.OUT ( ) );
-    rb_re.connectsTO ( rbbus_r2.OUT ( ) );
-    rc_re.connectsTO ( rcbus_r2.OUT ( ) );
+    ra_re.connectsTo ( rabus_r2.OUT ( ) );
+    rb_re.connectsTo ( rbbus_r2.OUT ( ) );
+    rc_re.connectsTo ( rcbus_r2.OUT ( ) );
 
     rb_r.connectsTo ( destalu_r.OP1 ( ) );
     not3_g.connectsTo ( destalu_r.OP2 ( ) );
@@ -161,19 +161,19 @@ void make_connections_execute ( )
     const3_g.connectsTo ( arith_alu.OP2 ( ) );
     rb_re.connectsTo ( addr_alu.OP1 ( ) );
     literal_re.connectsTo ( addr_alu.OP1 ( ) );
-    ex_internalarith.connectsTo ( arith_alu.OUT ( ) );
-    ex_internaladdr.connectsTo ( addr_alu.OUT ( ) );
+    ex_internal_arith.connectsTo ( arith_alu.OUT ( ) );
+    ex_internal_addr.connectsTo ( addr_alu.OUT ( ) );
 
     ir_re.connectsTo ( irbus_e1.IN ( ) );
-    ex_internalir.connectsTo ( irbus_e1.OUT ( ) );
-    ex_internalir.connectsTo ( irbus_e2.IN ( ) );
+    ex_internal_ir.connectsTo ( irbus_e1.OUT ( ) );
+    ex_internal_ir.connectsTo ( irbus_e2.IN ( ) );
     ir_em.connectsTo ( irbus_e2.OUT ( ) );
 
     disp_re.connectsTo ( shift_alu.OP1 ( ) );
     const16_g.connectsTo ( shift_alu.OP2 ( ) );
-    ex_internalshift.connectsTo ( shift_alu.OUT ( ) );
+    ex_internal_shift.connectsTo ( shift_alu.OUT ( ) );
 
-    ex_internalarith.connectsTo ( arith_alu.OP1 ( ) );
+    ex_internal_arith.connectsTo ( arith_alu.OP1 ( ) );
     ex_internal_addr.connectsTo ( arith_alu.OP2 ( ) );
     out_em.connectsTo ( arith_alu.OUT ( ) );
 
@@ -181,16 +181,16 @@ void make_connections_execute ( )
     ex_internal_shift.connectsTo ( addr_alu.OP2 ( ) );
     data_cache.MAR ( ).connectsTo ( addr_alu.OUT ( ) );
 
-    mem_flag.connectsTo ( read.OUT ( ) );
-    mem_flag.connectsTo ( write.OUT ( ) );
-    mem_flag.connectsTo ( nomem.OUT ( ) );
+    mem_flag.connectsTo ( read_mem.OUT ( ) );
+    mem_flag.connectsTo ( write_mem.OUT ( ) );
+    mem_flag.connectsTo ( no_mem.OUT ( ) );
     mem_flag.connectsTo ( writeback.OUT ( ) );
 
 } // make_connections_execute
 
 /**
  * make_connections_memory
- *
+ * 
  *
  */
 void make_connections_memory ( )
