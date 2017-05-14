@@ -22,21 +22,31 @@ extern unsigned int DATA_SIZE;   // DATA SIZE
  * INSTRUCTION OPCODE CONSTANTS
  */
 enum INSTRS {
-    OPC_NOOP = 0, OPC_LDA = 8,
-    OPC_LDAH = 9, OPC_LDBU = 10,
-    OPC_LDL	 = 40, OPC_LDWU = 12,
-    OPC_STL	 = 44, OPC_STW = 13,
-    OPC_JMP	 = 26, OPC_RPCC = 24,
+    OPC_PAL = 0, 
+    OPC_LDA = 8,
+    OPC_LDAH = 9, 
+    OPC_LDBU = 10,
+    OPC_LDL = 40, 
+    OPC_LDWU = 12,
+    OPC_STL = 44, 
+    OPC_STW = 13,
+    OPC_JMP = 26, 
+    OPC_RPCC = 24,
     OPC_ADDL = 16,
-    OPC_AND	 = 17,
-    OPC_BGE	 = 62, OPC_JSR = 260,
-    OPC_RET	 = 2600, OPC_JSRC = 26000,
-    OPC_BGT	 = 63, OPC_BEQ = 57,
-    OPC_BLBS = 60, OPC_BLE = 58,
-    OPC_BLBC = 56, OPC_BLT = 59,
-
-    OPC_BNE	 = 61, OPC_BR = 48,
-    OPC_BSR	 = 52
+    OPC_AND = 17,
+    OPC_BGE = 62, 
+    OPC_JSR = 260,
+    OPC_RET = 2600, 
+    OPC_JSRC = 26000,
+    OPC_BGT = 63, 
+    OPC_BEQ = 57,
+    OPC_BLBS = 60, 
+    OPC_BLE = 58,
+    OPC_BLBC = 56,
+    OPC_BLT = 59,
+    OPC_BNE  = 61,
+    OPC_BR = 48,
+    OPC_BSR = 52
 };
 //Note: because these instructions all share opcodes, decisions should not be made based on their values
 //eg. reading an opcode of 16 could mean many things. Once you decode the true function, store it separately
@@ -89,6 +99,7 @@ extern Counter* regfile[];
 extern Memory instr_cache;
 extern Memory data_cache;
 
+extern bool ir_purge;
 extern bool done;
 
 #endif

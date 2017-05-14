@@ -6,15 +6,27 @@
  */
 #include "includes.h"
 #include "hazards.h"
+
+char pc1value_ex [16];
+char opc1value_ex [16];
+char ra1value_ex [16];
+char rb1value_ex [16];
+char rc1value_ex [16];
+char lit1value_ex [16];
+char disp1value_ex [16];
+char opc2value_ex [16];
+char addr2value_ex [16];
+char shift2value_ex [16];
+char arith2value_ex [16];
+char print1_ex [256];
+char print2_ex [256];
+
 void execute ( );
 
 /**
- * $(fclass)
  * ex_mem_s1
  *
  *
- * $(gavaparam)
- * @throws
  */
 void ex_mem_s1 ( int opcode )
 {
@@ -28,12 +40,9 @@ void ex_mem_s1 ( int opcode )
 } // ex_mem_s1
 
 /**
- * $(fclass)
  * ex_mem_s2
  *
  *
- * $(gavaparam)
- * @throws
  */
 void ex_mem_s2 ( int opcode )
 {
@@ -47,12 +56,9 @@ void ex_mem_s2 ( int opcode )
 
 
 /**
- * $(fclass)
  * ex_arith_s1
  *
  *
- * $(gavaparam)
- * @throws
  */
 void ex_arith_s1 ( int	opcode,
                    int	func,
@@ -88,12 +94,9 @@ void ex_arith_s1 ( int	opcode,
 } // ex_arith_s1
 
 /**
- * $(fclass)
  * ex_arith_s2
  *
  *
- * $(gavaparam)
- * @throws
  */
 void ex_arith_s2 ( int opcode,
                    int func )
@@ -131,10 +134,21 @@ void execute1 ( )
     int opcode = ir_re ( 31, 26 );
     bool imm   = ir_re ( 12 ) == 0;
     int func   = ir_re ( 11, 5 );
-    if (opcode == 0) {
-        done = true;
-        return; 
-    }
+    sprintf ( pc1value_ex, "pc=%04lx",
+              pc_re.value ( ) );
+    sprintf ( opc1value_ex, "opc=%03d",
+              opcode );
+    sprintf ( ra1value_ex, "ra=%08lx",
+              ra_re.value ( ) );
+    sprintf ( rb1value_ex, "rb=%08lx",
+              rb_re.value ( ) );
+    sprintf ( rc1value_ex, "rc=%08lx",
+              rc_re.value ( ) );
+    sprintf ( lit1value_ex, "lit=%08lx",
+              literal_re.value ( ) );
+    sprintf ( disp1value_ex, "disp=%08lx",
+              disp_re.value ( ) );
+
     //preserve re for cycle 2
     switch ( opcode ) {
         case OPC_LDA: case OPC_LDAH: case OPC_LDBU:
@@ -159,12 +173,9 @@ void execute1 ( )
 } // execute1
 
 /**
- * $(fclass)
  * execute2
  *
  *
- * $(gavaparam)
- * @throws
  */
 void execute2 ( )
 {
@@ -196,5 +207,30 @@ void execute2 ( )
         default:
             break;
     } // switch
+    
+    sprintf ( opc2value_ex, "opc=%03d",
+              opcode );
+    sprintf ( addr2value_ex, "addr=%08lx",
+              ex_internal_shift.value ( ) );
+    sprintf ( shift2value_ex, "shift=%08lx",
+              ex_internal_shift.value ( ) );
+    sprintf ( arith2value_ex, "arith=%08lx",
+              ex_internal_arith.value ( ) );
+    
+    // first stage
+    sprintf ( print1_ex, "|X| %-7s %-7s %-12s %-12s %-12s %-12s %-12s ",
+              pc1value_ex,
+              opc1value_ex,
+              ra1value_ex,
+              rb1value_ex,
+              rc1value_ex,
+              lit1value_ex,
+              disp1value_ex );
+    sprintf ( print2_ex, "| %-7s %-14s %-14s %-14s ",
+              opc2value_ex,
+              addr2value_ex,
+              shift2value_ex,
+              arith2value_ex );
+    cout << print1_ex << print2_ex;
 } // execute2
 // $(filename) end

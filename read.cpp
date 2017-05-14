@@ -8,6 +8,15 @@
 
 long ra_value;
 
+char pc1value_read [16];
+char pc2value_read [16];
+char opc1value_read[16];
+char opc2value_read[16];
+
+char dest2value_read[16];
+char lit2value_read[16];
+char print_read [128];
+
 void read1 ( );
 void read2 ( );
 void noop1 ( );
@@ -42,19 +51,27 @@ void read1 ( )
     pc_r.latchFrom ( pcbus_r1.OUT ( ) );
     long opc = ir_re ( REG_SIZE - 1, REG_SIZE - 6 );
     switch ( opc ) {
-        case OPC_NOOP:
-            noop1 ( );
+        case OPC_PAL:
+
+            if ( ir_ir.value ( ) == 0 ) noop1 ( );
             break;
-        case OPC_LDA:  case OPC_LDAH:
-        case OPC_LDWU: case OPC_LDL:
+        case OPC_LDA:  
+        case OPC_LDAH:
+        case OPC_LDWU:
+        case OPC_LDL:
         case OPC_STL:
             memdisp1 ( );
             break;
-        case OPC_BEQ: case OPC_BGE:
-        case OPC_BGT: case OPC_BLBC:
-        case OPC_BLBS: case OPC_BLE:
-        case OPC_BLT: case OPC_BNE:
-        case OPC_BR:  case OPC_BSR: // B
+        case OPC_BEQ: 
+        case OPC_BGE:
+        case OPC_BGT: 
+        case OPC_BLBC:
+        case OPC_BLBS: 
+        case OPC_BLE:
+        case OPC_BLT: 
+        case OPC_BNE:
+        case OPC_BR:  
+        case OPC_BSR: // B
             branch1 ( );
             break;
         case OPC_JMP:
@@ -71,7 +88,11 @@ void read1 ( )
 
     } // switch
 
-    execute1 ( );
+    sprintf ( pc1value_read, "pc=%04lx",
+             pc_ir.value ( ) );
+    sprintf ( opc1value_read, "opc=%03lx",
+            opc );
+
 } // read1
 
 /**
@@ -82,19 +103,26 @@ void read2 ( )
     long opc = ir_r ( REG_SIZE - 1, REG_SIZE - 6 );
 
     switch ( opc ) {
-        case OPC_NOOP:
-            noop2 ( );
+        case OPC_PAL:
+            if ( ir_ir.value ( ) == 0 ) noop2 ( );
             break;
-        case OPC_LDA:  case OPC_LDAH:
-        case OPC_LDWU: case OPC_LDL:
+        case OPC_LDA:  
+        case OPC_LDAH:
+        case OPC_LDWU: 
+        case OPC_LDL:
         case OPC_STL:
             memdisp2 ( );
             break;
-        case OPC_BEQ:  case OPC_BGE:
-        case OPC_BGT:  case OPC_BLBC:
-        case OPC_BLBS: case OPC_BLE:
-        case OPC_BLT:  case OPC_BNE:
-        case OPC_BR:   case OPC_BSR: // B
+        case OPC_BEQ:  
+        case OPC_BGE:
+        case OPC_BGT:  
+        case OPC_BLBC:
+        case OPC_BLBS: 
+        case OPC_BLE:
+        case OPC_BLT:  
+        case OPC_BNE:
+        case OPC_BR:   
+        case OPC_BSR: // B
             branch2 ( );
             break;
         case OPC_JMP:
@@ -109,26 +137,65 @@ void read2 ( )
         default: // unknown
             done = true;
     } // switch
-    execute2 ( );
-} // read
+
+    sprintf ( pc2value_read, "pc=%04lx",
+              pc_r.value ( ) );
+    sprintf ( opc2value_read, "opc=%03lx",
+              opc );
+    sprintf ( lit2value_read, "lit=%08lx",
+              literal_r.value ( ) );
+    sprintf ( dest2value_read, "dest=%08lx",
+              dest_r.value ( ) );
+
+    sprintf ( print_read, "|R| %-7s %-7s | %-7s %-7s %-12s %-12s ",
+              pc1value_read,
+              opc1value_read,
+              pc2value_read,
+              opc2value_read,
+              lit2value_read,
+              dest2value_read );
+    cout << print_read;
+
+} // read2
 
 /**
  * noop1
  */
 void noop1 ( )
-{ }
+{
+    // move ir
+    irbus_r1.IN ( ).pullFrom ( ir_ir );
+    ir_r.latchFrom ( irbus_r1.OUT ( ) );
+    // move pc
+    pcbus_r1.IN ( ).pullFrom ( pc_ir );
+    pc_r.latchFrom ( pcbus_r1.OUT ( ) );
+}
 
 /**
  * noop2 ( )
  */
 void noop2 ( )
-{ }
+{ 
+    // move ir
+    irbus_r2.IN ( ).pullFrom ( ir_r );
+    ir_re.latchFrom ( irbus_r2.OUT ( ) );
+    // move pc
+    pcbus_r2.IN ( ).pullFrom ( pc_r );
+    pc_re.latchFrom ( pcbus_r2.OUT ( ) );
+}
 
 /**
  * memdisp1
  */
 void memdisp1 ( )
 {
+    // move ir
+    irbus_r1.IN ( ).pullFrom ( ir_ir );
+    ir_r.latchFrom ( irbus_r1.OUT ( ) );
+    // move pc
+    pcbus_r1.IN ( ).pullFrom ( pc_ir );
+    pc_r.latchFrom ( pcbus_r1.OUT ( ) );
+
     // sign extend
     signExtalu_r.OP1 ( ).pullFrom ( npc_ir );
     signExtalu_r.OP2 ( ).pullFrom ( dispmask_g );
@@ -168,8 +235,6 @@ void branch1 ( )
 
     long ra = ir_ir ( REG_SIZE - 7, REG_SIZE - 11 );
     ra_value = (*regfile[ra] ).value ( );
-    // grab the ra_value
-    //TODO ???
 } // branch1
 
 /**
@@ -317,7 +382,14 @@ void jump2 ( )
  * operate1
  */
 void operate1 ( )
-{
+{   
+    // move ir
+    irbus_r1.IN ( ).pullFrom ( ir_ir );
+    ir_r.latchFrom ( irbus_r1.OUT ( ) );
+    // move pc
+    pcbus_r1.IN ( ).pullFrom ( pc_ir );
+    pc_r.latchFrom ( pcbus_r1.OUT ( ) );
+
     long ind = ir_r ( REG_SIZE - 20 );
 
     move_ra ( );
@@ -342,6 +414,13 @@ void operate1 ( )
  */
 void operate2 ( )
 {
+    // move ir
+    irbus_r2.IN ( ).pullFrom ( ir_r );
+    ir_re.latchFrom ( irbus_r2.OUT ( ) );
+    // move pc
+    pcbus_r2.IN ( ).pullFrom ( pc_r );
+    pc_re.latchFrom ( pcbus_r2.OUT ( ) );
+
     long ind = ir_r ( REG_SIZE - 20 );
 
     rabus_r2.IN ( ).pullFrom ( ra_r );

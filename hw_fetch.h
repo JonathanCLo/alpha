@@ -18,5 +18,4 @@ extern Bus pcbus_f1;
 extern Bus pcbus_f2;
 extern Bus irbus_f2;
 
-extern bool ir_purge;
 // $(filename)

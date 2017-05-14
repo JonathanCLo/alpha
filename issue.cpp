@@ -11,6 +11,12 @@ void issue2 ( );
 void detect ( );
 void set_npc_branch ( );
 
+char pc1value_issue [16];
+char pc2value_issue [16];
+char ir1value_issue [16];
+char ir2value_issue [16];
+char purge2value_issue [16];
+char print_issue [64];
 
 /**
  * detect
@@ -31,11 +37,16 @@ void issue1 ( )
     pcbus_i1.IN ( ).pullFrom ( pc_fi );
     pc_i.latchFrom ( pcbus_i1.OUT ( ) );
 
-    long opc = ir_i ( REG_SIZE - 1, REG_SIZE - 6 );
-    char buff [ 32 ];
-
+    long opc = ir_fi ( REG_SIZE - 1, REG_SIZE - 6 );
+    sprintf ( pc1value_issue, "pc=%04lx",
+              pc_fi.value ( ) );
+    sprintf ( ir1value_issue, "ir=%08lx",
+              ir_fi.value ( ) );
+    
     switch ( opc ) {
-        case OPC_NOOP: // noop
+        case OPC_PAL:  // PAL
+            if ( ir_fi.value ( ) == 1 ) // halt
+                done = true; 
             break;
         case OPC_BEQ:
         case OPC_BGE:
@@ -67,7 +78,6 @@ void issue1 ( )
             // we don't care
             break;
     } // switch
-    read1 ( );
 }     // detect
 
 /**
@@ -78,23 +88,28 @@ void issue1 ( )
 void issue2 ( )
 {
     long opc = ir_i ( REG_SIZE - 1, REG_SIZE - 6 );
-    char buff [ 32 ];
-
+    sprintf ( pc2value_issue, "pc=%04lx",
+              pc_i.value ( ) );
+    sprintf ( ir2value_issue, "opc=%08lx",
+              ir_fi.value ( ) );
+    
     if ( ir_purge ) {
         irbus_i2.IN ( ).pullFrom ( noop_g );
         ir_ir.latchFrom ( irbus_i2.OUT ( ) );
+        sprintf ( purge2value_issue, "PURGE" );
     } else { // read from mem
         // move ir
         irbus_i2.IN ( ).pullFrom ( ir_i );
         ir_ir.latchFrom ( irbus_i2.OUT ( ) );
+        sprintf ( purge2value_issue, "NO PURGE" );
     }
 
     // move pc
-    pcbus_i2.IN ( ).pullFrom ( pc_fi );
+    pcbus_i2.IN ( ).pullFrom ( pc_i );
     pc_ir.latchFrom ( pcbus_i2.OUT ( ) );
 
     switch ( opc ) {
-        case OPC_NOOP: // noop
+        case OPC_PAL: // noop
             break;
         case OPC_BEQ:
         case OPC_BGE:
@@ -124,9 +139,13 @@ void issue2 ( )
             // we don't care
             break;
     } // switch
-
-    read2 ( );
-
+    sprintf ( print_issue, "|I| %-7s %-7s | %-7s %-7s %-7s ",
+              pc1value_issue,
+              ir1value_issue,
+              pc2value_issue,
+              ir2value_issue,
+              purge2value_issue );
+    cout << print_issue;
 } // issue2
 
 // issue.cpp end

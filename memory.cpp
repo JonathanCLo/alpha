@@ -5,9 +5,12 @@
  */
 #include "includes.h"
 
+char memflag1value_mem [16];
+char out1value_mem [16];
+char print_mem [256];
+
 void memory1 ( );
 void memory2 ( );
-
 
 void read_data_cache(){ data_cache.READ(); }
 /**
@@ -38,14 +41,23 @@ void memory1() { //TODO - handle no-ops
         long rx = ir_em ( REG_SIZE- 28, 0 );
         ( *regfile[rx] ).latchFrom ( dbus_m.OUT ( ) );
         dbus_m.IN ( ).pullFrom ( out_em );
-
     }
+    sprintf ( memflag1value_mem, "memflag=%02lx",
+              mem_flag.value ( ) );
+    sprintf ( out1value_mem, "out=%08lx",
+              out_em.value ( ) );
 }
 
 void simple_mem(StorageObject& rx) { rx.latchFrom(data_cache.READ()); }
 void memory2() {
     int mem_type = mem_flag.value();
-    if (mem_type == 0) { return;  }
+    sprintf ( print_mem, "|M| %-10s %-12s | ",
+              memflag1value_mem,
+              out1value_mem );
+    cout << print_mem ;
+
+    if (mem_type == 0) { }
+    
     if (mem_type == 2) {
         data_cache.WRITE().pullFrom(mm_internal_arith); 
         data_cache.write();
@@ -60,12 +72,8 @@ void memory2() {
         mm_hazard_bus.IN().pullFrom(mm_internal_arith);
     }
 
+    
 }
-/**
- * write_rc
- *
- * rc: reg_size - 28, 0
- * FUNC: dbus_m.OUT();
- */
+
 
 // $(filename) end
