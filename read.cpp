@@ -6,6 +6,26 @@
 
 #include "includes.h"
 
+long ra_value;
+
+void read1 ( );
+void read2 ( );
+void noop1 ( );
+void noop2 ( );
+void memdisp1 ( );
+void memdisp2 ( );
+void branch1 ( );
+void branch2 ( );
+void jump1 ( );
+void jump2 ( );
+void operate1 ( );
+void operate2 ( );
+void use_npc ( );
+void use_pc ( );
+void move_ra ( );
+void write_ra ( );
+void move_rb ( );
+void move_rc ( );
 
 /**
  * read1
@@ -93,6 +113,18 @@ void read2 ( )
 } // read
 
 /**
+ * noop1
+ */
+void noop1 ( )
+{ }
+
+/**
+ * noop2 ( )
+ */
+void noop2 ( )
+{ }
+
+/**
  * memdisp1
  */
 void memdisp1 ( )
@@ -133,7 +165,9 @@ void branch1 ( )
     signExtalu_r.perform ( BusALU::op_rashift );
 
     // get ra for comparison
-    long ra_value = write_reg ( REG_SIZE - 7, REG_SIZE - 11, sf_copy_ra );
+
+    long ra = ir_ir ( REG_SIZE - 7, REG_SIZE - 11 );
+    ra_value = (*regfile[ra] ).value ( );
     // grab the ra_value
     //TODO ???
 } // branch1
@@ -275,7 +309,7 @@ void jump2 ( )
     // indicate stage that it should purge instruction
     ir_purge = true;
     // toss curr inst
-    irbus_r2.IN ( ).pullFrom ( noop );
+    irbus_r2.IN ( ).pullFrom ( noop_g );
     ir_re.latchFrom ( irbus_r2.OUT ( ) );
 } // jump2
 
@@ -289,15 +323,15 @@ void operate1 ( )
     move_ra ( );
     move_rc ( );
     switch ( ind ) {
-        case 0; // register
+        case 0: // register
             move_rb ( );
             break;
-        case 1; // literal
+        case 1: // literal
             // get value
             litalu_r1.OP1 ( ).pullFrom ( ir_ir );
             litalu_r1.OP2 ( ).pullFrom ( literalmask_g );
-            literal_r1.latchFrom ( litalu_r1.OUT ( ) );
-            litalu_r1.peform ( BusALU::op_and );
+            literal_r.latchFrom ( litalu_r1.OUT ( ) );
+            litalu_r1.perform ( BusALU::op_and );
             break;
     } // switch
 
@@ -317,14 +351,14 @@ void operate2 ( )
     rc_re.latchFrom ( rcbus_r2.OUT ( ) );
 
     switch ( ind ) {
-        case 0; // register
+        case 0: // register
             rbbus_r2.IN ( ).pullFrom ( rb_r );
             rb_re.latchFrom ( rbbus_r2.OUT ( ) );
             break;
-        case 1; // literal
+        case 1: // literal
             litalu_r2.OP1 ( ).pullFrom ( literal_r );
             litalu_r2.OP2 ( ).pullFrom ( literalShift_g );
-            literal_re.latchFrom ( litalu_r.OUT ( ) );
+            literal_re.latchFrom ( litalu_r1.OUT ( ) );
             litalu_r2.perform ( BusALU::op_rshift );
             break;
     } // switch
@@ -356,7 +390,7 @@ void write_ra ( )
 
     // move ra
     rabus_r1.IN ( ).pullFrom ( pc_ir );
-    regfile[ra].latchFrom ( rabus_r1.OUT ( ) );
+    (*regfile[ra]).latchFrom ( rabus_r1.OUT ( ) );
 }
 
 /**
@@ -369,7 +403,7 @@ void move_rb ( )
     long rb = ir_ir ( REG_SIZE - 12, REG_SIZE - 16 );
 
     // move ra
-    rbbus_r1.IN ( ).pullFrom ( regfile[rb] );
+    rbbus_r1.IN ( ).pullFrom ( *regfile[rb] );
     rb_r.latchFrom ( rbbus_r1.OUT ( ) );
 } // move_rb
 
@@ -383,7 +417,7 @@ void move_rc ( )
     long rc = ir_ir ( REG_SIZE - 28, 0 );
 
     // move ra
-    rcbus_r1.IN ( ).pullFrom ( regfile[rc] );
+    rcbus_r1.IN ( ).pullFrom ( *regfile[rc] );
     rc_r.latchFrom ( rcbus_r1.OUT ( ) );
 
 } // move_rc

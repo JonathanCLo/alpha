@@ -5,6 +5,9 @@
  */
 #include "includes.h"
 
+unsigned int ADDR_SIZE ( 32 );
+unsigned int DATA_SIZE ( 16 );
+unsigned int REG_SIZE ( 32 );
 
 Clearable noop_g ( "NOOP_G", REG_SIZE, 0 );
 Clearable not3_g ( "NOT3_G", REG_SIZE, ~3 );
@@ -19,4 +22,9 @@ Constant no_mem ( "NO_MEM", REG_SIZE, 0 );
 Constant read_mem ( "READ_MEM", REG_SIZE, 1 );
 Constant write_mem ( "WRITE_MEM", REG_SIZE, 2 );
 Constant writeback ( "WRITEBACK", REG_SIZE, 3 );
+
+Memory instr_cache ( "INSTR_CACHE", ADDR_SIZE, REG_SIZE, 0xFFFF );
+Memory data_cache ( "DATA_CACHE", ADDR_SIZE, DATA_CACHE, 0xFFFF );
+
+bool done ( false );
 // $(filename)
