@@ -27,7 +27,7 @@ int main ( int	 argc,
 
     // make sure we've been given an object file name
     if ( argc != 2 ) {
-        cerr << "Usage:  " << argv [ 0 ] << "object-file-name\n\n";
+        cerr << "Usage:  " << argv [ 0 ] << " object-file-name\n\n";
         exit ( 1 );
     }
     cout << hex;

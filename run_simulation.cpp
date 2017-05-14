@@ -40,7 +40,7 @@ void run_simulation ( char* objfile )
     cout << buff;
 
     while ( !done ) { // until we stop the simulation
-        fetch1 ( );   // fetch stage
+        //fetch1 ( );   // fetch stage
     }
 
 } // run_simulation
