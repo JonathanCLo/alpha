@@ -3,13 +3,14 @@
  *
  * Author   Jonathan Lo < >
  */
-
 #include "includes.h"
+#include "hazards.h"
 
 void issue1 ( );
 void issue2 ( );
 void detect ( );
 void set_npc_branch ( );
+
 
 /**
  * detect
@@ -18,6 +19,10 @@ void set_npc_branch ( );
  */
 void issue1 ( )
 {
+    if (!ir_fi.zero()){
+        advance_hd();
+        load_dep_table();
+    }
     // move ir
     irbus_i1.IN ( ).pullFrom ( ir_fi );
     ir_i.latchFrom ( irbus_i1.OUT ( ) );

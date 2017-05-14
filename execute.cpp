@@ -5,7 +5,7 @@
  * Contributor: Nathan Castle
  */
 #include "includes.h"
-
+#include "hazards.h"
 void execute ( );
 
 /**
@@ -59,11 +59,8 @@ void ex_arith_s1 ( int	opcode,
                    bool imm )
 {
     //accounts for all arithmetic instructions
-    if ( imm ) { //immediate
-        addr_alu.OP1 ( ).pullFrom ( literal_re );
-    } else {
-        addr_alu.OP1 ( ).pullFrom ( rb_re );
-    }
+    exec_read_after_write(imm); //handle both hazard and no-hazard
+
     ex_internal_addr.latchFrom ( addr_alu.OUT ( ) );
     //handle manipulation of Rb/Li at this pointer
     if ( opcode == 17 && ( func==8 || func==72 || func==40 ) ) {
@@ -73,8 +70,6 @@ void ex_arith_s1 ( int	opcode,
         addr_alu.perform ( BusALU::op_rop1 );
     }
 
-    //Handle Ra at this point - all
-    arith_alu.OP1 ( ).pullFrom ( ra_re );
     ex_internal_arith.latchFrom ( arith_alu.OUT ( ) );
     //first conditional
     if ( opcode == 17 ) { //conditional moves

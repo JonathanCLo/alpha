@@ -46,7 +46,6 @@ void simple_mem(StorageObject& rx) { rx.latchFrom(data_cache.READ()); }
 void memory2() {
     int mem_type = mem_flag.value();
     if (mem_type == 0) { return;  }
-    
     if (mem_type == 2) {
         data_cache.WRITE().pullFrom(mm_internal_arith); 
         data_cache.write();
@@ -55,6 +54,11 @@ void memory2() {
         write_reg(REG_SIZE - 7, REG_SIZE - 11, simple_mem);
         data_cache.read();
    }
+    //forward to execute just in case it needs it
+    if (mem_type == 3) {
+        mm_external_arith.latchFrom(mm_hazard_bus.OUT());
+        mm_hazard_bus.IN().pullFrom(mm_internal_arith);
+    }
 
 }
 /**

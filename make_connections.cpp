@@ -191,11 +191,18 @@ void make_connections_execute ( )
     ex_internal_shift.connectsTo ( addr_alu.OP2 ( ) );
     data_cache.MAR ( ).connectsTo ( addr_alu.OUT ( ) );
 
+
+
     mem_flag.connectsTo ( read_mem.OUT ( ) );
     mem_flag.connectsTo ( write_mem.OUT ( ) );
     mem_flag.connectsTo ( no_mem.OUT ( ) );
     mem_flag.connectsTo ( writeback.OUT ( ) );
 
+    //hazards
+    out_em.connectsTo(arith_alu.OP1());
+    mm_external_arith.connectsTo(arith_alu.OP1());
+    out_em.connectsTo(addr_alu.OP1());
+    mm_external_arith.connectsTo(addr_alu.OP1());
 } // make_connections_execute
 
 /**
@@ -220,6 +227,8 @@ void make_connections_memory ( )
     for ( int i = 0; i < 32; i++ ) {
         ( *regfile[i] ).connectsTo ( data_cache.READ ( ) );
     }
+    mm_internal_arith.connectsTo(mm_hazard_bus.OUT());
+    mm_external_arith.connectsTo(mm_hazard_bus.IN());
 
 } // make_connections_memory
 
