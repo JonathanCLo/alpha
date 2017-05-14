@@ -136,7 +136,10 @@ void execute1 ( )
     int opcode = ir_re ( 31, 26 );
     bool imm   = ir_re ( 12 ) == 0;
     int func   = ir_re ( 11, 5 );
-
+    if (opcode == 0) {
+        done = true;
+        return; 
+    }
     //preserve re for cycle 2
     switch ( opcode ) {
         case OPC_LDA: case OPC_LDAH: case OPC_LDBU:
