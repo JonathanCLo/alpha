@@ -13,8 +13,9 @@ void set_npc_branch ( );
 
 char pc1value_issue [16];
 char pc2value_issue [16];
-char opc1value_issue [16];
-char opc2value_issue [16];
+char ir1value_issue [16];
+char ir2value_issue [16];
+char purge2value_issue [16];
 char print_issue [64];
 
 /**
@@ -32,11 +33,11 @@ void issue1 ( )
     pcbus_i1.IN ( ).pullFrom ( pc_fi );
     pc_i.latchFrom ( pcbus_i1.OUT ( ) );
 
-    long opc = ir_i ( REG_SIZE - 1, REG_SIZE - 6 );
+    long opc = ir_fi ( REG_SIZE - 1, REG_SIZE - 6 );
     sprintf ( pc1value_issue, "pc=%04lx",
               pc_fi.value ( ) );
-    sprintf ( opc1value_issue, "opc=%03lx",
-              opc);
+    sprintf ( ir1value_issue, "ir=%08lx",
+              ir_fi.value ( ) );
     
     switch ( opc ) {
         case OPC_NOOP: // noop
@@ -87,17 +88,18 @@ void issue2 ( )
     long opc = ir_i ( REG_SIZE - 1, REG_SIZE - 6 );
     sprintf ( pc2value_issue, "pc=%04lx",
               pc_i.value ( ) );
+    sprintf ( ir2value_issue, "opc=%08lx",
+              ir_fi.value ( ) );
     
     if ( ir_purge ) {
         irbus_i2.IN ( ).pullFrom ( noop_g );
         ir_ir.latchFrom ( irbus_i2.OUT ( ) );
-        sprintf ( opc2value_issue, "opc=NOOP" );
+        sprintf ( purge2value_issue, "PURGE" );
     } else { // read from mem
         // move ir
         irbus_i2.IN ( ).pullFrom ( ir_i );
         ir_ir.latchFrom ( irbus_i2.OUT ( ) );
-        sprintf ( opc2value_issue, "opc=%03lx",
-                  opc );
+        sprintf ( purge2value_issue, "NO PURGE" );
     }
 
     // move pc
@@ -135,11 +137,12 @@ void issue2 ( )
             // we don't care
             break;
     } // switch
-    sprintf ( print_issue, "|| %-10s %-10s | %-10s %-10s ",
+    sprintf ( print_issue, "|I| %-7s %-7s | %-7s %-7s %-7s ",
               pc1value_issue,
-              opc1value_issue,
+              ir1value_issue,
               pc2value_issue,
-              opc2value_issue );
+              ir2value_issue,
+              purge2value_issue );
     cout << print_issue;
 } // issue2
 

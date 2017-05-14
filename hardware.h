@@ -100,6 +100,7 @@ extern Counter* regfile[];
 extern Memory instr_cache;
 extern Memory data_cache;
 
+extern bool ir_purge;
 extern bool done;
 
 #endif

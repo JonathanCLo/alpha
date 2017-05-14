@@ -12,6 +12,7 @@ char pc1value_read [16];
 char pc2value_read [16];
 char opc1value_read[16];
 char opc2value_read[16];
+
 char dest2value_read[16];
 char lit2value_read[16];
 char print_read [128];
@@ -53,16 +54,23 @@ void read1 ( )
         case OPC_NOOP:
             noop1 ( );
             break;
-        case OPC_LDA:  case OPC_LDAH:
-        case OPC_LDWU: case OPC_LDL:
+        case OPC_LDA:  
+        case OPC_LDAH:
+        case OPC_LDWU:
+        case OPC_LDL:
         case OPC_STL:
             memdisp1 ( );
             break;
-        case OPC_BEQ: case OPC_BGE:
-        case OPC_BGT: case OPC_BLBC:
-        case OPC_BLBS: case OPC_BLE:
-        case OPC_BLT: case OPC_BNE:
-        case OPC_BR:  case OPC_BSR: // B
+        case OPC_BEQ: 
+        case OPC_BGE:
+        case OPC_BGT: 
+        case OPC_BLBC:
+        case OPC_BLBS: 
+        case OPC_BLE:
+        case OPC_BLT: 
+        case OPC_BNE:
+        case OPC_BR:  
+        case OPC_BSR: // B
             branch1 ( );
             break;
         case OPC_JMP:
@@ -97,16 +105,23 @@ void read2 ( )
         case OPC_NOOP:
             noop2 ( );
             break;
-        case OPC_LDA:  case OPC_LDAH:
-        case OPC_LDWU: case OPC_LDL:
+        case OPC_LDA:  
+        case OPC_LDAH:
+        case OPC_LDWU: 
+        case OPC_LDL:
         case OPC_STL:
             memdisp2 ( );
             break;
-        case OPC_BEQ:  case OPC_BGE:
-        case OPC_BGT:  case OPC_BLBC:
-        case OPC_BLBS: case OPC_BLE:
-        case OPC_BLT:  case OPC_BNE:
-        case OPC_BR:   case OPC_BSR: // B
+        case OPC_BEQ:  
+        case OPC_BGE:
+        case OPC_BGT:  
+        case OPC_BLBC:
+        case OPC_BLBS: 
+        case OPC_BLE:
+        case OPC_BLT:  
+        case OPC_BNE:
+        case OPC_BR:   
+        case OPC_BSR: // B
             branch2 ( );
             break;
         case OPC_JMP:
@@ -131,7 +146,7 @@ void read2 ( )
     sprintf ( dest2value_read, "dest=%08lx",
               dest_r.value ( ) );
 
-    sprintf ( print_read, "|| %-10s %-10s | %-10s %-10s %-10s %-10s ",
+    sprintf ( print_read, "|R| %-7s %-7s | %-7s %-7s %-12s %-12s ",
               pc1value_read,
               opc1value_read,
               pc2value_read,
@@ -146,19 +161,40 @@ void read2 ( )
  * noop1
  */
 void noop1 ( )
-{ }
+{
+    // move ir
+    irbus_r1.IN ( ).pullFrom ( ir_ir );
+    ir_r.latchFrom ( irbus_r1.OUT ( ) );
+    // move pc
+    pcbus_r1.IN ( ).pullFrom ( pc_ir );
+    pc_r.latchFrom ( pcbus_r1.OUT ( ) );
+}
 
 /**
  * noop2 ( )
  */
 void noop2 ( )
-{ }
+{ 
+    // move ir
+    irbus_r2.IN ( ).pullFrom ( ir_r );
+    ir_re.latchFrom ( irbus_r2.OUT ( ) );
+    // move pc
+    pcbus_r2.IN ( ).pullFrom ( pc_r );
+    pc_re.latchFrom ( pcbus_r2.OUT ( ) );
+}
 
 /**
  * memdisp1
  */
 void memdisp1 ( )
 {
+    // move ir
+    irbus_r1.IN ( ).pullFrom ( ir_ir );
+    ir_r.latchFrom ( irbus_r1.OUT ( ) );
+    // move pc
+    pcbus_r1.IN ( ).pullFrom ( pc_ir );
+    pc_r.latchFrom ( pcbus_r1.OUT ( ) );
+
     // sign extend
     signExtalu_r.OP1 ( ).pullFrom ( npc_ir );
     signExtalu_r.OP2 ( ).pullFrom ( dispmask_g );
@@ -198,8 +234,6 @@ void branch1 ( )
 
     long ra = ir_ir ( REG_SIZE - 7, REG_SIZE - 11 );
     ra_value = (*regfile[ra] ).value ( );
-    // grab the ra_value
-    //TODO ???
 } // branch1
 
 /**
@@ -347,7 +381,14 @@ void jump2 ( )
  * operate1
  */
 void operate1 ( )
-{
+{   
+    // move ir
+    irbus_r1.IN ( ).pullFrom ( ir_ir );
+    ir_r.latchFrom ( irbus_r1.OUT ( ) );
+    // move pc
+    pcbus_r1.IN ( ).pullFrom ( pc_ir );
+    pc_r.latchFrom ( pcbus_r1.OUT ( ) );
+
     long ind = ir_r ( REG_SIZE - 20 );
 
     move_ra ( );
@@ -372,6 +413,13 @@ void operate1 ( )
  */
 void operate2 ( )
 {
+    // move ir
+    irbus_r2.IN ( ).pullFrom ( ir_r );
+    ir_re.latchFrom ( irbus_r2.OUT ( ) );
+    // move pc
+    pcbus_r2.IN ( ).pullFrom ( pc_r );
+    pc_re.latchFrom ( pcbus_r2.OUT ( ) );
+
     long ind = ir_r ( REG_SIZE - 20 );
 
     rabus_r2.IN ( ).pullFrom ( ra_r );

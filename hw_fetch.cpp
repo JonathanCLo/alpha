@@ -15,5 +15,4 @@ Bus pcbus_f1 ( "PCBUSF1", REG_SIZE );
 Bus pcbus_f2 ( "PCBUSF2", REG_SIZE );
 Bus irbus_f2 ( "IRBUS_F2", REG_SIZE );
 
-bool ir_purge = false;
 // $(filename)

@@ -12,15 +12,31 @@ void tick2 ( );
 
 void pipeline ( ) 
 {
+    char print_pipes [200];
+    char pipes [12];
+    sprintf ( pipes, "----------" );
+    sprintf ( print_pipes, 
+              "|F| %-10s | %-10s |I| %-10s | %-10s |R| %-10s | %-10s |X| %-10s | %-10s |M| %-10s | %-10s |!|",
+              pipes,
+              pipes,
+              pipes,
+              pipes,
+              pipes,
+              pipes,
+              pipes,
+              pipes,
+              pipes,
+              pipes );
+    cout << print_pipes << endl;
     tick1 ( );
     tick2 ( );
+    cout << "|!|"  << endl;
 }
 
 void tick1 ( ) 
 {
     fetch1 ( );
     issue1 ( );
-    if ( done ) return;
     read1 ( );
     execute1 ( );
     memory1 ( );

@@ -30,5 +30,6 @@ Constant writeback ( "WRITEBACK", REG_SIZE, 3 );
 
 Counter* regfile[32];
 
+bool ir_purge ( false );
 bool done ( false );
 // $(filename)

@@ -10,6 +10,7 @@ void fetch2 ( );
 
 char pc1value_fetch [16];
 char pc2value_fetch [16];
+char purge2value_fetch [10];
 char print_fetch [128];
 
 /**
@@ -19,12 +20,12 @@ char print_fetch [128];
  */
 void fetch1 ( )
 {
-    // set up MAR
     sprintf ( pc1value_fetch, "pc=%04lx", pc_load.value ( ) );
+    // pass to mar
     pcbus_load.IN ( ).pullFrom ( pc_load );
     instr_cache.MAR ( ).latchFrom ( pcbus_load.OUT ( ) );
 
-    // pc_f <- pc__f
+    // pass pc
     pcbus_f1.IN ( ).pullFrom ( pc_load );
     pc_f.latchFrom ( pcbus_f1.OUT ( ) );
 
@@ -39,9 +40,11 @@ void fetch2 ( )
 { 
     sprintf ( pc2value_fetch, "pc=%04lx", pc_f.value ( ) ); 
     if ( ir_purge ) {
+        sprintf ( purge2value_fetch, "PURGED" );
         irbus_f2.IN ( ).pullFrom ( noop_g );
         ir_fi.latchFrom ( irbus_f2.OUT ( ) );
     } else { // read from mem
+        sprintf ( purge2value_fetch, "NO PURGE" );
         instr_cache.read ( );
         ir_fi.latchFrom ( instr_cache.READ ( ) );
     }
@@ -50,11 +53,12 @@ void fetch2 ( )
     pcbus_f2.IN ( ).pullFrom ( pc_f );
     pc_fi.latchFrom ( pcbus_f2.OUT ( ) );
     pc_load.incr ( );
-    sprintf ( print_fetch, "|| %-10s | %-10s ",
+    sprintf ( print_fetch, "|F| %-7s | %-7s %-10s",
               pc1value_fetch,
-              pc2value_fetch );
+              pc2value_fetch,
+              purge2value_fetch );
     cout << print_fetch;
-              
+
 } // fetch2
 
 // $(filename) end
