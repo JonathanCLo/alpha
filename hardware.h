@@ -66,6 +66,11 @@ enum INSTRS {
 extern Clearable not3_g;
 extern Clearable mult4_g;
 extern Clearable shift11_g;
+extern Clearable dispmask_g; //2097151
+extern Clearable const2_g;
+extern Clearable const3_g;
+extern Clearable not3_g;
+extern Clearable const16_g;
 
 /**
  * SPECIAL RESERVED BUSES FOR SRR
@@ -80,13 +85,11 @@ extern Counter mm_internal_type;
 extern Counter pc_ir;        // pc issue read
 extern Counter npc_ir;       // npc issue read
 extern Counter pc_r;
-extern Counter pc_re;        // pc read execute
-extern Counter pc_em;        // pc execute memory
-extern Clearable ir_ir;      // ir issue read
-extern Clearable ir_re;      // ir read execute
-extern Counter aux_r;        // aux read
-extern Clearable dispmask_g; //2097151
-extern Clearable shift11_g;
+extern Counter pc_re;      // pc read execute
+extern Counter pc_em;      // pc execute memory
+extern Clearable ir_ir;    // ir issue read
+extern Clearable ir_re;    // ir read execute
+extern Counter aux_r;      // aux read
 extern Clearable lock_ir;  // lock issue read
 extern Clearable lock_re;  // lock read execute
 extern Clearable disp_r;   // disp read
@@ -112,10 +115,7 @@ extern Clearable ir_em;    // reg_addr execute memory
 extern Counter addr_em;   // addr execute memory
 extern Clearable data_m;  // data memory
 extern Counter literal_re;
-extern StorageObject exec_const_2;
-extern StorageObject exec_const_3;
-extern StorageObject exec_const_not_3;
-extern StorageObject exec_const_16;
+
 
 extern Constant no_mem;
 extern Constant read_mem;
