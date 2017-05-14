@@ -73,6 +73,7 @@ Clearable ir_i ( "IR Issue", REG_SIZE );
 // AUX COMPONENTS
 // PIPELINE COMPONENTS
 Counter pc_re ( "PC_READ_EXECUTE", ADDR_SIZE );
+Counter pc_r ( "PC_READ_EXECUTE", ADDR_SIZE );
 Clearable ir_re ( "IR_READ_EXECUTE", REG_SIZE );
 Counter ra_re ( "RA_READ_EXECUTE", REG_SIZE );
 Counter rb_re ( "RB_READ_EXECUTE", REG_SIZE );
@@ -81,7 +82,7 @@ Counter aux_re ( "AUX_READ_EXECUTE", REG_SIZE );
 Clearable disp_re ( "DISPLACE_READ_EXECUTE", DATA_SIZE );
 Counter li_re ( "LITERAL_READ_EXECUTE", DATA_SIZE );
 Clearable func_re ( "FUNC_READ_EXECUTE", DATA_SIZE );
-Counter literal_re("LITERALRE", REG_SIZE);
+Counter literal_re ( "LITERALRE", REG_SIZE );
 /**
  * EXECUTE
  */

@@ -77,13 +77,14 @@ extern Counter mm_internal_type;
 /**
  * PIPELINE REGISTERS
  */
-extern Counter pc_ir;      // pc issue read
-extern Counter npc_ir;     // npc issue read
-extern Counter pc_re;      // pc read execute
-extern Counter pc_em;      // pc execute memory
-extern Clearable ir_ir;    // ir issue read
-extern Clearable ir_re;    // ir read execute
-extern Counter aux_r;      // aux read
+extern Counter pc_ir;        // pc issue read
+extern Counter npc_ir;       // npc issue read
+extern Counter pc_r;
+extern Counter pc_re;        // pc read execute
+extern Counter pc_em;        // pc execute memory
+extern Clearable ir_ir;      // ir issue read
+extern Clearable ir_re;      // ir read execute
+extern Counter aux_r;        // aux read
 extern Clearable dispmask_g; //2097151
 extern Clearable shift11_g;
 extern Clearable lock_ir;  // lock issue read
@@ -143,38 +144,6 @@ extern BusALU addr_alu;       // addr alu
  * Programmer-viewable registers
  */
 extern Counter* regfile[];
-extern Counter r0;
-extern Counter r1;
-extern Counter r2;
-extern Counter r3;
-extern Counter r4;
-extern Counter r5;
-extern Counter r6;
-extern Counter r7;
-extern Counter r8;
-extern Counter r9;
-extern Counter r10;
-extern Counter r11;
-extern Counter r12;
-extern Counter r13;
-extern Counter r14;
-extern Counter r15;
-extern Counter r16;
-extern Counter r17;
-extern Counter r18;
-extern Counter r19;
-extern Counter r20;
-extern Counter r21;
-extern Counter r22;
-extern Counter r23;
-extern Counter r24;
-extern Counter r25;
-extern Counter r26;
-extern Counter r27;
-extern Counter r28;
-extern Counter r29;
-extern Counter r30;
-extern Clearable r31;         // used as a 'zero' register
 
 extern Bus irbus_e;
 /* cache */
