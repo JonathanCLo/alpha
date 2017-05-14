@@ -83,7 +83,7 @@ Clearable disp_re ( "DISPLACE_READ_EXECUTE", DATA_SIZE );
 Counter li_re ( "LITERAL_READ_EXECUTE", DATA_SIZE );
 Clearable func_re ( "FUNC_READ_EXECUTE", DATA_SIZE );
 Clearable lock_re ( "LOCK_READ_EXECUTE", DATA_SIZE );
-
+Counter literal_re("LITERALRE", REG_SIZE);
 /**
  * EXECUTE
  */

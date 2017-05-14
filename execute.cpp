@@ -28,18 +28,11 @@ void ex_mem_s2(int opcode) {
     return;
 }
 
-void __disp_4 () {
-    addr_alu.OP1().pullFrom(disp_re);
-    addr_alu.OP2().pullFrom(exec_const_2);
-    addr_alu.perform(BusALU::op_lshift);
-    ex_internal_addr.latchFrom(addr_alu.OUT());
-    return;
-}
 
 void ex_arith_s1(int opcode, int func, bool imm) {
     //accounts for all arithmetic instructions
     if (imm) { //immediate
-        addr_alu.OP1().pullFrom(li_re);
+        addr_alu.OP1().pullFrom(literal_re);
     } else {
         addr_alu.OP1().pullFrom(rb_re);
     }
@@ -82,7 +75,7 @@ void ex_arith_s2(int opcode, int func) {
     }
     arith_alu.OP1().pullFrom(ex_internal_arith);
     arith_alu.OP2().pullFrom(ex_internal_addr);
-    ex_out_arith.latchFrom(arith_alu.OUT());
+    out_em.latchFrom(arith_alu.OUT());
     if (opcode == 16 && (func == 0 || func == 2 || func == 18)) { arith_alu.perform(BusALU::op_add); }
     else if (opcode == 16 && (func == 9 || func == 11 || func == 27)) { arith_alu.perform(BusALU::op_sub); }
     else if (opcode == 17 && (func == 8 || func == 0)) { arith_alu.perform(BusALU::op_and); }

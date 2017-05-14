@@ -42,7 +42,7 @@ void write_reg (int upper, int lower, void (*f)(StorageObject& rx))
     }
 }
 
-void simple_rc(StorageObject& rx) { rx.latchFrom(dbus_m.OUT()); dbus_m.IN().pullFrom(ex_out_arith);}
+void simple_rc(StorageObject& rx) { rx.latchFrom(dbus_m.OUT()); dbus_m.IN().pullFrom(out_em);}
 void memory1() { //TODO - handle no-ops
     memory();
     int mem_type = mem_flag.value(); //keep this around
@@ -52,7 +52,7 @@ void memory1() { //TODO - handle no-ops
         //data_cache.MAR().latchFrom(addr_bus.OUT()); - cheating in execute
         //addr_bus.IN().pullFrom(ex_out_addr);
         //store for next cycle - STL only
-        dbus_m.IN().pullFrom(ex_out_arith);
+        dbus_m.IN().pullFrom(out_em);
         mm_internal_arith.latchFrom(dbus_m.OUT());
     } else if (mem_type == 3) {
         write_reg(REG_SIZE - 28, 0, simple_rc);
