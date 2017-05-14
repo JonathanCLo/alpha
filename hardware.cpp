@@ -22,24 +22,22 @@ unsigned int DATA_SIZE ( 16 );    // DATA SIZE
 /**
  * SPECIAL RESERVED REGISTERS
  */
-Counter pcc ( "PCC", REG_SIZE );
-Clearable noop ( "NOOP", REG_SIZE, 0 );
-Clearable not3 ( "NOT3", REG_SIZE, 0xFFFFFFFC ); // TODO does this work?
-Clearable mult4 ( "MULT4", REG_SIZE, 2 );
-Clearable shift10 ( "SHIFT10", REG_SIZE, 10 );
-/**
- * SPECIAL RESERVED BUSES FOR SRR
- */
-Bus irfi_noop_bus ( "IRFI_NOOP_BUS", REG_SIZE );
-Bus irir_noop_bus ( "IRIR_NOOP_BUS", REG_SIZE );
-Bus irre_noop_bus ( "IRRE_NOOP_BUS", REG_SIZE );
-Bus ire_noop_bus ( "IRE_NOOP_BUS", REG_SIZE );
-Bus irem_noop_bus ( "IREM_NOOP_BUS", REG_SIZE );
+Clearable noop_g ( "NOOP_G", REG_SIZE, 0 );
+Clearable not3_g ( "NOT3_G", REG_SIZE, 0xFFFFFFFC );
+Clearable mult4_g ( "MULT4_G", REG_SIZE, 2 );
+Clearable shift11_g ( "SHIFT11_G", REG_SIZE, 11 );
+Clearable literalmask_g ( "LITERALMASK_G", REG_SIZE, 0x1FE000 );
+Clearable dispmask_g ( "DISPMASK_G", REG_SIZE, 0x1FFFFF ); //2097151
+Clearable const2_g ( "CONST2_G", REG_SIZE, 2 );
+Clearable const3_g ( "CONST3_G", REG_SIZE, 3 );
+Clearable not3_g ( "NOT3_G", REG_SIZE, ~3 );
+Clearable const16_g ( "CONST16_G", REG_SIZE, 16 );
 
 /**
  * FETCH
  */
 // REGISTERS
+Counter pc_load ( "PC_LOAD", ADDR_SIZE );
 Counter pc_f ( "PC_FETCH", ADDR_SIZE );
 // BUSES
 Bus pcbus_f ( "PCBUS_FETCH", ADDR_SIZE );
@@ -52,7 +50,10 @@ Counter ir_fi ( "IR_FETCH_ISSUE", REG_SIZE );
  * ISSUE
  */
 // REGISTERS
-Clearable dispmask_i ( "DISP_MASK_ISSUE", REG_SIZE, 0x1FFFFF );
+Counter pc_i ( "PC_ISSUE", ADDR_SIZE );
+Counter ir_i ( "IR_ISSUE", ADDR_SIZE );
+Counter aux_i ( "AUX_ISSUE", ADDR_SIZE );
+
 // BUSES
 Bus pcbus_i ( "PCBUS_ISSUE", ADDR_SIZE );
 // AUX COMPONENTS
@@ -64,7 +65,6 @@ BusALU destalu_i ( "DESTALU_ISSUE", REG_SIZE );
 Counter pc_ir ( "PC_ISSUE_READ", ADDR_SIZE );
 Counter npc_ir ( "NPC_ISSUE_READ", ADDR_SIZE );
 Clearable ir_ir ( "IR_ISSUE_READ", REG_SIZE );
-Clearable ir_i ( "IR Issue", REG_SIZE );
 
 /**
  * READ
@@ -108,10 +108,6 @@ Clearable ir_em ( "IR_EXECUTE_MEMORY", ADDR_SIZE );
 Bus outbus_em ( "OUTBUS_EXECUTE_MEMORY", REG_SIZE );
 Bus addrbus_em ( "ADDRBUS_EXECUTE_MEMORY", ADDR_SIZE );
 
-StorageObject exec_const_2 ( "2", REG_SIZE, 2 );
-StorageObject exec_const_3 ( "3", REG_SIZE, 3 );
-StorageObject exec_const_16 ( "16", REG_SIZE, 16 );
-StorageObject exec_const_not_3 ( "not 3", REG_SIZE, ~3 );
 
 Constant no_mem ( "CONST_NO_MEM", REG_SIZE, 0 );
 Constant read_mem ( "CONST_RD_MEM", REG_SIZE, 1 );
