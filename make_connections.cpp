@@ -196,8 +196,6 @@ void make_connections_execute ( )
     ex_internal_shift.connectsTo ( addr_alu.OP2 ( ) );
     data_cache.MAR ( ).connectsTo ( addr_alu.OUT ( ) );
 
-
-
     mem_flag.connectsTo ( read_mem.OUT ( ) );
     mem_flag.connectsTo ( write_mem.OUT ( ) );
     mem_flag.connectsTo ( no_mem.OUT ( ) );
@@ -223,8 +221,6 @@ void make_connections_memory ( )
     out_em.connectsTo ( dbus_m.IN ( ) );
     mm_internal_arith.connectsTo ( dbus_m.OUT ( ) );
     mm_internal_arith.connectsTo ( data_cache.WRITE ( ) );
-
-    data_cache.MAR ( ).connectsTo ( addrbus_m.OUT ( ) );
 
     for ( int i = 0; i < 32; i++ ) {
         ( *regfile[i] ).connectsTo ( dbus_m.OUT ( ) );
