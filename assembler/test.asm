@@ -3,8 +3,12 @@ home:
     ADDL    $zero   5   $2
     ADDL    $1      $2  $3
     STL     $3      $fp 0
+    BEQ     $1      @endloop
 local:
     ADDL    $zero   $zero   $1
     ADDL    $zero   $zero   $2
     ADDL    $zero   $zero   $3
     JMP     @home
+endloop:
+    PAL     NOOP
+    HALT

@@ -14,7 +14,7 @@ def isBranch(mnemonic):
     return mnemonic in ["BEQ", "BGE", "BGT", "BLBC", "BLBS", "BLE", \
                     "BLT", "BNE", "BR", "BSR"]
 def isPalcode(mnemonic):
-    return mnemonic == "PAL"
+    return mnemonic in ["PAL", "HALT", "NOOP"]
 def isOperate(mnemonic):
     return mnemonic in ["ADDL", "S4ADDL", "S8ADDL", \
                     "CLTZ", "CTPOP", "CTTZ", \
@@ -75,7 +75,10 @@ class Instruction():
         elif isPalcode(self.mnemonic):
             # PAL HALT
             self.Format = "PALCode"
-            self.PALCode = parts[1]
+            if (len(parts) > 1):
+                self.PALCode = parts[1]
+            else:
+                self.PALCode = parts[0]
             self.Addr = Instruction.addrnext
             Instruction.addrnext += 1
         elif isLabel(self.mnemonic):
@@ -130,8 +133,8 @@ class Instruction():
             return result
         elif self.Format == "PALCode":
             if self.PALCode == "HALT":
-                result += "".zfill(26)
-            elif self.PALCode == "NOP":
+                result += "0".zfill(26)
+            elif self.PALCode == "NOOP":
                 result += "1".zfill(26)
             else:
                 result += "10".zfill(26)
@@ -161,10 +164,10 @@ def main():
                     outfile.write(str(hex(accumulator))[2:] + " 4 ")
                     accumulator = accumulator + 4
                     one, two, three, four = b[24:31], b[16:23], b[8:15], b[0:7]
-                    outfile.write(str(hex(int(one, 2)))[2:] + " ")
-                    outfile.write(str(hex(int(two, 2)))[2:] + " ")
-                    outfile.write(str(hex(int(three,2)))[2:] + " ")
-                    outfile.write(str(hex(int(four, 2)))[2:] + "\n")
+                    outfile.write(str(hex(int(four, 2)))[2:] + " ")
+                    outfile.write(str(hex(int(three, 2)))[2:] + " ")
+                    outfile.write(str(hex(int(two,2)))[2:] + " ")
+                    outfile.write(str(hex(int(one, 2)))[2:] + "\n")
             outfile.write("0\n")
 
 if __name__ =="__main__":
