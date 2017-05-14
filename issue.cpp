@@ -40,12 +40,10 @@ void issue1 ( )
               ir_fi.value ( ) );
     
     switch ( opc ) {
-        case OPC_PAL: // PAL
-            if ( ir_fi.value ( ) == 0 ) { // HALT
-                done = true;
-                return;
-            }
-            break;      
+        case OPC_PAL:  // PAL
+            if ( ir_fi.value ( ) == 1 ) // halt
+                done = true; 
+            break;
         case OPC_BEQ:
         case OPC_BGE:
         case OPC_BGT:

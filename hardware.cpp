@@ -6,10 +6,10 @@
 #include "includes.h"
 
 unsigned int ADDR_SIZE ( 32 );
-unsigned int DATA_SIZE ( 16 );
+unsigned int DATA_SIZE ( 32 );
 unsigned int REG_SIZE ( 32 );
 
-Clearable noop_g ( "NOOP_G", REG_SIZE, 1 );
+Clearable noop_g ( "NOOP_G", REG_SIZE, 0 );
 Clearable not3_g ( "NOT3_G", REG_SIZE, ~0x3 );
 Clearable mult4_g ( "MULT4_G", REG_SIZE, 2 );
 Clearable shift11_g ( "SHIFT11_G", REG_SIZE, 11 );
