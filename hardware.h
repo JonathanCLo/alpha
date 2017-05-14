@@ -72,73 +72,10 @@ extern Clearable const2_g;
 extern Clearable const3_g;
 extern Clearable const16_g;
 
-/**
- * SPECIAL RESERVED BUSES FOR SRR
- */
-extern Bus mm_controlbus;
-
-extern Counter mm_internal_arith;
-extern Counter mm_internal_type;
-/**
- * PIPELINE REGISTERS
- */
-extern Counter pc_ir;        // pc issue read
-extern Counter npc_ir;       // npc issue read
-extern Counter pc_r;
-extern Counter pc_re;      // pc read execute
-extern Counter pc_em;      // pc execute memory
-extern Clearable ir_ir;    // ir issue read
-extern Clearable ir_re;    // ir read execute
-extern Counter aux_r;      // aux read
-extern Clearable lock_ir;  // lock issue read
-extern Clearable lock_re;  // lock read execute
-extern Clearable disp_r;   // disp read
-extern Clearable disp_re;  // disp read execute
-extern Clearable li_r;     // literal read
-extern Counter li_re;      // literal read execute
-extern Clearable func_r;   // func read
-extern Clearable func_re;  // func read execute
-extern Counter ra_re;      // ra read execute
-extern Counter rb_re;      // rb read execute
-extern Counter rc_re;      // rc read execute
-extern Counter aux_re;     // aux read execute
-extern Counter ex_internal_arith;
-extern Counter ex_internal_shift;
-extern Counter ex_internal_addr;
-extern Counter ex_internal_ir;
-extern Counter ex_out_addr;
-extern Counter ex_out_arith;
-extern Counter out_em;     // out execute memory
-extern Counter pc_em;      // pc execute memory
-extern Clearable ir_em;    // reg_addr execute memory
-// extern Clearable  out_m; // out memory
-extern Counter addr_em;   // addr execute memory
-extern Clearable data_m;  // data memory
-extern Counter literal_re;
-
-
 extern Constant no_mem;
 extern Constant read_mem;
 extern Constant write_mem;
 extern Constant writeback;
-/**
- * BUSES
- */
-extern Bus outbus_em;     // out bus execute memory
-extern Bus addrbus_em;    // addr bus execute memory
-extern Bus addrbus_m;     // addr bus memory
-extern Bus dbus_m;        // dbus memory
-
-/**
- * ALU
- */
-extern BusALU destalu_i;      // mask alue
-extern BusALU leftShift_alu;  // left shift alu
-extern BusALU rightShift_alu; // right shift alu
-extern BusALU dest_alu;       // pc alu
-extern BusALU arith_alu;      // arith alu
-extern BusALU shift_alu;      // shift alu
-extern BusALU addr_alu;       // addr alu
 
 /**
  * Programmer-viewable registers
