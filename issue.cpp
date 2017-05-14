@@ -32,6 +32,10 @@ void issue1 ( )
     switch ( opc ) {
         case OPC_NOOP: // noop
             break;
+        case OPC_HALT: // halt
+            done = true;
+            return;
+            break;
         case OPC_BEQ:
         case OPC_BGE:
         case OPC_BGT:

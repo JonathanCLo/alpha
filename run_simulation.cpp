@@ -37,7 +37,7 @@ void run_simulation ( char* objfile )
     cout << buff << endl;
    
     while ( !done ) { // until we stop the simulation
-        fetch1 ( );   // fetch stage
+        pipeline ( );   // fetch stage
     }
 
 } // run_simulation

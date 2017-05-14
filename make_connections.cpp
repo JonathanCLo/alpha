@@ -40,7 +40,8 @@ void make_connections_fetch ( )
     // stage 1
     pc_load.connectsTo ( pcbus_load.IN ( ) );
     instr_cache.MAR ( ).connectsTo ( pcbus_load.OUT ( ) );
-
+    
+    pc_load.connectsTo ( instr_cache.READ ( ) );
     pc_load.connectsTo ( pcbus_f1.IN ( ) );
     pc_f.connectsTo ( pcbus_f1.OUT ( ) );
 
