@@ -35,8 +35,8 @@ void fetch1 ( )
 void fetch2 ( )
 {
     if ( ir_purge ) {
-        irfi_noop_bus.IN ( ).pullFrom ( noop_g );
-        ir_fi.latchFrom ( irfi_noop_bus.OUT ( ) );
+        irbus_f2.IN ( ).pullFrom ( noop_g );
+        ir_fi.latchFrom ( irbus_f2.OUT ( ) );
     } else { // read from mem
         instr_cache.read ( );
         ir_fi.latchFrom ( instr_cache.READ ( ) );
@@ -45,6 +45,7 @@ void fetch2 ( )
 
     pcbus_f2.IN ( ).pullFrom ( pc_f );
     pc_fi.latchFrom ( pcbus_f2.OUT ( ) );
+    pc_load.incr ( );
     issue2 ( );
 } // fetch2
 
