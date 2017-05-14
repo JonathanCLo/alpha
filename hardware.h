@@ -124,41 +124,10 @@ extern Constant writeback;
 /**
  * BUSES
  */
-extern Bus pcbus_i;       // pcbus issue
-extern Bus pcbus_r;       // pcbus read
-extern Bus pcbus_e;       // pcbus execute
-extern Bus irbus_i;       // irbus issue
-extern Bus irbus_r;       // irbus read
-extern Bus irbus_e;       // irbus execute
-extern Bus rabus_r;       // rabus read
-extern Bus rbbus_r;       // rbbus read
-extern Bus rcbus_r;       // rcbus read
-extern Bus auxbus_r;      // auxbus read
-extern Bus lockbus_r;     // lockbus read
-extern Bus arithop1_ebus; // arith op1 ebus execute
-extern Bus arithop2_ebus; // arith op2 ebus execute
-extern Bus shiftop1_ebus; // shift op1 ebus execute
-extern Bus shiftop2_ebus; // shift op2 ebus execute
-extern Bus addrop1_ebus;  // addr op1 ebus execute
-extern Bus addrop2_ebus;  // addr op2 ebus execute
-extern Bus shift_ebus;    // shift ebus execute
-extern Bus addr_ebus;     // addr ebus execute
 extern Bus outbus_em;     // out bus execute memory
 extern Bus addrbus_em;    // addr bus execute memory
 extern Bus addrbus_m;     // addr bus memory
 extern Bus dbus_m;        // dbus memory
-extern Bus sbus1;         // stage buses
-extern Bus sbus2;
-extern Bus sbus3;
-extern Bus sbus4;
-extern Bus sbus5;
-
-
-//forwarding
-extern Bus forward_bus_nodelay; //RAW - two sequential
-extern Bus forward_bus_delay;   //RAW - independent instruction in between
-extern Clearable forward_delay_slot;
-
 
 /**
  * ALU

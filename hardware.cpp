@@ -56,7 +56,6 @@ Counter ir_fi ( "IR_FETCH_ISSUE", REG_SIZE );
 Clearable dispmask_i ( "DISP_MASK_ISSUE", REG_SIZE, 0x1FFFFF );
 // BUSES
 Bus pcbus_i ( "PCBUS_ISSUE", ADDR_SIZE );
-Bus irbus_i ( "IRBUS_ISSUE", REG_SIZE );
 // AUX COMPONENTS
 BusALU mask_alu ( "MASK_ALU", REG_SIZE );
 BusALU leftShift_alu ( "leftShift_ALU", REG_SIZE );
@@ -73,17 +72,7 @@ Clearable lock_ir ( "LOCK_ISSUE_READ", REG_SIZE );
  * READ
  */
 // REGISTERS
-Counter aux_r ( "AUX_READ", ADDR_SIZE );
-// BUSES
-Bus pcbus_r ( "PCBUS_READ", ADDR_SIZE );
-Bus irbus_r ( "IRBUS_READ", REG_SIZE );
-Bus rabus_r ( "RABUS_READ", REG_SIZE );
-Bus rbbus_r ( "RBBUS_READ", REG_SIZE );
-Bus rcbus_r ( "RCBUS_READ", REG_SIZE );
-Bus auxbus_r ( "AUXBUS_READ", REG_SIZE );
-Bus lockbus_r ( "LOCKBUS_READ", REG_SIZE );
 // AUX COMPONENTS
-BusALU dest_alu ( "DEST_ALU", REG_SIZE );
 // PIPELINE COMPONENTS
 Counter pc_re ( "PC_READ_EXECUTE", ADDR_SIZE );
 Clearable ir_re ( "IR_READ_EXECUTE", REG_SIZE );

@@ -127,20 +127,18 @@ void memdisp1 ( )
 
 /**
  * memdisp2
- *
- *
  */
 void memdisp2 ( )
 {
     // move ir
-    irbus_r2.IN ( ).pullFrom ( ir_ir );
-    ir_r.latchFrom ( irbus_r2.OUT ( ) );
+    irbus_r2.IN ( ).pullFrom ( ir_r );
+    ir_re.latchFrom ( irbus_r2.OUT ( ) );
     // move pc
-    pcbus_r2.IN ( ).pullFrom ( pc_ir );
-    pc_r.latchFrom ( pcbus_r2.OUT ( ) );
+    pcbus_r2.IN ( ).pullFrom ( pc_r );
+    pc_re.latchFrom ( pcbus_r2.OUT ( ) );
     // move disp
-    destbus_r.IN ( ).pullFrom ( dest_r );
-    disp_re.latchFrom ( destbus_r.OUT ( ) );
+    destbus_r2.IN ( ).pullFrom ( dest_r );
+    disp_re.latchFrom ( destbus_r2.OUT ( ) );
 } // memdisp2
 
 int sf_copy_ra(StorageObject& rx) { return rx.value(); } 
@@ -246,15 +244,15 @@ void branch2 ( )
 void use_npc ( )
 {
     // change pc_load
-    changePC_bus.IN ( ).pullFrom ( npc_r );
+    changePC_bus.IN ( ).pullFrom ( dest_r );//npc_r
     pc_load.latchFrom ( changePC_bus.OUT ( ) );
     // discard pc_re // TODO do we?
 
     // indicate stage that it should purge instruction
     ir_purge = true;
     // toss curr inst
-    ir_noop_bus_r.IN ( ).pullFrom ( noop );
-    ir_re.latchFrom ( ir_noop_bus_r.OUT ( ) );
+    irbus_r2.IN ( ).pullFrom ( noop_g );
+    ir_re.latchFrom ( irbus_r2.OUT ( ) );
 
 } // use_npc
 
@@ -265,11 +263,11 @@ void use_npc ( )
 void use_pc ( )
 {
     // move pc
-    pcbus_r.IN ( ).pullFrom ( pc_r );
-    pc_re.latchFrom ( pcbus_r.OUT ( ) );
+    pcbus_r2.IN ( ).pullFrom ( pc_r );
+    pc_re.latchFrom ( pcbus_r2.OUT ( ) );
     // move ir
-    irbus_r.IN ( ).pullFrom ( ir_r );
-    ir_re.latchFrom ( irbus_r.OUT ( ) );
+    irbus_r2.IN ( ).pullFrom ( ir_r );
+    ir_re.latchFrom ( irbus_r2.OUT ( ) );
 }
 
 /**
@@ -299,8 +297,8 @@ void jump2 ( )
     // indicate stage that it should purge instruction
     ir_purge = true;
     // toss curr inst
-    ir_noop_bus_r.IN ( ).pullFrom ( noop );
-    ir_re.latchFrom ( ir_noop_bus_r.OUT ( ) );
+    irbus_r2.IN ( ).pullFrom ( noop );
+    ir_re.latchFrom ( irbus_r2.OUT ( ) );
 } // jump2
 
 /**
@@ -317,10 +315,10 @@ void operate1 ( )
             break;
         case 1; // literal
             // get value
-            litalu_r.OP1 ( ).pullFrom ( ir_r );
-            litalu_r.OP2 ( ).pullFrom ( literalmask_g );
-            literal_r.latchFrom ( litalu_r.OUT ( ) );
-            litalu_r.peform ( BusALU::op_and );
+            litalu_r1.OP1 ( ).pullFrom ( ir_ir );
+            litalu_r1.OP2 ( ).pullFrom ( literalmask_g );
+            literal_r1.latchFrom ( litalu_r1.OUT ( ) );
+            litalu_r1.peform ( BusALU::op_and );
             break;
     } // switch
 
@@ -332,20 +330,20 @@ void operate1 ( )
 void operate2 ( )
 {
     long ind = ir_r ( REG_SIZE - 20 );
-    rabus_r.IN().pullFrom(ra_r);
-    ra_re.latchFrom(rabus_r.OUT());
-    rcbus_r.IN().pullFrom(rc_r);
-    rc_re.latchFrom(rcbus_r.OUT());
+    rabus_r2.IN().pullFrom(ra_r);
+    ra_re.latchFrom(rabus_r2.OUT());
+    rcbus_r2.IN().pullFrom(rc_r);
+    rc_re.latchFrom(rcbus_r2.OUT());
     switch ( ind ) {
         case 0; // register
-            rbbus_r.IN ( ).pullFrom ( rb_r );
-            rb_re.latchFrom ( rbbus_r.OUT ( ) );
+            rbbus_r2.IN ( ).pullFrom ( rb_r );
+            rb_re.latchFrom ( rbbus_r2.OUT ( ) );
             break;
         case 1; // literal
-            litalu_r.OP1 ( ).pullFrom ( literal_r );
-            litalu_r.OP2 ( ).pullFrom ( literalShift_g );
+            litalu_r2.OP1 ( ).pullFrom ( literal_r );
+            litalu_r2.OP2 ( ).pullFrom ( literalShift_g );
             literal_re.latchFrom ( litalu_r.OUT ( ) );
-            litalu_r.perform ( BusALU::op_rshift );
+            litalu_r2.perform ( BusALU::op_rshift );
             break;
     } // switch
 
