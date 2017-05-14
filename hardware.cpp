@@ -10,7 +10,7 @@ unsigned int DATA_SIZE ( 32 );
 unsigned int REG_SIZE ( 32 );
 
 Clearable noop_g ( "NOOP_G", REG_SIZE, 0 );
-Clearable not3_g ( "NOT3_G", REG_SIZE, ~0x3 );
+Clearable not3_g ( "NOT3_G", REG_SIZE, 0xFFFFFFFC );
 Clearable mult4_g ( "MULT4_G", REG_SIZE, 2 );
 Clearable shift11_g ( "SHIFT11_G", REG_SIZE, 11 );
 Clearable dispmask_g ( "DISPMASK_G", REG_SIZE, 2097151 );
