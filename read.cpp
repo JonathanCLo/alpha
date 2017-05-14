@@ -53,7 +53,7 @@ void read1 ( )
     switch ( opc ) {
         case OPC_PAL:
 
-            if ( ir_ir.value ( ) == 1 ) noop1 ( );
+            if ( ir_ir.value ( ) == 0 ) noop1 ( );
             break;
         case OPC_LDA:  
         case OPC_LDAH:
@@ -104,7 +104,7 @@ void read2 ( )
 
     switch ( opc ) {
         case OPC_PAL:
-            if ( ir_ir.value ( ) == 1 ) noop2 ( );
+            if ( ir_ir.value ( ) == 0 ) noop2 ( );
             break;
         case OPC_LDA:  
         case OPC_LDAH:
