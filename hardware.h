@@ -75,6 +75,11 @@ extern Clearable const2_g;
 extern Clearable const3_g;
 extern Clearable const16_g;
 
+extern Constant no_mem;
+extern Constant read_mem;
+extern Constant write_mem;
+extern Constant writeback;
+
 /**
  * Programmer-viewable registers
  */

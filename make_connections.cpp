@@ -37,16 +37,19 @@ void make_connections ( )
  */
 void make_connections_fetch ( )
 {
+    // stage 1
     pc_load.connectsTo ( pcbus_load.IN ( ) );
-    pc_load.connectsTo ( pcbus_f1.IN ( ) );
-    pc_f.connectsTo ( pcbus_f1.OUT ( ) );
     instr_cache.MAR ( ).connectsTo ( pcbus_load.OUT ( ) );
 
+    pc_load.connectsTo ( pcbus_f1.IN ( ) );
+    pc_f.connectsTo ( pcbus_f1.OUT ( ) );
+
+    // stage 2
     pc_f.connectsTo ( pcbus_f2.IN ( ) );
     pc_fi.connectsTo ( pcbus_f2.OUT ( ) );
 
-    noop_g.connectsTo ( irfi_noop_bus.IN ( ) );
-    ir_fi.connectsTo ( irfi_noop_bus.OUT ( ) );
+    noop_g.connectsTo ( irbus_f2.IN ( ) );
+    ir_fi.connectsTo ( irbus_f2.OUT ( ) );
 
     ir_fi.connectsTo ( instr_cache.READ ( ) );
 } // make_connections_fetch
@@ -58,13 +61,17 @@ void make_connections_fetch ( )
  */
 void make_connections_issue ( )
 {
+    // stage 1s
     pc_fi.connectsTo ( pcbus_i1.IN ( ) );
     pc_i.connectsTo ( pcbus_i1.OUT ( ) );
+
     pc_i.connectsTo ( pcbus_i2.IN ( ) );
     pc_ir.connectsTo ( pcbus_i2.OUT ( ) );
 
     ir_fi.connectsTo ( irbus_i1.IN ( ) );
     ir_i.connectsTo ( irbus_i1.OUT ( ) );
+
+    // stage 2
     pc_i.connectsTo ( pcbus_i2.IN ( ) );
     pc_ir.connectsTo ( pcbus_i2.OUT ( ) );
 
@@ -86,6 +93,7 @@ void make_connections_issue ( )
  */
 void make_connections_read ( )
 {
+    // stage 1
     pc_ir.connectsTo ( pcbus_r1.IN ( ) );
     pc_r.connectsTo ( pcbus_r1.OUT ( ) );
 
@@ -106,22 +114,24 @@ void make_connections_read ( )
 
     // connect rx to rabus_r1
     for ( int i = 0; i < 32; i++ ) {
-        (*regfile[i]).connectsTo ( rabus_r1.IN ( ) );
+        ( *regfile[i] ).connectsTo ( rabus_r1.IN ( ) );
     }
 
     // connect rx to rbbus_r1
     for ( int i = 0; i < 32; i++ ) {
-        (*regfile[i]).connectsTo ( rbbus_r1.IN ( ) );
+        ( *regfile[i] ).connectsTo ( rbbus_r1.IN ( ) );
     }
 
     // connect rx to rcbus_r1
     for ( int i = 0; i < 32; i++ ) {
-        (*regfile[i]).connectsTo ( rcbus_r1.IN ( ) );
+        ( *regfile[i] ).connectsTo ( rcbus_r1.IN ( ) );
     }
 
     ra_r.connectsTo ( rabus_r1.OUT ( ) );
     rb_r.connectsTo ( rbbus_r1.OUT ( ) );
     rc_r.connectsTo ( rcbus_r1.OUT ( ) );
+
+    // stage 2
 
     ra_r.connectsTo ( rabus_r2.IN ( ) );
     rb_r.connectsTo ( rbbus_r2.IN ( ) );
@@ -190,7 +200,7 @@ void make_connections_execute ( )
 
 /**
  * make_connections_memory
- * 
+ *
  *
  */
 void make_connections_memory ( )
@@ -204,11 +214,11 @@ void make_connections_memory ( )
     data_cache.MAR ( ).connectsTo ( addrbus_m.OUT ( ) );
 
     for ( int i = 0; i < 32; i++ ) {
-        (*regfile[i]).connectsTo ( dbus_m.OUT ( ) );
+        ( *regfile[i] ).connectsTo ( dbus_m.OUT ( ) );
     }
 
     for ( int i = 0; i < 32; i++ ) {
-        (*regfile[i]).connectsTo ( data_cache.READ ( ) );
+        ( *regfile[i] ).connectsTo ( data_cache.READ ( ) );
     }
 
 } // make_connections_memory

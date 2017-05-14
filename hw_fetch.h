@@ -16,7 +16,7 @@ extern Counter ir_fi;
 extern Bus pcbus_load;
 extern Bus pcbus_f1;
 extern Bus pcbus_f2;
-extern Bus irfi_noop_bus;
+extern Bus irbus_f2;
 
 extern bool ir_purge;
 // $(filename)

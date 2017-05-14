@@ -1,3 +1,8 @@
+/**
+ * hw_mem
+ *
+ * Author   Jonathan Lo < >
+ */
 #include "includes.h"
 extern Bus dbus_m;
 extern Counter pc_em;
@@ -8,9 +13,4 @@ extern Bus addrbus_m;
 extern Counter mem_flag;
 extern Counter mm_internal_arith;
 extern Counter mm_internal_type;
-extern Constant no_mem;
-extern Constant read_mem;
-extern Constant write_mem;
-extern Constant writeback;
-
-
+// $(filename)
