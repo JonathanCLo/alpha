@@ -233,8 +233,8 @@ void make_connections_memory ( )
     for ( int i = 0; i < 32; i++ ) {
         ( *regfile[i] ).connectsTo ( data_cache.READ ( ) );
     }
-    mm_internal_arith.connectsTo(mm_hazard_bus.OUT());
-    mm_external_arith.connectsTo(mm_hazard_bus.IN());
+    mm_internal_arith.connectsTo(mm_hazard_bus.IN());
+    mm_external_arith.connectsTo(mm_hazard_bus.OUT());
     mm_external_load.connectsTo(arith_alu.OP1());
     mm_external_load.connectsTo(addr_alu.OP1());
     mm_external_load.connectsTo(data_cache.READ());
