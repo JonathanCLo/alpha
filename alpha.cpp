@@ -9,6 +9,12 @@
 
 #include "includes.h"
 
+void create_regFile(){
+    for (int i = 0; i < 32; i++){
+        Counter qq ("R" + i, REG_SIZE);
+        regfile[i] = &qq;
+    }
+}
 /**
  * main ( )
  *
@@ -36,7 +42,7 @@ int main ( int	 argc,
 
         return 1;
     }
-
+    
     return 0;
 } // main
 

@@ -36,7 +36,6 @@ Bus irre_noop_bus ( "IRRE_NOOP_BUS", REG_SIZE );
 Bus ire_noop_bus ( "IRE_NOOP_BUS", REG_SIZE );
 Bus irem_noop_bus ( "IREM_NOOP_BUS", REG_SIZE );
 
-
 /**
  * FETCH
  */
