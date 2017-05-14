@@ -1,3 +1,8 @@
+/**
+ * hw_exec
+ *
+ * Author   Jonathan Lo < >
+ */
 #include "hw_exec.h"
 
 Counter disp_re ( "DISP_READ_EXECUTE", REG_SIZE );
@@ -13,3 +18,4 @@ Counter ex_internal_ir ( "EXINTIR", REG_SIZE );
 BusALU shift_alu ( "SHIFTALU", REG_SIZE );
 BusALU addr_alu ( "ADDRALU", REG_SIZE );
 BusALU arith_alu ( "ARITHALU", REG_SIZE );
+// $(filename)
