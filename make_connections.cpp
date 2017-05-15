@@ -136,7 +136,7 @@ void make_connections_read ( )
     for ( int i = 0; i < 32; i++ ) {
         ( *regfile[i] ).connectsTo ( rcbus_r1.IN ( ) );
     }
-
+    pc_ir.connectsTo(rabus_r1.IN());
     ra_r.connectsTo ( rabus_r1.OUT ( ) );
     rb_r.connectsTo ( rbbus_r1.OUT ( ) );
     rc_r.connectsTo ( rcbus_r1.OUT ( ) );

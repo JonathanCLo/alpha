@@ -48,7 +48,7 @@ void read1 ( )
     // move pc
     pcbus_r1.IN ( ).pullFrom ( pc_ir );
     pc_r.latchFrom ( pcbus_r1.OUT ( ) );
-    long opc = ir_re ( REG_SIZE - 1, REG_SIZE - 6 );
+    long opc = ir_ir ( REG_SIZE - 1, REG_SIZE - 6 );
     switch ( opc ) {
         case OPC_PAL:
 
@@ -309,7 +309,7 @@ void operate1 ( )
     pcbus_r1.IN ( ).pullFrom ( pc_ir );
     pc_r.latchFrom ( pcbus_r1.OUT ( ) );
 
-    long ind = ir_r ( REG_SIZE - 20 );
+    long ind = ir_ir ( REG_SIZE - 20 );
 
     move_ra ( );
     move_rc ( );
@@ -387,7 +387,7 @@ void write_ra ( )
     long ra = ir_ir ( REG_SIZE - 7, REG_SIZE - 11 );
 
     // move ra
-    rabus_r1.IN ( ).pullFrom ( *regfile[ra] );
+    rabus_r1.IN ( ).pullFrom ( pc_ir );
     (*regfile[ra]).latchFrom ( rabus_r1.OUT ( ) );
 }
 

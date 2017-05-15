@@ -39,13 +39,13 @@ void fetch1 ( )
 void fetch2 ( )
 { 
     sprintf ( pc2value_fetch, "pc=%04lx", pc_f.value ( ) ); 
-    if ( ir_purge ) {
-        irbus_f2.IN ( ).pullFrom ( noop_g );
-        ir_fi.latchFrom ( irbus_f2.OUT ( ) );
-    } else { // read from mem
+    //if ( ir_purge ) {
+        //irbus_f2.IN ( ).pullFrom ( noop_g );
+        //ir_fi.latchFrom ( irbus_f2.OUT ( ) );
+    //} else { // read from mem
         instr_cache.read ( );
         ir_fi.latchFrom ( instr_cache.READ ( ) );
-    }
+    //}
     // move pc to pipeline
 
     pcbus_f2.IN ( ).pullFrom ( pc_f );

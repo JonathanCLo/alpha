@@ -26,8 +26,7 @@ char print_issue [64];
 void issue1 ( )
 {
     if ( !ir_fi.zero ( ) ) {
-        advance_hd ( );
-        load_dep_table ( );
+        //advance_hd ( );
     }
     // move ir
     irbus_i1.IN ( ).pullFrom ( ir_fi );
@@ -44,7 +43,7 @@ void issue1 ( )
               ir_fi.value ( ) );
 
     // calculate ra
-    long ra = ir_ir ( REG_SIZE - 7, REG_SIZE - 11 );
+    long ra = ir_fi ( REG_SIZE - 7, REG_SIZE - 11 );
     long ra_value = ( *regfile[ra] ).value ( );
 
     switch ( opc ) {
@@ -200,7 +199,7 @@ void issue2 ( )
 
     sprintf ( pc2value_issue, "pc=%04lx",
               pc_i.value ( ) );
-    sprintf ( ir2value_issue, "opc=%08lx",
+    sprintf ( ir2value_issue, "ir=%08lx",
               ir_fi.value ( ) );
 
     irbus_i2.IN ( ).pullFrom ( ir_i );

@@ -48,6 +48,7 @@ bool detect_read_after_write() {
     //previous instr is (instr_index - 1) % 3
     int current = (instr_index - 2) % 3;
     int past = (instr_index - 3) % 5;
+    if (reg_deps[current][1] == -1) { return false; }
     if (reg_deps[current][1] == reg_deps[past][0]) {
         //we depend on the output of past instr for operand 1
         return true;
@@ -62,6 +63,7 @@ bool detect_read_after_load_dist() {
     int current = (instr_index - 2) % 5;
     int past = (instr_index - 4) % 5;
     int distpast = (instr_index -5) % 5;
+    if (reg_deps[current][1] == -1) { return false; }
     if (reg_deps[current][1] == reg_deps[distpast][0]) {
         if (reg_deps[distpast][1] == 100) {
             return true;
@@ -79,6 +81,10 @@ void exec_read_after_write(bool imm){
     int current = (instr_index - 2) % 5;
     int past = (instr_index - 4) % 5;
     int distpast = (instr_index - 5) % 5;
+    if (!detect_read_after_write()) { 
+        arith_alu.OP1().pullFrom(ra_re);
+        addr_alu.OP1().pullFrom(rb_re);
+    }
     if (reg_deps[current][1] == reg_deps[past][0]) {
         //ra dependency
         if (reg_deps[past][1] == 100) {
@@ -93,7 +99,7 @@ void exec_read_after_write(bool imm){
             arith_alu.OP1().pullFrom(mm_external_arith);
         }
     } else {
-        arith_alu.OP2().pullFrom(ra_re);
+        arith_alu.OP1().pullFrom(ra_re);
     }
 
 

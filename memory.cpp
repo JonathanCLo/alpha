@@ -38,7 +38,7 @@ void memory1() { //TODO - handle no-ops
         dbus_m.IN().pullFrom(out_em);
         mm_internal_arith.latchFrom(dbus_m.OUT());
     } else if (mem_type == 3) {
-        long rx = ir_em ( REG_SIZE- 28, 0 );
+        long rx = ir_em ( 25, 21 );
         ( *regfile[rx] ).latchFrom ( dbus_m.OUT ( ) );
         dbus_m.IN ( ).pullFrom ( out_em );
     }
