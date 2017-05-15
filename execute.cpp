@@ -132,7 +132,7 @@ void ex_arith_s2 ( int opcode,
 void execute1 ( )
 {
     int opcode = ir_re ( 31, 26 );
-    bool imm   = ir_re ( 12 ) == 0;
+    bool imm   = ir_re ( 12 ) != 0;
     int func   = ir_re ( 11, 5 );
     sprintf ( pc1value_ex, "pc=%04lx",
               pc_re.value ( ) );
@@ -149,9 +149,8 @@ void execute1 ( )
     sprintf ( disp1value_ex, "disp=%08lx",
               disp_re.value ( ) );
     if (detect_read_after_load_dist()) {
-        memory_stall();
+        //memory_stall();
     }
-    return;
     //preserve re for cycle 2
     switch ( opcode ) {
         case OPC_LDA: case OPC_LDAH: case OPC_LDBU:
@@ -183,7 +182,7 @@ void execute1 ( )
 void execute2 ( )
 {
     int opcode = ex_internal_ir ( 31, 26 );
-    bool imm   = ex_internal_ir ( 12 ) == 0;
+    bool imm   = ex_internal_ir ( 12 ) != 0;
     int func   = ex_internal_ir ( 11, 5 );
 
     switch ( opcode ) {
@@ -214,7 +213,7 @@ void execute2 ( )
     sprintf ( opc2value_ex, "opc=%03d",
               opcode );
     sprintf ( addr2value_ex, "addr=%08lx",
-              ex_internal_shift.value ( ) );
+              ex_internal_addr.value ( ) );
     sprintf ( shift2value_ex, "shift=%08lx",
               ex_internal_shift.value ( ) );
     sprintf ( arith2value_ex, "arith=%08lx",

@@ -83,7 +83,7 @@ void read1 ( )
             operate1 ( );
             break;
         default: // unknown
-            done = true;
+            break;//done = true;
 
     } // switch
 
@@ -134,7 +134,7 @@ void read2 ( )
             operate2 ( );
             break;
         default: // unknown
-            done = true;
+            break;//done = true;
     } // switch
 
     sprintf ( pc2value_read, "pc=%04lx",
