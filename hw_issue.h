@@ -16,6 +16,6 @@ extern Bus pcbus_i1;
 extern Bus irbus_i1;
 extern Bus irbus_i2;
 extern Bus pcbus_i2;
-extern BusALU leftShift_alu;
-extern BusALU destalu_i;
+extern BusALU destalu_i1;
+extern BusALU destalu_i2;
 // $(filename)
