@@ -114,7 +114,7 @@ class Instruction():
             # figure out target
             target = Instruction.targets[self.Target]
             pc = self.Addr
-            result += "{0:b}".format(target - pc).zfill(20)
+            result += "{0:b}".format(int(target - pc)).zfill(20)
             return result
         elif self.Format == "Control":
             result += "{0:b}".format(REGS["pv"]).zfill(5)
@@ -168,7 +168,7 @@ def main():
                     print(b)
                     print(instr.raw_string)
                     outfile.write(str(hex(accumulator))[2:] + " 1 ")
-                    accumulator = accumulator + 4
+                    accumulator = accumulator + 1
                     outfile.write(str(hex(int(instr.toBinary(), 2)))[2:])
                     outfile.write("\n")
                     '''

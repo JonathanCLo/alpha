@@ -66,8 +66,8 @@ void ex_arith_s1 ( int	opcode,
 {
     //accounts for all arithmetic instructions
     exec_read_after_write(imm); //handle both hazard and no-hazard
-
-    ex_internal_addr.latchFrom ( addr_alu.OUT ( ) );
+    if (opcode==17)
+        ex_internal_addr.latchFrom ( addr_alu.OUT ( ) );
     //handle manipulation of Rb/Li at this pointer
     if ( opcode == 17 && ( func==8 || func==72 || func==40 ) ) {
         addr_alu.perform ( BusALU::op_not );
@@ -149,7 +149,7 @@ void execute1 ( )
     sprintf ( disp1value_ex, "disp=%08lx",
               disp_re.value ( ) );
     if (detect_read_after_load_dist()) {
-        //memory_stall();
+        memory_stall();
     }
     //preserve re for cycle 2
     switch ( opcode ) {

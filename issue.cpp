@@ -26,7 +26,7 @@ char print_issue [64];
 void issue1 ( )
 {
     if ( !ir_fi.zero ( ) ) {
-        //advance_hd ( );
+        advance_hd ( );
     }
     // move ir
     irbus_i1.IN ( ).pullFrom ( ir_fi );

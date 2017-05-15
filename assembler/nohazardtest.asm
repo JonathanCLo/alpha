@@ -7,6 +7,7 @@ home:
     SUBL    $7      78      $8
     S4SUBL  $9      90      $10
     S8SUBL  $11     12      $12
+    BEQ     $zero   @end
     AND     $zero   3       $13
     BIC     $zero   3       $14
     BIS     $zero   3       $15
@@ -19,9 +20,9 @@ home:
     CMOVLBC $zero   3       $22
     CMOVLBS $zero   3       $23
     CMOVLE  $zero   3       $24
-    CMOVLT  $zero   3       $25
-    CMOVNE  $zero   3       $26
-    LDA     $1      $zero   600
+    CMOVLT  $10   3       $25
+    CMOVNE  $18   3       $26
     PAL NOOP
     NOOP
+end:
     PAL HALT
