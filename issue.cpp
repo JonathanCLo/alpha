@@ -58,6 +58,61 @@ void issue1 ( )
         case OPC_BNE:
         case OPC_BR:
         case OPC_BSR: // branches
+            // calculate ra
+            long ra = ir_ir ( REG_SIZE - 7, REG_SIZE - 11 );
+            long ra_value = (*regfile[ra]).value ( );
+            
+            // noop the current instr or pass it through
+            if ( ra_value == 0 ) {
+                ir_i.clear ( );
+            } else {
+                irbus_i1.IN ( ).pullFrom ( ir_fi );
+                ir_i.latchFrom ( irbus_i1.OUT ( ) );
+            }
+            if ( ra_value >= 0 ) {
+                ir_i.clear ( );
+            } else {
+                irbus_i1.IN ( ).pullFrom ( ir_fi );
+                ir_i.latchFrom ( irbus_i1.OUT ( ) );
+            }
+            if ( ra_value > 0 ) {
+                ir_i.clear ( );
+            } else {
+                irbus_i1.IN ( ).pullFrom ( ir_fi );
+                ir_i.latchFrom ( irbus_i1.OUT ( ) );
+            }
+            if ( ra_value & 0x1 == 0 ) {
+                ir_i.clear ( );
+            } else {
+                irbus_i1.IN ( ).pullFrom ( ir_fi );
+                ir_i.latchFrom ( irbus_i1.OUT ( ) );
+            }
+            if ( ra_value & 0x1 == 1 ) {
+                ir_i.clear ( );
+            } else {
+                irbus_i1.IN ( ).pullFrom ( ir_fi );
+                ir_i.latchFrom ( irbus_i1.OUT ( ) );
+            }
+            if ( ra_value <= 0 ) {
+                ir_i.clear ( );
+            } else {
+                irbus_i1.IN ( ).pullFrom ( ir_fi );
+                ir_i.latchFrom ( irbus_i1.OUT ( ) );
+            }
+            if ( ra_value < 0 ) {
+                ir_i.clear ( );
+            } else {
+                irbus_i1.IN ( ).pullFrom ( ir_fi );
+                ir_i.latchFrom ( irbus_i1.OUT ( ) );
+            }
+            if ( ra_value != 0 ) {
+                ir_i.clear ( );
+            } else {
+                irbus_i1.IN ( ).pullFrom ( ir_fi );
+                ir_i.latchFrom ( irbus_i1.OUT ( ) );
+            }
+
+
             // grab the required bits
             destalu_i.OP1 ( ).pullFrom ( ir_fi );
             destalu_i.OP2 ( ).pullFrom ( dispmask_g );
