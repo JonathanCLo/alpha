@@ -200,11 +200,6 @@ void issue2 ( )
 {
     long opc = ir_i ( REG_SIZE - 1, REG_SIZE - 6 );
 
-    destalu_i2.OP1 ( ).pullFrom ( pc_i );
-    destalu_i2.OP2 ( ).pullFrom ( aux_i );
-    pc_load.latchFrom ( destalu_i.OUT ( ) );
-    destalu_i2.perform ( BusALU::op_add );
-
     sprintf ( pc2value_issue, "pc=%04lx",
               pc_i.value ( ) );
     sprintf ( ir2value_issue, "opc=%08lx",
@@ -213,50 +208,46 @@ void issue2 ( )
     irbus_i2.IN ( ).pullFrom ( ir_i );
     ir_ir.latchFrom ( irbus_i2.OUT ( ) );
     sprintf ( purge2value_issue, "NO PURGE" );
-} // issue2
 
-// move pc
-pcbus_i2.IN ( ).pullFrom ( pc_i );
-pc_ir.latchFrom ( pcbus_i2.OUT ( ) );
+    // move pc
+    pcbus_i2.IN ( ).pullFrom ( pc_i );
+    pc_ir.latchFrom ( pcbus_i2.OUT ( ) );
 
-switch ( opc ) {
-    case OPC_PAL:     // noop
-        break;
-    case OPC_BEQ:
-    case OPC_BGE:
-    case OPC_BGT:
-    case OPC_BLBC:
-    case OPC_BLBS:
-    case OPC_BLE:
-    case OPC_BLT:
-    case OPC_BNE:
-    case OPC_BR:
-    case OPC_BSR:     // branches
-        // prep npc for calculation in read
-        leftShift_alu.OP1 ( ).pullFrom ( aux_i );
-        leftShift_alu.OP2 ( ).pullFrom ( shift11_g );
-        npc_ir.latchFrom ( leftShift_alu.OUT ( ) );
-        leftShift_alu.perform ( BusALU::op_lshift );
-        break;
-    case OPC_JMP:     // mf
-        // TODO do we need to do anything?
-        // prep npc for calculation in read
-        leftShift_alu.OP1 ( ).pullFrom ( aux_i );
-        leftShift_alu.OP2 ( ).pullFrom ( shift11_g );
-        npc_ir.latchFrom ( leftShift_alu.OUT ( ) );
-        leftShift_alu.perform ( BusALU::op_rop1 );
-        break;
-    default:     // other formats
-        // we don't care
-        break;
-}     // switch
-sprintf ( print_issue, "|I| %-7s %-7s | %-7s %-7s %-7s ",
-          pc1value_issue,
-          ir1value_issue,
-          pc2value_issue,
-          ir2value_issue,
-          purge2value_issue );
-cout << print_issue;
+    switch ( opc ) {
+        case OPC_PAL: // noop
+            break;
+        case OPC_BEQ:
+        case OPC_BGE:
+        case OPC_BGT:
+        case OPC_BLBC:
+        case OPC_BLBS:
+        case OPC_BLE:
+        case OPC_BLT:
+        case OPC_BNE:
+        case OPC_BR:
+        case OPC_BSR: // branches
+            destalu_i2.OP1 ( ).pullFrom ( pc_i );
+            destalu_i2.OP2 ( ).pullFrom ( aux_i );
+            pc_load.latchFrom ( destalu_i.OUT ( ) );
+            destalu_i2.perform ( BusALU::op_add );
+            break;
+        case OPC_JMP: // mf
+            destalu_i2.OP1 ( ).pullFrom ( pc_i );
+            destalu_i2.OP2 ( ).pullFrom ( aux_i );
+            pc_load.latchFrom ( destalu_i.OUT ( ) );
+            destalu_i2.perform ( BusALU::op_add );
+            break;
+        default: // other formats
+            // we don't care
+            break;
+    } // switch
+    sprintf ( print_issue, "|I| %-7s %-7s | %-7s %-7s %-7s ",
+              pc1value_issue,
+              ir1value_issue,
+              pc2value_issue,
+              ir2value_issue,
+              purge2value_issue );
+    cout << print_issue;
 } // issue2
 
 // issue.cpp end
