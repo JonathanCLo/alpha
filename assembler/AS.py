@@ -20,7 +20,7 @@ def isOperate(mnemonic):
                     "CLTZ", "CTPOP", "CTTZ", \
                     "MULL", "SUBL", "S4SUBL", "S8SUBL", \
                     "AND", "BIC", "BIS", "EQV", "ORNOT", "XOR", \
-                    "CMOVEQ", "CMOVGE", "CMOVGT", "CMOVLBS", "CMOVLE", "CMOVNE", "CMOVLT", \
+                    "CMOVEQ", "CMOVGE", "CMOVGT", "CMOVLBC",  "CMOVLBS", "CMOVLE", "CMOVNE", "CMOVLT", \
                     "SLL", "SRA", "SRL", "CMPGBE", "EXTWL", \
                     "EXTLL", "EXTWH", "EXTLH", \
                     "INSWL", "INSLL", "INSWH", "INSLH", \
@@ -70,8 +70,6 @@ class Instruction():
             # ADDL $Ra $Rb $Rc
             # ADDL $Ra 1234 $Rc
             self.Ra = parts[1].strip("$")
-            if len(self.Ra) == len(parts[1]):
-                raise ValueError("not a reg")
             if parts[2].startswith("$"):
                 self.Rb = parts[2].strip("$")
             else:
