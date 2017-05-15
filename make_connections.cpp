@@ -71,7 +71,8 @@ void make_connections_issue ( )
 
     ir_fi.connectsTo ( irbus_i1.IN ( ) );
     ir_i.connectsTo ( irbus_i1.OUT ( ) );
-    
+    noop_g.connectsTo(irbus_i1.IN());
+    noop_g.connectsTo(irbus_i2.IN());
     ir_i.connectsTo ( irbus_i2.IN ( ) );
     ir_ir.connectsTo ( irbus_i2.OUT ( ) );
 
@@ -79,14 +80,14 @@ void make_connections_issue ( )
     pc_i.connectsTo ( pcbus_i2.IN ( ) );
     pc_ir.connectsTo ( pcbus_i2.OUT ( ) );
 
-    ir_fi.connectsTo ( destalu_i.OP1 ( ) );
-    pc_fi.connectsTo ( destalu_i.OP1 ( ) );
-    dispmask_g.connectsTo ( destalu_i.OP2 ( ) );
-    aux_i.connectsTo ( destalu_i.OUT ( ) );
+    ir_fi.connectsTo ( destalu_i1.OP1 ( ) );
+    pc_fi.connectsTo ( destalu_i1.OP1 ( ) );
+    dispmask_g.connectsTo ( destalu_i2.OP2 ( ) );
+    aux_i.connectsTo ( destalu_i1.OUT ( ) );
 
-    aux_i.connectsTo ( leftShift_alu.OP1 ( ) );
-    shift11_g.connectsTo ( leftShift_alu.OP2 ( ) );
-    npc_ir.connectsTo ( leftShift_alu.OUT ( ) );
+    aux_i.connectsTo ( destalu_i2.OP1 ( ) );
+    shift11_g.connectsTo ( destalu_i2.OP2 ( ) );
+    npc_ir.connectsTo ( destalu_i2.OUT ( ) );
 
 } // make_connections_issue
 

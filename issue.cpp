@@ -59,20 +59,20 @@ void issue1 ( )
         case OPC_BR:
         case OPC_BSR: // branches
             // grab the required bits
-            destalu_i.OP1 ( ).pullFrom ( ir_fi );
-            destalu_i.OP2 ( ).pullFrom ( dispmask_g );
-            aux_i.latchFrom ( destalu_i.OUT ( ) );
-            destalu_i.perform ( BusALU::op_and );
+            destalu_i1.OP1 ( ).pullFrom ( ir_fi );
+            destalu_i1.OP2 ( ).pullFrom ( dispmask_g );
+            aux_i.latchFrom ( destalu_i1.OUT ( ) );
+            destalu_i1.perform ( BusALU::op_and );
             break;
         case OPC_JMP:
         case OPC_JSR:
         case OPC_RET:
         case OPC_JSRC:
         case OPC_RPCC: // mf
-            destalu_i.OP1 ( ).pullFrom ( pc_fi );
-            destalu_i.OP2 ( ).pullFrom ( dispmask_g );
-            aux_i.latchFrom ( destalu_i.OUT ( ) );
-            destalu_i.perform ( BusALU::op_rop1 );
+            destalu_i1.OP1 ( ).pullFrom ( pc_fi );
+            destalu_i1.OP2 ( ).pullFrom ( dispmask_g );
+            aux_i.latchFrom ( destalu_i1.OUT ( ) );
+            destalu_i1.perform ( BusALU::op_rop1 );
             break;
         default: // other formats
             // we don't care
@@ -122,18 +122,18 @@ void issue2 ( )
         case OPC_BR:
         case OPC_BSR: // branches
             // prep npc for calculation in read
-            leftShift_alu.OP1 ( ).pullFrom ( aux_i );
-            leftShift_alu.OP2 ( ).pullFrom ( shift11_g );
-            npc_ir.latchFrom ( leftShift_alu.OUT ( ) );
-            leftShift_alu.perform ( BusALU::op_lshift );
+            destalu_i2.OP1 ( ).pullFrom ( aux_i );
+            destalu_i2.OP2 ( ).pullFrom ( shift11_g );
+            npc_ir.latchFrom ( destalu_i2.OUT ( ) );
+            destalu_i2.perform ( BusALU::op_lshift );
             break;
         case OPC_JMP: // mf
             // TODO do we need to do anything?
             // prep npc for calculation in read
-            leftShift_alu.OP1 ( ).pullFrom ( aux_i );
-            leftShift_alu.OP2 ( ).pullFrom ( shift11_g );
-            npc_ir.latchFrom ( leftShift_alu.OUT ( ) );
-            leftShift_alu.perform ( BusALU::op_rop1 );
+            destalu_i2.OP1 ( ).pullFrom ( aux_i );
+            destalu_i2.OP2 ( ).pullFrom ( shift11_g );
+            npc_ir.latchFrom ( destalu_i2.OUT ( ) );
+            destalu_i2.perform ( BusALU::op_rop1 );
             break;
         default: // other formats
             // we don't care
