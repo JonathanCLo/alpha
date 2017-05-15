@@ -61,10 +61,10 @@ void issue1 ( )
                 ir_i.latchFrom ( irbus_i1.OUT ( ) );
             }
             // grab the required bits
-            destalu_i.OP1 ( ).pullFrom ( ir_fi );
-            destalu_i.OP2 ( ).pullFrom ( dispmask_g );
-            aux_i.latchFrom ( destalu_i.OUT ( ) );
-            destalu_i.perform ( BusALU::op_and );
+            destalu_i1.OP1 ( ).pullFrom ( ir_fi );
+            destalu_i1.OP2 ( ).pullFrom ( dispmask_g );
+            aux_i.latchFrom ( destalu_i1.OUT ( ) );
+            destalu_i1.perform ( BusALU::op_and );
             break;
 
         case OPC_BGE:
@@ -75,10 +75,10 @@ void issue1 ( )
                 ir_i.latchFrom ( irbus_i1.OUT ( ) );
             }
             // grab the required bits
-            destalu_i.OP1 ( ).pullFrom ( ir_fi );
-            destalu_i.OP2 ( ).pullFrom ( dispmask_g );
-            aux_i.latchFrom ( destalu_i.OUT ( ) );
-            destalu_i.perform ( BusALU::op_and );
+            destalu_i1.OP1 ( ).pullFrom ( ir_fi );
+            destalu_i1.OP2 ( ).pullFrom ( dispmask_g );
+            aux_i.latchFrom ( destalu_i1.OUT ( ) );
+            destalu_i1.perform ( BusALU::op_and );
             break;
 
         case OPC_BGT:
@@ -89,10 +89,10 @@ void issue1 ( )
                 ir_i.latchFrom ( irbus_i1.OUT ( ) );
             }
             // grab the required bits
-            destalu_i.OP1 ( ).pullFrom ( ir_fi );
-            destalu_i.OP2 ( ).pullFrom ( dispmask_g );
-            aux_i.latchFrom ( destalu_i.OUT ( ) );
-            destalu_i.perform ( BusALU::op_and );
+            destalu_i1.OP1 ( ).pullFrom ( ir_fi );
+            destalu_i1.OP2 ( ).pullFrom ( dispmask_g );
+            aux_i.latchFrom ( destalu_i1.OUT ( ) );
+            destalu_i1.perform ( BusALU::op_and );
             break;
 
         case OPC_BLBC:
@@ -103,10 +103,10 @@ void issue1 ( )
                 ir_i.latchFrom ( irbus_i1.OUT ( ) );
             }
             // grab the required bits
-            destalu_i.OP1 ( ).pullFrom ( ir_fi );
-            destalu_i.OP2 ( ).pullFrom ( dispmask_g );
-            aux_i.latchFrom ( destalu_i.OUT ( ) );
-            destalu_i.perform ( BusALU::op_and );
+            destalu_i1.OP1 ( ).pullFrom ( ir_fi );
+            destalu_i1.OP2 ( ).pullFrom ( dispmask_g );
+            aux_i.latchFrom ( destalu_i1.OUT ( ) );
+            destalu_i1.perform ( BusALU::op_and );
             break;
 
         case OPC_BLBS:
@@ -117,10 +117,10 @@ void issue1 ( )
                 ir_i.latchFrom ( irbus_i1.OUT ( ) );
             }
             // grab the required bits
-            destalu_i.OP1 ( ).pullFrom ( ir_fi );
-            destalu_i.OP2 ( ).pullFrom ( dispmask_g );
-            aux_i.latchFrom ( destalu_i.OUT ( ) );
-            destalu_i.perform ( BusALU::op_and );
+            destalu_i1.OP1 ( ).pullFrom ( ir_fi );
+            destalu_i1.OP2 ( ).pullFrom ( dispmask_g );
+            aux_i.latchFrom ( destalu_i1.OUT ( ) );
+            destalu_i1.perform ( BusALU::op_and );
             break;
 
         case OPC_BLE:
@@ -131,10 +131,10 @@ void issue1 ( )
                 ir_i.latchFrom ( irbus_i1.OUT ( ) );
             }
             // grab the required bits
-            destalu_i.OP1 ( ).pullFrom ( ir_fi );
-            destalu_i.OP2 ( ).pullFrom ( dispmask_g );
-            aux_i.latchFrom ( destalu_i.OUT ( ) );
-            destalu_i.perform ( BusALU::op_and );
+            destalu_i1.OP1 ( ).pullFrom ( ir_fi );
+            destalu_i1.OP2 ( ).pullFrom ( dispmask_g );
+            aux_i.latchFrom ( destalu_i1.OUT ( ) );
+            destalu_i1.perform ( BusALU::op_and );
             break;
 
         case OPC_BLT:
@@ -145,10 +145,10 @@ void issue1 ( )
                 ir_i.latchFrom ( irbus_i1.OUT ( ) );
             }
             // grab the required bits
-            destalu_i.OP1 ( ).pullFrom ( ir_fi );
-            destalu_i.OP2 ( ).pullFrom ( dispmask_g );
-            aux_i.latchFrom ( destalu_i.OUT ( ) );
-            destalu_i.perform ( BusALU::op_and );
+            destalu_i1.OP1 ( ).pullFrom ( ir_fi );
+            destalu_i1.OP2 ( ).pullFrom ( dispmask_g );
+            aux_i.latchFrom ( destalu_i1.OUT ( ) );
+            destalu_i1.perform ( BusALU::op_and );
             break;
 
         case OPC_BNE:
@@ -159,10 +159,10 @@ void issue1 ( )
                 ir_i.latchFrom ( irbus_i1.OUT ( ) );
             }
             // grab the required bits
-            destalu_i.OP1 ( ).pullFrom ( ir_fi );
-            destalu_i.OP2 ( ).pullFrom ( dispmask_g );
-            aux_i.latchFrom ( destalu_i.OUT ( ) );
-            destalu_i.perform ( BusALU::op_and );
+            destalu_i1.OP1 ( ).pullFrom ( ir_fi );
+            destalu_i1.OP2 ( ).pullFrom ( dispmask_g );
+            aux_i.latchFrom ( destalu_i1.OUT ( ) );
+            destalu_i1.perform ( BusALU::op_and );
             break;
         case OPC_BR:
         case OPC_BSR: // branches
@@ -171,7 +171,7 @@ void issue1 ( )
 
             destalu_i1.OP1 ( ).pullFrom ( ir_fi );
             destalu_i1.OP2 ( ).pullFrom ( dispmask_g );
-            aux_i.latchFrom ( destalu_i.OUT ( ) );
+            aux_i.latchFrom ( destalu_i1.OUT ( ) );
             destalu_i1.perform ( BusALU::op_and );
             break;
         case OPC_JMP:
@@ -182,7 +182,7 @@ void issue1 ( )
 
             destalu_i1.OP1 ( ).pullFrom ( pc_fi );
             destalu_i1.OP2 ( ).pullFrom ( dispmask_g );
-            aux_i.latchFrom ( destalu_i.OUT ( ) );
+            aux_i.latchFrom ( destalu_i1.OUT ( ) );
             destalu_i1.perform ( BusALU::op_rop1 );
             break;
         default: // other formats
@@ -228,13 +228,13 @@ void issue2 ( )
         case OPC_BSR: // branches
             destalu_i2.OP1 ( ).pullFrom ( pc_i );
             destalu_i2.OP2 ( ).pullFrom ( aux_i );
-            pc_load.latchFrom ( destalu_i.OUT ( ) );
+            pc_load.latchFrom ( destalu_i2.OUT ( ) );
             destalu_i2.perform ( BusALU::op_add );
             break;
         case OPC_JMP: // mf
             destalu_i2.OP1 ( ).pullFrom ( pc_i );
             destalu_i2.OP2 ( ).pullFrom ( aux_i );
-            pc_load.latchFrom ( destalu_i.OUT ( ) );
+            pc_load.latchFrom ( destalu_i2.OUT ( ) );
             destalu_i2.perform ( BusALU::op_add );
             break;
         default: // other formats

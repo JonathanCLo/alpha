@@ -80,16 +80,13 @@ void make_connections_issue ( )
 
     ir_fi.connectsTo ( destalu_i1.OP1 ( ) );
     pc_fi.connectsTo ( destalu_i1.OP1 ( ) );
-    dispmask_g.connectsTo ( destalu_i.OP2 ( ) );
+    dispmask_g.connectsTo ( destalu_i1.OP2 ( ) );
     aux_i.connectsTo ( destalu_i1.OUT ( ) );
 
     pc_i.connectsTo ( destalu_i2.OP1 ( ) );
     aux_i.connectsTo ( destalu_i2.OP2 ( ) );
     pc_load.connectsTo ( destalu_i2.OUT ( ) );
 
-    aux_i.connectsTo ( leftShift_alu.OP1 ( ) );
-    shift11_g.connectsTo ( leftShift_alu.OP2 ( ) );
-    npc_ir.connectsTo ( leftShift_alu.OUT ( ) );
 
 } // make_connections_issue
 
