@@ -39,12 +39,16 @@ class Instruction():
             self.raw_string = string.split(";")[0].strip()
             self.comment = string.split(";")[1:]
         parts = [splits for splits in self.raw_string.split(" ") if splits is not ""]
+        if len(parts) == 0:
+            return None
         self.mnemonic = parts[0]
         if isMemory(self.mnemonic):
             # LDA $Ra $Rb 1234
             self.Format = "Memory"
             self.Ra = parts[1].strip("$")
             self.Rb = parts[2].strip("$")
+            if len(self.Rb) == len(parts[2]) or len(self.Ra) == len(parts[1]):
+                raise ValueError("not a reg")
             self.Disp = int(parts[3])
             self.Addr = Instruction.addrnext
             Instruction.addrnext += 1
@@ -52,6 +56,8 @@ class Instruction():
             # BEQ $Ra @Target
             self.Format = "Branch"
             self.Ra = parts[1].strip("$")
+            if len(self.Ra) == len(parts[1]):
+                raise ValueError("not a reg")
             self.Target = parts[2].strip("@")
             self.Addr = Instruction.addrnext
             Instruction.addrnext += 1
@@ -64,6 +70,8 @@ class Instruction():
             # ADDL $Ra $Rb $Rc
             # ADDL $Ra 1234 $Rc
             self.Ra = parts[1].strip("$")
+            if len(self.Ra) == len(parts[1]):
+                raise ValueError("not a reg")
             if parts[2].startswith("$"):
                 self.Rb = parts[2].strip("$")
             else:
@@ -156,7 +164,7 @@ def main():
                 program.append(Instruction(line.strip()))
         with open(outarg, 'w') as outfile:
             accumulator = 0
-            for instr in program:
+            for instr in list(filter(lambda x: hasattr(x, "mnemonic"), program)):
                 b = instr.toBinary()
                 if b != "":
                     print(b)
