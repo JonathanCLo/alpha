@@ -372,7 +372,7 @@ void move_ra ( )
 {
     long ra = ir_ir ( REG_SIZE - 7, REG_SIZE - 11 ); // move ra
 
-    rabus_r1.IN ( ).pullFrom ( pc_ir );
+    rabus_r1.IN ( ).pullFrom ( *regfile[ra] );
     ra_r.latchFrom ( rabus_r1.OUT ( ) );
 
 } // move_ra
@@ -387,7 +387,7 @@ void write_ra ( )
     long ra = ir_ir ( REG_SIZE - 7, REG_SIZE - 11 );
 
     // move ra
-    rabus_r1.IN ( ).pullFrom ( pc_ir );
+    rabus_r1.IN ( ).pullFrom ( *regfile[ra] );
     (*regfile[ra]).latchFrom ( rabus_r1.OUT ( ) );
 }
 

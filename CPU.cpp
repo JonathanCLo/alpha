@@ -23,7 +23,7 @@ int main ( int	 argc,
            char* argv[] )
 {
     // turn on data flow tracing and memory dump after load
-    CPUObject::debug |= CPUObject::trace | CPUObject::memload;
+    //CPUObject::debug |= CPUObject::trace | CPUObject::memload;
 
     // make sure we've been given an object file name
     if ( argc != 2 ) {

@@ -205,7 +205,6 @@ void issue2 ( )
 
     irbus_i2.IN ( ).pullFrom ( ir_i );
     ir_ir.latchFrom ( irbus_i2.OUT ( ) );
-    sprintf ( purge2value_issue, "NO PURGE" );
 
     // move pc
     pcbus_i2.IN ( ).pullFrom ( pc_i );

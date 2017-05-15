@@ -40,11 +40,9 @@ void fetch2 ( )
 { 
     sprintf ( pc2value_fetch, "pc=%04lx", pc_f.value ( ) ); 
     if ( ir_purge ) {
-        sprintf ( purge2value_fetch, "PURGED" );
         irbus_f2.IN ( ).pullFrom ( noop_g );
         ir_fi.latchFrom ( irbus_f2.OUT ( ) );
     } else { // read from mem
-        sprintf ( purge2value_fetch, "NO PURGE" );
         instr_cache.read ( );
         ir_fi.latchFrom ( instr_cache.READ ( ) );
     }
@@ -53,10 +51,9 @@ void fetch2 ( )
     pcbus_f2.IN ( ).pullFrom ( pc_f );
     pc_fi.latchFrom ( pcbus_f2.OUT ( ) );
     pc_load.incr ( );
-    sprintf ( print_fetch, "|F| %-7s | %-7s %-10s",
+    sprintf ( print_fetch, "|F| %-7s | %-7s ",
               pc1value_fetch,
-              pc2value_fetch,
-              purge2value_fetch );
+              pc2value_fetch);
     cout << print_fetch;
 
 } // fetch2

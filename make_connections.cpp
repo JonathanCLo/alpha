@@ -127,7 +127,6 @@ void make_connections_read ( )
     for ( int i = 0; i < 32; i++ ) {
         ( *regfile[i] ).connectsTo ( rabus_r1.IN ( ) );
     }
-
     // connect rx to rbbus_r1
     for ( int i = 0; i < 32; i++ ) {
         ( *regfile[i] ).connectsTo ( rbbus_r1.IN ( ) );
