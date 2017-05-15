@@ -25,9 +25,9 @@ char print_issue [64];
  */
 void issue1 ( )
 {
-    if (!ir_fi.zero()){
-        advance_hd();
-        load_dep_table();
+    if ( !ir_fi.zero ( ) ) {
+        advance_hd ( );
+        load_dep_table ( );
     }
     // move ir
     irbus_i1.IN ( ).pullFrom ( ir_fi );
@@ -42,23 +42,132 @@ void issue1 ( )
               pc_fi.value ( ) );
     sprintf ( ir1value_issue, "ir=%08lx",
               ir_fi.value ( ) );
-    
+
+    // calculate ra
+    long ra = ir_ir ( REG_SIZE - 7, REG_SIZE - 11 );
+    long ra_value = ( *regfile[ra] ).value ( );
+
     switch ( opc ) {
-        case OPC_PAL:  // PAL
+        case OPC_PAL:                   // PAL
             if ( ir_fi.value ( ) == 1 ) // halt
-                done = true; 
+                done = true;
             break;
         case OPC_BEQ:
+            // noop the current instr or pass it through
+            if ( ra_value == 0 ) {
+                ir_i.clear ( );
+            } else {
+                irbus_i1.IN ( ).pullFrom ( ir_fi );
+                ir_i.latchFrom ( irbus_i1.OUT ( ) );
+            }
+            // grab the required bits
+            destalu_i1.OP1 ( ).pullFrom ( ir_fi );
+            destalu_i1.OP2 ( ).pullFrom ( dispmask_g );
+            aux_i.latchFrom ( destalu_i1.OUT ( ) );
+            destalu_i1.perform ( BusALU::op_and );
+            break;
+
         case OPC_BGE:
+            if ( ra_value >= 0 ) {
+                ir_i.clear ( );
+            } else {
+                irbus_i1.IN ( ).pullFrom ( ir_fi );
+                ir_i.latchFrom ( irbus_i1.OUT ( ) );
+            }
+            // grab the required bits
+            destalu_i1.OP1 ( ).pullFrom ( ir_fi );
+            destalu_i1.OP2 ( ).pullFrom ( dispmask_g );
+            aux_i.latchFrom ( destalu_i1.OUT ( ) );
+            destalu_i1.perform ( BusALU::op_and );
+            break;
+
         case OPC_BGT:
+            if ( ra_value > 0 ) {
+                ir_i.clear ( );
+            } else {
+                irbus_i1.IN ( ).pullFrom ( ir_fi );
+                ir_i.latchFrom ( irbus_i1.OUT ( ) );
+            }
+            // grab the required bits
+            destalu_i1.OP1 ( ).pullFrom ( ir_fi );
+            destalu_i1.OP2 ( ).pullFrom ( dispmask_g );
+            aux_i.latchFrom ( destalu_i1.OUT ( ) );
+            destalu_i1.perform ( BusALU::op_and );
+            break;
+
         case OPC_BLBC:
+            if ( ra_value & 0x1 == 0 ) {
+                ir_i.clear ( );
+            } else {
+                irbus_i1.IN ( ).pullFrom ( ir_fi );
+                ir_i.latchFrom ( irbus_i1.OUT ( ) );
+            }
+            // grab the required bits
+            destalu_i1.OP1 ( ).pullFrom ( ir_fi );
+            destalu_i1.OP2 ( ).pullFrom ( dispmask_g );
+            aux_i.latchFrom ( destalu_i1.OUT ( ) );
+            destalu_i1.perform ( BusALU::op_and );
+            break;
+
         case OPC_BLBS:
+            if ( ra_value & 0x1 == 1 ) {
+                ir_i.clear ( );
+            } else {
+                irbus_i1.IN ( ).pullFrom ( ir_fi );
+                ir_i.latchFrom ( irbus_i1.OUT ( ) );
+            }
+            // grab the required bits
+            destalu_i1.OP1 ( ).pullFrom ( ir_fi );
+            destalu_i1.OP2 ( ).pullFrom ( dispmask_g );
+            aux_i.latchFrom ( destalu_i1.OUT ( ) );
+            destalu_i1.perform ( BusALU::op_and );
+            break;
+
         case OPC_BLE:
+            if ( ra_value <= 0 ) {
+                ir_i.clear ( );
+            } else {
+                irbus_i1.IN ( ).pullFrom ( ir_fi );
+                ir_i.latchFrom ( irbus_i1.OUT ( ) );
+            }
+            // grab the required bits
+            destalu_i1.OP1 ( ).pullFrom ( ir_fi );
+            destalu_i1.OP2 ( ).pullFrom ( dispmask_g );
+            aux_i.latchFrom ( destalu_i1.OUT ( ) );
+            destalu_i1.perform ( BusALU::op_and );
+            break;
+
         case OPC_BLT:
+            if ( ra_value < 0 ) {
+                ir_i.clear ( );
+            } else {
+                irbus_i1.IN ( ).pullFrom ( ir_fi );
+                ir_i.latchFrom ( irbus_i1.OUT ( ) );
+            }
+            // grab the required bits
+            destalu_i1.OP1 ( ).pullFrom ( ir_fi );
+            destalu_i1.OP2 ( ).pullFrom ( dispmask_g );
+            aux_i.latchFrom ( destalu_i1.OUT ( ) );
+            destalu_i1.perform ( BusALU::op_and );
+            break;
+
         case OPC_BNE:
+            if ( ra_value != 0 ) {
+                ir_i.clear ( );
+            } else {
+                irbus_i1.IN ( ).pullFrom ( ir_fi );
+                ir_i.latchFrom ( irbus_i1.OUT ( ) );
+            }
+            // grab the required bits
+            destalu_i1.OP1 ( ).pullFrom ( ir_fi );
+            destalu_i1.OP2 ( ).pullFrom ( dispmask_g );
+            aux_i.latchFrom ( destalu_i1.OUT ( ) );
+            destalu_i1.perform ( BusALU::op_and );
+            break;
         case OPC_BR:
         case OPC_BSR: // branches
             // grab the required bits
+            ir_i.clear ( );
             destalu_i1.OP1 ( ).pullFrom ( ir_fi );
             destalu_i1.OP2 ( ).pullFrom ( dispmask_g );
             aux_i.latchFrom ( destalu_i1.OUT ( ) );
@@ -68,7 +177,7 @@ void issue1 ( )
         case OPC_JSR:
         case OPC_RET:
         case OPC_JSRC:
-        case OPC_RPCC: // mf
+            ir_i.clear ( );
             destalu_i1.OP1 ( ).pullFrom ( pc_fi );
             destalu_i1.OP2 ( ).pullFrom ( dispmask_g );
             aux_i.latchFrom ( destalu_i1.OUT ( ) );
@@ -88,21 +197,15 @@ void issue1 ( )
 void issue2 ( )
 {
     long opc = ir_i ( REG_SIZE - 1, REG_SIZE - 6 );
+
     sprintf ( pc2value_issue, "pc=%04lx",
               pc_i.value ( ) );
     sprintf ( ir2value_issue, "opc=%08lx",
               ir_fi.value ( ) );
-    
-    if ( ir_purge ) {
-        irbus_i2.IN ( ).pullFrom ( noop_g );
-        ir_ir.latchFrom ( irbus_i2.OUT ( ) );
-        sprintf ( purge2value_issue, "PURGE" );
-    } else { // read from mem
-        // move ir
-        irbus_i2.IN ( ).pullFrom ( ir_i );
-        ir_ir.latchFrom ( irbus_i2.OUT ( ) );
-        sprintf ( purge2value_issue, "NO PURGE" );
-    }
+
+    irbus_i2.IN ( ).pullFrom ( ir_i );
+    ir_ir.latchFrom ( irbus_i2.OUT ( ) );
+    sprintf ( purge2value_issue, "NO PURGE" );
 
     // move pc
     pcbus_i2.IN ( ).pullFrom ( pc_i );
@@ -121,19 +224,16 @@ void issue2 ( )
         case OPC_BNE:
         case OPC_BR:
         case OPC_BSR: // branches
-            // prep npc for calculation in read
-            destalu_i2.OP1 ( ).pullFrom ( aux_i );
-            destalu_i2.OP2 ( ).pullFrom ( shift11_g );
-            npc_ir.latchFrom ( destalu_i2.OUT ( ) );
-            destalu_i2.perform ( BusALU::op_lshift );
+            destalu_i2.OP1 ( ).pullFrom ( pc_i );
+            destalu_i2.OP2 ( ).pullFrom ( aux_i );
+            pc_load.latchFrom ( destalu_i2.OUT ( ) );
+            destalu_i2.perform ( BusALU::op_add );
             break;
         case OPC_JMP: // mf
-            // TODO do we need to do anything?
-            // prep npc for calculation in read
-            destalu_i2.OP1 ( ).pullFrom ( aux_i );
-            destalu_i2.OP2 ( ).pullFrom ( shift11_g );
-            npc_ir.latchFrom ( destalu_i2.OUT ( ) );
-            destalu_i2.perform ( BusALU::op_rop1 );
+            destalu_i2.OP1 ( ).pullFrom ( pc_i );
+            destalu_i2.OP2 ( ).pullFrom ( aux_i );
+            pc_load.latchFrom ( destalu_i2.OUT ( ) );
+            destalu_i2.perform ( BusALU::op_add );
             break;
         default: // other formats
             // we don't care

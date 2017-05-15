@@ -42,7 +42,6 @@ void move_rc ( );
 void read1 ( )
 {
     // reset indicator. this does not get used until tick2
-    ir_purge = false;
     // move ir
     irbus_r1.IN ( ).pullFrom ( ir_ir );
     ir_r.latchFrom ( irbus_r1.OUT ( ) );
@@ -224,18 +223,7 @@ void memdisp2 ( )
  * calculates the possible npc
  */
 void branch1 ( )
-{
-    // sign extend
-    signExtalu_r.OP1 ( ).pullFrom ( npc_ir );
-    signExtalu_r.OP2 ( ).pullFrom ( shift7_g );
-    dest_r.latchFrom ( signExtalu_r.OUT ( ) );
-    signExtalu_r.perform ( BusALU::op_rashift );
-
-    // get ra for comparison
-
-    long ra = ir_ir ( REG_SIZE - 7, REG_SIZE - 11 );
-    ra_value = (*regfile[ra] ).value ( );
-} // branch1
+{ } // branch1
 
 /**
  * branch2
@@ -243,76 +231,7 @@ void branch1 ( )
  *
  */
 void branch2 ( )
-{
-    long branch = ir_re ( REG_SIZE - 1, REG_SIZE - 6 );
-
-    // calculate if we are taking branch
-    switch ( branch ) {
-        case OPC_BEQ:
-            if ( ra_value == 0 ) { // take the branch
-                use_npc ( );
-            } else { // not taken... continue onward
-                use_pc ( );
-            }
-            break;
-        case OPC_BGE:
-            if ( ra_value >= 0 ) { // take the branch
-                use_npc ( );
-            } else { // not taken... continue onward
-                use_pc ( );
-            }
-            break;
-        case OPC_BGT:
-            if ( ra_value > 0 ) { // take the branch
-                use_npc ( );
-            } else { // not taken... continue onward
-                use_pc ( );
-            }
-            break;
-        case OPC_BLBC:
-            if ( ( ra_value & 1 ) == 0 ) { // take the branch
-                use_npc ( );
-            } else { // not taken... continue onward
-                use_pc ( );
-            }
-            break;
-        case OPC_BLBS:
-            if ( ( ra_value & 1 ) == 1 ) { // take the branch
-                use_npc ( );
-            } else { // not taken... continue onward
-                use_pc ( );
-            }
-            break;
-        case OPC_BLE:
-            if ( ra_value <= 0 ) { // take the branch
-                use_npc ( );
-            } else { // not taken... continue onward
-                use_pc ( );
-            }
-            break;
-        case OPC_BLT:
-            if ( ra_value < 0 ) { // take the branch
-                use_npc ( );
-            } else { // not taken... continue onward
-                use_pc ( );
-            }
-            break;
-        case OPC_BNE:
-            if ( ra_value != 0 ) { // take the branch
-                use_npc ( );
-            } else { // not taken... continue onward
-                use_pc ( );
-            }
-            break;
-        case OPC_BR:
-        case OPC_BSR:
-            use_npc ( );
-            break;
-        default: // dont care
-            break;
-    } // switch
-
-} // branch2
+{ } // branch2
 
 /**
  * use_npc

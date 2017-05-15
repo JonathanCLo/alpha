@@ -76,7 +76,6 @@ void make_connections_issue ( )
     ir_i.connectsTo ( irbus_i2.IN ( ) );
     ir_ir.connectsTo ( irbus_i2.OUT ( ) );
 
-    // stage 2
     pc_i.connectsTo ( pcbus_i2.IN ( ) );
     pc_ir.connectsTo ( pcbus_i2.OUT ( ) );
 
@@ -88,6 +87,12 @@ void make_connections_issue ( )
     aux_i.connectsTo ( destalu_i2.OP1 ( ) );
     shift11_g.connectsTo ( destalu_i2.OP2 ( ) );
     npc_ir.connectsTo ( destalu_i2.OUT ( ) );
+    dispmask_g.connectsTo ( destalu_i1.OP2 ( ) );
+    aux_i.connectsTo ( destalu_i1.OUT ( ) );
+
+    pc_i.connectsTo ( destalu_i2.OP1 ( ) );
+    aux_i.connectsTo ( destalu_i2.OP2 ( ) );
+    pc_load.connectsTo ( destalu_i2.OUT ( ) );
 
 } // make_connections_issue
 

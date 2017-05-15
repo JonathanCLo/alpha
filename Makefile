@@ -1,5 +1,5 @@
 #
-# Created by gmakemake (Ubuntu Jul 25 2014) on Sun May 14 15:55:20 2017
+# Created by gmakemake (Ubuntu Jul 25 2014) on Sun May 14 18:26:02 2017
 #
 
 #
@@ -54,7 +54,7 @@ CCLIBFLAGS = $(LIBFLAGS)
 ########## End of flags from header.mak
 
 
-CPP_FILES =	alpha.cpp execute.cpp fetch.cpp hardware.cpp hazards.cpp hw_exec.cpp hw_fetch.cpp hw_issue.cpp hw_mem.cpp hw_read.cpp issue.cpp make_connections.cpp memory.cpp pipeline.cpp read.cpp run_simulation.cpp
+CPP_FILES =	CPU.cpp execute.cpp fetch.cpp hardware.cpp hazards.cpp hw_exec.cpp hw_fetch.cpp hw_issue.cpp hw_mem.cpp hw_read.cpp issue.cpp make_connections.cpp memory.cpp pipeline.cpp read.cpp run_simulation.cpp
 C_FILES =	
 PS_FILES =	
 S_FILES =	
@@ -67,16 +67,16 @@ OBJFILES =	execute.o fetch.o hardware.o hazards.o hw_exec.o hw_fetch.o hw_issue.
 # Main targets
 #
 
-all:	alpha 
+all:	CPU 
 
-alpha:	alpha.o $(OBJFILES)
-	$(CXX) $(CXXFLAGS) -o alpha alpha.o $(OBJFILES) $(CCLIBFLAGS)
+CPU:	CPU.o $(OBJFILES)
+	$(CXX) $(CXXFLAGS) -o CPU CPU.o $(OBJFILES) $(CCLIBFLAGS)
 
 #
 # Dependencies
 #
 
-alpha.o:	hardware.h hw_exec.h hw_fetch.h hw_issue.h hw_mem.h hw_read.h includes.h prototypes.h
+CPU.o:	hardware.h hw_exec.h hw_fetch.h hw_issue.h hw_mem.h hw_read.h includes.h prototypes.h
 execute.o:	hardware.h hazards.h hw_exec.h hw_fetch.h hw_issue.h hw_mem.h hw_read.h includes.h prototypes.h
 fetch.o:	hardware.h hw_exec.h hw_fetch.h hw_issue.h hw_mem.h hw_read.h includes.h prototypes.h
 hardware.o:	hardware.h hw_exec.h hw_fetch.h hw_issue.h hw_mem.h hw_read.h includes.h prototypes.h
@@ -103,7 +103,7 @@ archive.tgz:	$(SOURCEFILES) Makefile
 	tar cf - $(SOURCEFILES) Makefile | gzip > archive.tgz
 
 clean:
-	-/bin/rm -f $(OBJFILES) alpha.o core
+	-/bin/rm -f $(OBJFILES) CPU.o core
 
 realclean:        clean
-	-/bin/rm -f alpha 
+	-/bin/rm -f CPU 
